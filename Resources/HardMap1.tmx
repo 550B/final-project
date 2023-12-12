@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="64" tileheight="64" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="HardMap1" tilewidth="64" tileheight="64" tilecount="220" columns="20">
+  <image source="HardMap1.png" width="1280" height="720"/>
+ </tileset>
+ <layer id="1" name="hardmap1" width="20" height="12">
+  <data encoding="base64" compression="zlib">
+   eJytw4dWCAAAAMBkZO9dRvZe2aQQoYwyMrK3rOyRreyRnb33zshekZlN4WPcR3TvXUBAwSpkoIUtYlGLGWRxS1jSUpa2jGUtZ3krWNFKVraKVa1mdWtY02BDrGVt61jXUOtZ3wY2tJGNbWJTm9ncFra0la1tY1vbGWZ7O9jRTna2i13tZnfD7WGEkfa0l72Nso99jbaf/R1gjLEOdJCDHWKc8Q51mMMdYYIjHeVox5joWMc53glOdJKTneJUpzndGc50lknOdo5zned8k13gQhe52CUudZnLXeFKU1zlate41nWud4MbTTXNTW52i1vd5nZ3uNNd7jbdPe51n/s94EEPmeFhj3jUYx73hCc95WnPeNZznveCF73kZa941Wte94Y3veVtM73jXe953ywf+NBHPvaJT33mc1/40ldm+9o35vjWd773gx/9ZK6f/eJXv/ndH/70l7/NM98//vWf/wHWk173
+  </data>
+ </layer>
+</map>
