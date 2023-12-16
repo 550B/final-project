@@ -63,33 +63,47 @@ void GanYuanMedical::shoot()
     GameManager* instance = GameManager::getInstance();
     auto bulletVector = instance->bulletVector;
 
-    sortInjuredGanYuan();
-    auto temp = injuredGanYuan.at(0);  //血量最低的干员
-    injuredGanYuan.clear();
+    // 治疗个数
+    int cnt = 3;
 
     if (!injuredGanYuan.empty())
     {
-        // 这段代码是发射治疗弹的
-        auto currBullet = MedicalBullet();
-        instance->bulletVector.pushBack(currBullet);
+        sortInjuredGanYuan();
 
-        auto moveDuration = getRate();
+        for (int i = 0; i < cnt; i++)
+        {
+            // 这段代码是发射治疗弹的
+            auto currBullet = MedicalBullet();
+            instance->bulletVector.pushBack(currBullet);
 
-        // 这里改成干员位置
-        Point shootVector = temp->getPosition() - this->getPosition();
+            auto moveDuration = getRate();
 
-        shootVector.normalize();
-        Point normalizedShootVector = -shootVector;
+            Point shootVector;
 
-        auto farthestDistance = Director::getInstance()->getWinSize().width;
-        Point overshotVector = normalizedShootVector * farthestDistance;
-        Point offscreenPoint = (ganyuanMedical->getPosition() - overshotVector);
+            // 这里改成干员位置
+            if (i <= injuredGanYuan.size() - 1)
+            {
+                shootVector = injuredGanYuan.at(i)->getPosition() - this->getPosition();
+            }
+            else
+            {
+                break;
+            }
 
-        currBullet->runAction(Sequence::create(MoveTo::create(moveDuration, offscreenPoint),
-            CallFuncN::create(CC_CALLBACK_1(GanYuanMedical::removeBullet, this)),
-            NULL));
-        currBullet = NULL;
+            shootVector.normalize();
+            Point normalizedShootVector = -shootVector;
 
+            auto farthestDistance = Director::getInstance()->getWinSize().width;
+            Point overshotVector = normalizedShootVector * farthestDistance;
+            Point offscreenPoint = (ganyuanMedical->getPosition() - overshotVector);
+
+            currBullet->runAction(Sequence::create(MoveTo::create(moveDuration, offscreenPoint),
+                CallFuncN::create(CC_CALLBACK_1(GanYuanMedical::removeBullet, this)),
+                NULL));
+            currBullet = NULL;
+        }
+
+        injuredGanYuan.clear();
 
         ////////////////////////////////
         // 下面注释都废了

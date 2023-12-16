@@ -8,6 +8,7 @@
 USING_NS_CC;
 
 // 这里类名起敌人名字
+// 飞行类
 class Enemy1 : public EnemyBase
 {
 public:
@@ -23,6 +24,7 @@ public:
 };
 
 // 第二种敌人
+// 地面类
 class Enemy2 : public EnemyBase
 {
 public:
@@ -40,6 +42,7 @@ public:
 };
 
 // 第三种敌人
+// 地面类
 class Enemy3 : public EnemyBase
 {
 public:

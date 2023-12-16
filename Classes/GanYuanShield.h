@@ -12,13 +12,13 @@ public:
 
     CREATE_FUNC(GanYuanShield);
 
-    void attack();
-
-
+    void attack(float dt);
 
 private:
 
     Sprite* ganyuanShield;
+
+    EnemyBase* curBlockedEnemy;
 
 };
 
