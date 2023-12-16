@@ -47,7 +47,6 @@ bool NormalMap1::init()
     TMXObjectGroup* objects = map->getObjectGroup("road");
     this->addChild(map, 0);
 
-
     return true;
 }
 
