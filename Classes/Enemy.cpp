@@ -1,6 +1,6 @@
 #include "Enemy.h"
 
-
+// 空中
 bool Enemy1::init()
 {
     /////////////////////////
@@ -120,21 +120,22 @@ void Enemy1::enemyExpload()
     sprite->removeFromParent();
 }
 
-////////////////////////////
-// 后面的以此类推吧
-
-bool Pirate::init()
+// 地面
+bool Enemy2::init()
 {
-    if (!Sprite3D::init())
+    if (!Sprite::init())
     {
         return false;
     }
+
     setRunSpeed(50);
-    setVaule(20);
-    sprite = Sprite3D::create("orc.c3b");
+    setValue(20);
+
+    sprite = Sprite::create("orc.c3b");
     sprite->setAnchorPoint(Vec2(0, 0));
     sprite->setScale(2.0);
     this->addChild(sprite);
+
     animationRight = createAnimation("enemyRight2", 4, 0.1f);
     AnimationCache::getInstance()->addAnimation(animationRight, "runright2");
     animationLeft = createAnimation("enemyLeft2", 4, 0.1f);
@@ -143,19 +144,21 @@ bool Pirate::init()
     AnimationCache::getInstance()->addAnimation(animationExplode, "explode2");
 
     createAndSetHpBar();
-    schedule(schedule_selector(Pirate::changeDirection), 0);
+
+    schedule(CC_SCHEDULE_SELECTOR(Enemy2::changeDirection), 0);
+
     return true;
 }
 
-Pirate* Pirate::createPirate(Vector<Node*> points, int hp)
+Enemy2* Enemy2::createEnemy2(Vector<Node*> points, int hp)
 {
-    Pirate* pRet = new Pirate();
+    Enemy2* pRet = new Enemy2();
     if (pRet && pRet->init())
     {
         pRet->setPointsVector(points);
         pRet->setMaxHp(hp);
         pRet->setCurrHp(hp);
-        pRet->runFllowPoint();
+        pRet->runFollowPoint();
 
         pRet->autorelease();
         return pRet;
@@ -167,7 +170,7 @@ Pirate* Pirate::createPirate(Vector<Node*> points, int hp)
         return NULL;
     }
 }
-void Pirate::changeDirection(float dt)
+void Enemy2::changeDirection(float dt)
 {
     hpBgSprite->setPosition(Point(sprite->getContentSize().width / 2, sprite->getContentSize().height + 15) + sprite->getPosition());
     auto curr = currPoint();
@@ -183,25 +186,26 @@ void Pirate::changeDirection(float dt)
         sprite->setRotation3D(Vec3(0, 90, 0));
     }
 }
-void Pirate::enemyExpload()
+
+void Enemy2::enemyExpload()
 {
     hpBgSprite->setVisible(false);
     sprite->stopAllActions();
-    unschedule(schedule_selector(Pirate::changeDirection));
+    unschedule(CC_SCHEDULE_SELECTOR(Enemy2::changeDirection));
     sprite->setAnchorPoint(Point(0.5f, 0.25f));
     sprite->removeFromParent();
 }
 
-
-bool Bandit::init()
+// 地面
+bool Enemy3::init()
 {
-    if (!Sprite3D::init())
+    if (!Sprite::init())
     {
         return false;
     }
     setRunSpeed(70);
-    setVaule(30);
-    sprite = Sprite3D::create("orc.c3b");
+    setValue(30);
+    sprite = Sprite::create("orc.c3b");
     sprite->setColor(Color3B(255, 255, 0));
     sprite->setAnchorPoint(Vec2(0, 0));
     this->addChild(sprite);
@@ -214,19 +218,19 @@ bool Bandit::init()
     AnimationCache::getInstance()->addAnimation(animationExplode, "explode3");
 
     createAndSetHpBar();
-    schedule(schedule_selector(Bandit::changeDirection), 0);
+    schedule(CC_SCHEDULE_SELECTOR(Enemy3::changeDirection), 0);
     return true;
 }
 
-Bandit* Bandit::createBandit(Vector<Node*> points, int hp)
+Enemy3* Enemy3::createEnemy3(Vector<Node*> points, int hp)
 {
-    Bandit* pRet = new Bandit();
+    Enemy3* pRet = new Enemy3();
     if (pRet && pRet->init())
     {
         pRet->setPointsVector(points);
         pRet->setMaxHp(hp);
         pRet->setCurrHp(hp);
-        pRet->runFllowPoint();
+        pRet->runFollowPoint();
 
         pRet->autorelease();
         return pRet;
@@ -238,7 +242,7 @@ Bandit* Bandit::createBandit(Vector<Node*> points, int hp)
         return NULL;
     }
 }
-void Bandit::changeDirection(float dt)
+void Enemy3::changeDirection(float dt)
 {
     hpBgSprite->setPosition(Point(sprite->getContentSize().width / 2, sprite->getContentSize().height + 15) + sprite->getPosition());
     auto curr = currPoint();
@@ -254,11 +258,11 @@ void Bandit::changeDirection(float dt)
         sprite->setRotation3D(Vec3(0, 90, 0));
     }
 }
-void Bandit::enemyExpload()
+void Enemy3::enemyExpload()
 {
     hpBgSprite->setVisible(false);
     sprite->stopAllActions();
-    unschedule(schedule_selector(Bandit::changeDirection));
+    unschedule(CC_SCHEDULE_SELECTOR(Enemy3::changeDirection));
     sprite->setAnchorPoint(Point(0.5f, 0.25f));
     sprite->removeFromParent();
 }

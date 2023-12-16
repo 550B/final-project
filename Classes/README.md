@@ -20,7 +20,7 @@
   | Enemy          | 不同敌人的实现，继承Base                       |
   | EnemyBase      | 敌人基类                                       |
   | GanYuanBase    | 干员基类                                       |
-  | GanYuanMedical | 医疗干员的实现，继承Base                       |
+  | GanYuanMedical | 医疗干员的实现，继承Base，在这里面挪动子弹     |
   | GanYuanShield  | 重装干员的实现，继承Base                       |
   | GanYuanShooter | 射手干员的实现，继承Base                       |
   | GameLayer      | 游戏逻辑的判断，比如：判断输赢                 |

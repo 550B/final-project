@@ -13,6 +13,7 @@ EnemyBase::EnemyBase()
     , animationExplode(NULL)
     , pointsVector(NULL)
     , runSpeed(0)
+    , defense(0)
     , maxHp(0)
     , currHp(0)
     , hpPercentage(100)
@@ -166,7 +167,7 @@ void EnemyBase::checkNearestGanYuan()
     nearestGanYuan = ganyuanTemp;
 }
 
-void EnemyBase::attack(GanYuanBase* gy)
+void EnemyBase::attack(float dt)
 {
 
 }

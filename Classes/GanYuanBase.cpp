@@ -104,19 +104,16 @@ void qSort(Vector<GanYuanBase*>array, int low, int high) {
 
 void GanYuanBase::checkBlock()
 {
-	// 先找到最近的敌人(废
-	//checkNearestEnemy();
-
 	GameManager* instance = GameManager::getInstance();
 	auto enemyVector = instance->enemyVector;
 
 	// 判断是否贴贴
-	for (int i = 0; i < enemyVector.size() && curBlock < block; i++)
+	for (int i = 0; i < enemyVector.size() && this->getCurBlock() < this->getBlock(); i++)
 	{
 		auto enemy = enemyVector.at(i);
 		double distance = this->getPosition().getDistance(enemy->sprite->getPosition());
 
-		if (distance < 0.1 /*这个数举个例子，后面微调*/)
+		if (distance < 0.1 /*这个数举个例子，后面微调*/ && !blockedEnemy.contains(enemy))
 		{
 			// 加入阻挡队列
 			blockedEnemy.pushBack(enemy);
@@ -128,8 +125,5 @@ void GanYuanBase::checkBlock()
 			this->setCurBlock(curBlock);
 		}
 	}
-
-
 }
-
 

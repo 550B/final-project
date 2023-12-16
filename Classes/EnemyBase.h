@@ -25,7 +25,7 @@ public:
     void checkNearestGanYuan();
 
     // 打
-    void attack(GanYuanBase* gy);
+    void attack(float dt);
 
 
     // 每delta帧更新
@@ -102,6 +102,9 @@ protected:
     CC_SYNTHESIZE(float, value, Value);
 
     // 很多值...
+
+    // 防御力
+    CC_SYNTHESIZE(float, defense, Defense);
 
     // 当前血
     CC_SYNTHESIZE(float, currHp, CurrHp);
