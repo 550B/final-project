@@ -10,10 +10,10 @@
 class NormalMap1 : public cocos2d::Layer
 {
 public:
-    //´´½¨³¡¾°
+    //Â´Â´Â½Â¨Â³Â¡Â¾Â°
     static cocos2d::Scene* createScene();
 
-    //´´½¨ÍßÆ¬µØÍ¼
+    //Â´Â´Â½Â¨ÃÃŸÃ†Â¬ÂµÃ˜ÃÂ¼
     static cocos2d::TMXTiledMap* createMap();
 
     virtual bool init();

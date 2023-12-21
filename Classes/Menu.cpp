@@ -1,22 +1,23 @@
-/*ÎäÜÆ¶ä2151422
+/*æ­¦èŠ·æœµ2151422
 2023.12.12
-ÊµÏÖÖ÷½çÃæ¡¢Ìø×ªµØÍ¼¡¢ÒôÀÖ*/
+å®ç°ä¸»ç•Œé¢ã€è·³è½¬åœ°å›¾ã€éŸ³ä¹*/
 #include "Menu.h"
 #include"NormalMapChoose.h"
 #include "HardMap1Scene.h"
 #include "GanYuanShield.h"
 USING_NS_CC;
 
-//Ò»Ğ©È«¾Ö±äÁ¿¡£ÉùÃ÷³ÉÈ«¾Ö¿É²Ù¿ØµÄ
+//xjyä¸€äº›å…¨å±€å˜é‡ã€‚å£°æ˜æˆå…¨å±€å¯æ“æ§çš„
 TMXObjectGroup* road;
 TMXObjectGroup* towers;
 TMXObjectGroup* grounds;
 std::vector<Vec2> road_path;
 std::vector<Vec2> towers_path;
 std::vector<Vec2> grounds_path;
-Emode mode;//Ä£Ê½
-Scene* gameScene;//µ±Ç°³¡¾°£¨hard/normalµØÍ¼£©
-bool gameStart = false;//ÊÇ·ñÓÎÏ·ÒÑ¾­¿ªÊ¼ÔËĞĞ,Èç¹ûÒÑ¾­ÔËĞĞÔò¸ÉÔ±Ñ¡ÔñÊÇ²»ÄÜ¼ÌĞøµÄ£¬³õÊ¼Ïë·¨ÊÇÉè¼Æ°´Å¥¿É¾ö¶¨¿ªÊ¼
+Emode mode;//æ¨¡å¼
+Scene* gameScene;//å½“å‰åœºæ™¯ï¼ˆhard/normalåœ°å›¾ï¼‰
+bool gameStart = false;//æ˜¯å¦æ¸¸æˆå·²ç»å¼€å§‹è¿è¡Œ,å¦‚æœå·²ç»è¿è¡Œåˆ™å¹²å‘˜é€‰æ‹©æ˜¯ä¸èƒ½ç»§ç»­çš„ï¼Œåˆå§‹æƒ³æ³•æ˜¯è®¾è®¡æŒ‰é’®å¯å†³å®šå¼€å§‹
+
 Scene* Menusys::createScene()
 {
     auto scene = Scene::create();
@@ -44,16 +45,16 @@ bool Menusys::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    //Ô¤¼ÓÔØ
+    //é¢„åŠ è½½
     SimpleAudioEngine::getInstance()->preloadBackgroundMusic("Music/m_sys.mp3");
     SimpleAudioEngine::getInstance()->preloadBackgroundMusic("Music/button.mp3");
 
-    //ÔØÈë²Ëµ¥±³¾°Í¼£¨×îµ×²ã£©
+    //è½½å…¥èœå•èƒŒæ™¯å›¾ï¼ˆæœ€åº•å±‚ï¼‰
     auto sprite = Sprite::create("Pictures/Menu.jpg");
     sprite->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     this->addChild(sprite, 0);
 
-    //ÏµÍ³bgm
+    //ç³»ç»Ÿbgm
     auto audio_menu = SimpleAudioEngine::getInstance();
     if (!audio_menu->isBackgroundMusicPlaying()) {
         audio_menu->playBackgroundMusic("Music/m_sys.mp3", true);
@@ -61,19 +62,19 @@ bool Menusys::init()
     auto offMusic = MenuItemImage::create("Pictures/stopMusic.png", "Pictures/stopMusic.png");
     auto onMusic = MenuItemImage::create("Pictures/continueMusic.png", "Pictures/continueMusic.png");
 
-    //Õ¹Ê¾²»Í¬°´Å¥×´Ì¬£¨¿ª¹ØÒôÀÖ£©
+    //å±•ç¤ºä¸åŒæŒ‰é’®çŠ¶æ€ï¼ˆå¼€å…³éŸ³ä¹ï¼‰
     MenuItemToggle* MusicMenu = MenuItemToggle::createWithCallback(CC_CALLBACK_1(Menusys::MenuMusicCallBack, this), onMusic, offMusic,NULL );
     auto Menu_Music= Menu::create(MusicMenu, NULL);
     Menu_Music->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     Menu_Music->setPosition(Vec2(1221, 661));
     this->addChild(Menu_Music, 1);
 
-    //1 ÆÕÍ¨¹Ø¿¨--Normal
-    //²åÈëÎÄ×Ö 
+    //1 æ™®é€šå…³å¡--Normal
+    //æ’å…¥æ–‡å­— 
     auto label_normal = Label::createWithSystemFont("NormalMap", "fonts/arial.ttf", 30);
     auto menuitem_normal = MenuItemLabel::create(label_normal, CC_CALLBACK_1(Menusys::NormalMap, this));
 
-    //´´½¨ºÃÁË²Ëµ¥ÌõÄ¿£¬¾ÍĞèÒª¼ÓÈë²Ëµ¥ÖĞ£¬ËùÒÔÏÂÃæ¾ÍÊÇ´´½¨²Ëµ¥
+    //åˆ›å»ºå¥½äº†èœå•æ¡ç›®ï¼Œå°±éœ€è¦åŠ å…¥èœå•ä¸­ï¼Œæ‰€ä»¥ä¸‹é¢å°±æ˜¯åˆ›å»ºèœå•
     auto menu_normal = Menu::create(menuitem_normal, NULL);
     if (menu_normal == nullptr || menu_normal->getContentSize().width <= 0 || menu_normal->getContentSize().height <= 0) {
         problemLoading("'NormalMap'");
@@ -86,8 +87,8 @@ bool Menusys::init()
     }
 
 
-    //2 ½ËÃğ×÷Õ½--Hard
-    //²åÈëÎÄ×Ö
+    //2 å‰¿ç­ä½œæˆ˜--Hard
+    //æ’å…¥æ–‡å­—
     auto label_Hard = Label::createWithSystemFont("HardMap", "fonts/arial.ttf", 30);
     auto menuitem_Hard = MenuItemLabel::create(label_Hard, CC_CALLBACK_1(Menusys::HardMap, this));
 
@@ -103,7 +104,7 @@ bool Menusys::init()
     }
     
 
-    //3¸ÉÔ±±à¶Ó¡ªOperator
+    //3å¹²å‘˜ç¼–é˜Ÿâ€”Operator
     auto label_Operator = Label::createWithSystemFont("OperatorFormation", "fonts/arial.ttf", 30);
     auto menuitem_Operator = MenuItemLabel::create(label_Operator, CC_CALLBACK_1(Menusys::OperatorFormation, this));
 
@@ -120,7 +121,7 @@ bool Menusys::init()
 
     return true;
 }
-//¿ª¹ØÒôÀÖ
+//å¼€å…³éŸ³ä¹
 void Menusys::MenuMusicCallBack(Ref* pSender) {
     auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
     if (audio->isBackgroundMusicPlaying()) {
@@ -130,34 +131,36 @@ void Menusys::MenuMusicCallBack(Ref* pSender) {
         audio->resumeBackgroundMusic();
     }
 }
-//ÆÕÍ¨¹Ø¿¨
+//æ™®é€šå…³å¡
 void Menusys::NormalMap(Ref* pSender)
 {
     onButtonEffect();
-    mode=normal;//ÉèÖÃÈ«¾Ö±äÁ¿mode
+
+    mode=normal;//xjyè®¾ç½®å…¨å±€å˜é‡mode
+
     Scene* scene = MapChoose::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
 }
-//½ËÃğ×÷Õ½
+//å‰¿ç­ä½œæˆ˜
 void Menusys::HardMap(Ref* pSender)
 {
     onButtonEffect();
-    mode = hard;//ÉèÖÃÈ«¾Ö±äÁ¿mode;
+    mode = hard;//xjyè®¾ç½®å…¨å±€å˜é‡mode;
     Scene* scene = HardMap1::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
 }
-//¸ÉÔ±±à¶Ó
+//å¹²å‘˜ç¼–é˜Ÿ
 void Menusys::OperatorFormation(Ref* pSender)
 {
     onButtonEffect();
-    mode = biandui;//ÉèÖÃÈ«¾Ö±äÁ¿mode;
+    mode = biandui;//xjyè®¾ç½®å…¨å±€å˜é‡mode;
     //Scene* scene = OperatorFormation::createScene();
     //Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
 }
-//°´Å¥ÌØĞ§
+//æŒ‰é’®ç‰¹æ•ˆ
 void Menusys::onButtonEffect()
 {
-    SimpleAudioEngine::getInstance()->stopBackgroundMusic(); //Í£Ö¹ÏµÍ³bgm
-    SimpleAudioEngine::getInstance()->playBackgroundMusic("Music/button.mp3", false); //false±íÊ¾²»Ñ­»·
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic(); //åœæ­¢ç³»ç»Ÿbgm
+    SimpleAudioEngine::getInstance()->playBackgroundMusic("Music/button.mp3", false); //falseè¡¨ç¤ºä¸å¾ªç¯
 }
 
