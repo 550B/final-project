@@ -3,6 +3,7 @@
 #define __MENU_H__
 
 #include "cocos2d.h"
+#include "Const.h"
 #include"editor-support/cocostudio/SimpleAudioEngine.h"
 using namespace CocosDenshion;
 

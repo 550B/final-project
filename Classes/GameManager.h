@@ -5,7 +5,8 @@
 #include "cocos2d.h"
 #include "EnemyBase.h"
 #include "GanYuanBase.h"
-#include "Wave.h"
+#include "Const.h"
+//#include "Wave.h"
 
 
 USING_NS_CC;
@@ -13,12 +14,11 @@ USING_NS_CC;
 class GameManager
 {
 public:
-
+	Scene* gameScene;
 	Vector<EnemyBase*> enemyVector;
 	Vector<Sprite*> bulletVector;
 	Vector<GanYuanBase*> ganyuanVector;
-	Vector<Wave*> waveVector;
-
+	//Vector<Wave*> waveVector;
 	CC_SYNTHESIZE(int, money, Money);
 	CC_SYNTHESIZE(int, groupNum, GroupNum);
 	CC_SYNTHESIZE(std::string, curMapName, CurMapName);
@@ -38,3 +38,4 @@ private:
 
 };
 #endif /* defined(_GAME_MANAGER_H_) */
+
