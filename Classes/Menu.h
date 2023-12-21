@@ -6,14 +6,15 @@
 #include"editor-support/cocostudio/SimpleAudioEngine.h"
 using namespace CocosDenshion;
 
-
-
 class Menusys : public cocos2d::Layer
 {
 public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
+
+    //开关音乐
+    void MenuMusicCallBack(Ref* pSender);
 
     //跳转普通关卡
     void NormalMap(Ref* pSender);
