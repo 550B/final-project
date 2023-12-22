@@ -187,3 +187,15 @@ void GanYuanMedical::removeBullet(Node* pSender)
     sprite->removeFromParent();
 }
 
+void GanYuanMedical::ganyuanDie()
+{
+    hpBgSprite->setVisible(false);
+    sprite->stopAllActions();
+
+    unschedule(CC_SCHEDULE_SELECTOR(GanYuanMedical::rotateAndShoot));
+
+    sprite->setAnchorPoint(Point(0.5f, 0.25f));
+    sprite->removeFromParent();
+
+}
+

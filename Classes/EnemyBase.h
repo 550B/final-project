@@ -24,9 +24,6 @@ public:
     // 查找最近干员
     void checkNearestGanYuan();
 
-    // 打
-    void attack(float dt);
-
 
     // 每delta帧更新
     virtual void update(float delta);
@@ -35,10 +32,20 @@ public:
     Animation* createAnimation(std::string prefixName, int framesNum, float delay);
 
     // 转身，dt好像没用
-    virtual void changeDirection(float dt) {};
+    //virtual void changeDirection(float dt) {};
 
     // 敌人死
     virtual void enemyExpload() {};
+
+    // 循环判断小飞机打人
+    virtual void flyAndShoot(float dt) {};
+
+    virtual void shoot() {};
+
+    virtual void removeBullet(Node* pSender) {};
+
+    // 地面敌人判断阻挡
+    virtual void attack(float dt) {};
 
     // 返回当前点
     Node* currPoint();
@@ -93,7 +100,7 @@ protected:
     CC_SYNTHESIZE(bool, beBlocked, BeBlocked);
 
     // 判断空中地上
-    CC_SYNTHESIZE(bool, isFly, IsFly);
+    CC_SYNTHESIZE(bool, isGround, IsGround);
 
     // 无人机攻击范围
     CC_SYNTHESIZE(int, scope, Scope);
@@ -102,6 +109,9 @@ protected:
     CC_SYNTHESIZE(float, value, Value);
 
     // 很多值...
+
+    // 攻击力
+    CC_SYNTHESIZE(float, atk, Atk);
 
     // 防御力
     CC_SYNTHESIZE(float, defense, Defense);
@@ -115,7 +125,7 @@ protected:
     // 只读的进度条类型的血条
     CC_SYNTHESIZE_READONLY(ProgressTimer*, hpBar, HpBar);
 
-    // 敌人生成成功？
+    // 敌人走进蓝点
     CC_SYNTHESIZE(bool, enemySuccessful, EnemySuccessful);
 
     Sprite* sprite;
@@ -124,6 +134,9 @@ protected:
 
     // 最近的干员
     GanYuanBase* nearestGanYuan;
+
+    // 阻挡的干员
+    GanYuanBase* blockGanYuan;
 
 };
 

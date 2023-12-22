@@ -19,6 +19,8 @@ public:
 
     void removeBullet(Node* pSender);
 
+    virtual void ganyuanDie();
+
     Sprite* MedicalBullet();
 
 private:

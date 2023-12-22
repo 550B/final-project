@@ -5,7 +5,7 @@ EnemyBase::EnemyBase()
     : sprite(NULL)      // 赋初始值
     , hpBgSprite(NULL)
     , beBlocked(false)
-    , isFly(false)
+    , isGround(false)
     , scope(0)
     , pointCounter(0)
     , animationRight(NULL)
@@ -13,6 +13,7 @@ EnemyBase::EnemyBase()
     , animationExplode(NULL)
     , pointsVector(NULL)
     , runSpeed(0)
+    , atk(0)
     , defense(0)
     , maxHp(0)
     , currHp(0)
@@ -34,8 +35,10 @@ bool EnemyBase::init()
     {
         return false;
     }
+
     return true;
 }
+
 Sprite* EnemyBase::getHpBarBg()
 {
     return hpBgSprite;
@@ -49,6 +52,7 @@ void EnemyBase::update(float delta)
     //hpBgSprite->setPosition(Point(sprite->getContentSize().width / 2, sprite->getContentSize().height )+sprite->getPosition());
 
 }
+
 void EnemyBase::createAndSetHpBar()
 {
     // 添加血条边框帧
@@ -165,10 +169,5 @@ void EnemyBase::checkNearestGanYuan()
         }
     }
     nearestGanYuan = ganyuanTemp;
-}
-
-void EnemyBase::attack(float dt)
-{
-
 }
 

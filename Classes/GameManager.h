@@ -10,6 +10,7 @@
 
 USING_NS_CC;
 
+
 class GameManager
 {
 public:
@@ -20,7 +21,7 @@ public:
 	Vector<Wave*> waveVector;
 
 	CC_SYNTHESIZE(int, money, Money);
-	CC_SYNTHESIZE(int, groupNum, GroupNum);
+	CC_SYNTHESIZE(int, waveIndex, WaveIndex);
 	CC_SYNTHESIZE(std::string, curMapName, CurMapName);
 	CC_SYNTHESIZE(std::string, currLevelFile, CurrLevelFile);
 	CC_SYNTHESIZE(std::string, nextLevelFile, NextLevelFile);

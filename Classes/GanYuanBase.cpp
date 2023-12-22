@@ -5,14 +5,24 @@ GanYuanBase::GanYuanBase()
 	:scope(0)
 	, towerValue(0)
 	, lethality(0)
+	, defense(0)
 	, hp(0)
 	, health(0)
 	, block(0)
 	, curBlock(0)
+	, isGround(false)
 	, rate(0)
+	, hpPercentage(100)
+	, hpBar(NULL)
+	, hpBgSprite(NULL)
 	, nearestEnemy(NULL)
 {
 
+}
+
+GanYuanBase::~GanYuanBase()
+{
+	hpBgSprite->removeFromParent();
 }
 
 bool GanYuanBase::init()
@@ -25,6 +35,34 @@ bool GanYuanBase::init()
 	return true;
 }
 
+Sprite* GanYuanBase::getHpBarBg()
+{
+	return hpBgSprite;
+}
+
+void GanYuanBase::createAndSetHpBar()
+{
+	// 添加血条边框帧
+	hpBgSprite = Sprite::createWithSpriteFrameName("hpBg1.png");
+
+	hpBgSprite->setPosition(Point(sprite->getContentSize().width / 2, sprite->getContentSize().height));
+
+	// 进度条，添加血条帧
+	hpBar = ProgressTimer::create(Sprite::createWithSpriteFrameName("hp1.png"));
+
+	hpBar->setType(ProgressTimer::Type::BAR);
+
+	hpBar->setMidpoint(Point(0, 0.5f));
+
+	hpBar->setBarChangeRate(Point(1, 0));
+
+	hpBar->setPercentage(hpPercentage);
+
+	hpBar->setPosition(Point(hpBgSprite->getContentSize().width / 2, hpBgSprite->getContentSize().height / 3 * 2));
+
+	hpBgSprite->addChild(hpBar);
+
+}
 
 void GanYuanBase::checkNearestEnemy()
 {
@@ -119,6 +157,8 @@ void GanYuanBase::checkBlock()
 			blockedEnemy.pushBack(enemy);
 
 			enemy->setBeBlocked(true);
+
+			enemy->blockGanYuan = this;
 
 			curBlock++;
 

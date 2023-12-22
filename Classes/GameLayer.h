@@ -2,6 +2,7 @@
 #define _GAME_LAYER_H_
 
 #include <iostream>
+#include <initializer_list>
 #include "cocos2d.h"
 #include "Enemy.h"
 #include "GanYuanMedical.h"
@@ -12,6 +13,13 @@
 
 USING_NS_CC;
 
+// 敌人种类，这种敌人的数量
+struct EnemyType
+{
+    int type;
+    int count;
+};
+
 class GameLayer : public Layer
 {
 public:
@@ -19,8 +27,13 @@ public:
     GameLayer();
     ~GameLayer();
 
+    //创建场景
+    static cocos2d::Scene* createScene();
+
+    //创建瓦片地图
+    static cocos2d::TMXTiledMap* createMap();
+
     virtual bool init() override;
-    static Scene* createScene();
     CREATE_FUNC(GameLayer);
 
     virtual void update(float dt) override;
@@ -28,11 +41,14 @@ public:
 
     Wave* currentWave();
     Wave* nextWave();
-    void addWaveEnemy();
+    void addWaveEnemy(std::initializer_list<EnemyType> il);
+    void initWave();
     void logic(float dt);
-    void initLabelText();
+    //void initLabelText();
 
 private:
+
+    float interval;
 
     SpriteBatchNode* spriteSheet;
     TMXTiledMap* map;
@@ -51,8 +67,10 @@ private:
     Label* groupTotalLabel;
     Layer* toolLayer;
     void initToolLayer();
-    CC_SYNTHESIZE(float, playHpPercentage, PlayHpPercentage);
-    CC_SYNTHESIZE_READONLY(ProgressTimer*, playHpBar, PlayHpBar);
+    CC_SYNTHESIZE(int, blue, Blue);
+
+    // 不需要关卡血条
+    //CC_SYNTHESIZE_READONLY(ProgressTimer*, playHpBar, PlayHpBar);
     bool isSuccessful;
 
     bool isTouchEnable;
@@ -67,9 +85,12 @@ private:
 
     Point towerPos;
     void initPointsVector(float offX);
-    void addEnemy();
+    void addSceneEnemy();
     void addTower();
     GanYuanBase** towerMatrix;
+
+    // 判断输赢
+    void YingZhengTouchesTheElectricSwitch();
 
 };
 

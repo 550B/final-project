@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "GameManager.h"
 
 // 空中
 bool Enemy1::init()
@@ -51,10 +52,74 @@ bool Enemy1::init()
     // 不确定是不是这么写，
     // 请测试一下！
     //schedule(schedule_selector(EnemyBase::changeDirection), 0);
-    schedule(CC_SCHEDULE_SELECTOR(EnemyBase::changeDirection), 0);
+    // 
+    // 先不要转了
+    //schedule(CC_SCHEDULE_SELECTOR(Enemy1::changeDirection), 0);
+    schedule(CC_SCHEDULE_SELECTOR(Enemy1::flyAndShoot), 2.0f);
 
     return true;
 
+}
+
+Sprite* Enemy1::FlyBullet()
+{
+    Sprite* bullet = Sprite::createWithSpriteFrameName("arrowBullet.png");
+    bullet->setPosition(enemyFly->getPosition());
+    bullet->setRotation(enemyFly->getRotation());
+    addChild(bullet);
+
+    return bullet;
+}
+
+void Enemy1::removeBullet(Node* pSender)
+{
+    GameManager* instance = GameManager::getInstance();
+
+    auto bulletVector = instance->bulletVector;
+
+    Sprite* sprite = (Sprite*)pSender;
+    instance->bulletVector.eraseObject(sprite);
+    sprite->removeFromParent();
+}
+
+void Enemy1::flyAndShoot(float dt)
+{
+    checkNearestGanYuan();
+
+    if (nearestGanYuan != NULL)
+    {
+        enemyFly->runAction(Sequence::create(
+            CallFunc::create(CC_CALLBACK_0(Enemy1::shoot, this)),
+            NULL));
+    }
+}
+
+void Enemy1::shoot()
+{
+    GameManager* instance = GameManager::getInstance();
+    auto bulletVector = instance->bulletVector;
+
+    if (nearestGanYuan != NULL && nearestGanYuan->getHealth() > 0)
+    {
+        // 发射子弹
+        auto currBullet = FlyBullet();
+        instance->bulletVector.pushBack(currBullet);
+
+        auto moveDuration = nearestGanYuan->getRate();
+
+        Point shootVector = nearestGanYuan->getPosition() - this->getPosition();
+        shootVector.normalize();
+        Point normalizedShootVector = -shootVector;
+
+        auto farthestDistance = Director::getInstance()->getWinSize().width;
+        Point overshotVector = normalizedShootVector * farthestDistance;
+        Point offscreenPoint = (enemyFly->getPosition() - overshotVector);
+
+        currBullet->runAction(Sequence::create(MoveTo::create(moveDuration, offscreenPoint),
+            CallFuncN::create(CC_CALLBACK_1(Enemy1::removeBullet, this)),
+            NULL));
+        currBullet = NULL;
+    }
 }
 
 Enemy1* Enemy1::createEnemy1(Vector<Node*> points, int hp)
@@ -114,7 +179,8 @@ void Enemy1::enemyExpload()
     // 不确定是不是这么写，
     // 请测试一下！
     //unschedule(schedule_selector(Enemy1::changeDirection));
-    unschedule(CC_SCHEDULE_SELECTOR(Enemy1::changeDirection));
+    //unschedule(CC_SCHEDULE_SELECTOR(Enemy1::changeDirection));
+    unschedule(CC_SCHEDULE_SELECTOR(Enemy1::flyAndShoot));
 
     sprite->setAnchorPoint(Point(0.5f, 0.25f));
     sprite->removeFromParent();
@@ -145,7 +211,7 @@ bool Enemy2::init()
 
     createAndSetHpBar();
 
-    schedule(CC_SCHEDULE_SELECTOR(Enemy2::changeDirection), 0);
+    schedule(CC_SCHEDULE_SELECTOR(Enemy2::changeDirection, Enemy2::attack), 0);
 
     return true;
 }
@@ -187,11 +253,35 @@ void Enemy2::changeDirection(float dt)
     }
 }
 
+void Enemy2::attack(float dt)
+{
+    if (getBeBlocked())
+    {
+        if (blockGanYuan == NULL)
+        {
+            return;
+        }
+
+        float blood = blockGanYuan->getHealth();
+        float dfs = blockGanYuan->getDefense();
+        float atk = this->getAtk();
+
+        if (blood > 0)
+        {
+            blockGanYuan->setHealth(blood - atk * (1 - dfs) <= 0 ? 0 : blood - atk * (1 - dfs));
+
+            // 攻击动画
+            // 在这实现
+
+        }
+    }
+}
+
 void Enemy2::enemyExpload()
 {
     hpBgSprite->setVisible(false);
     sprite->stopAllActions();
-    unschedule(CC_SCHEDULE_SELECTOR(Enemy2::changeDirection));
+    unschedule(CC_SCHEDULE_SELECTOR(Enemy2::changeDirection, Enemy2::attack));
     sprite->setAnchorPoint(Point(0.5f, 0.25f));
     sprite->removeFromParent();
 }
@@ -203,13 +293,16 @@ bool Enemy3::init()
     {
         return false;
     }
+
     setRunSpeed(70);
     setValue(30);
+
     sprite = Sprite::create("orc.c3b");
     sprite->setColor(Color3B(255, 255, 0));
     sprite->setAnchorPoint(Vec2(0, 0));
     this->addChild(sprite);
     sprite->setScale(2.0);
+
     animationRight = createAnimation("enemyRight3", 4, 0.1f);
     AnimationCache::getInstance()->addAnimation(animationRight, "runright3");
     animationLeft = createAnimation("enemyLeft3", 4, 0.1f);
@@ -218,7 +311,9 @@ bool Enemy3::init()
     AnimationCache::getInstance()->addAnimation(animationExplode, "explode3");
 
     createAndSetHpBar();
+
     schedule(CC_SCHEDULE_SELECTOR(Enemy3::changeDirection), 0);
+
     return true;
 }
 
@@ -258,6 +353,31 @@ void Enemy3::changeDirection(float dt)
         sprite->setRotation3D(Vec3(0, 90, 0));
     }
 }
+
+void Enemy3::attack(float dt)
+{
+    if (getBeBlocked())
+    {
+        if (blockGanYuan == NULL)
+        {
+            return;
+        }
+
+        float blood = blockGanYuan->getHealth();
+        float dfs = blockGanYuan->getDefense();
+        float atk = this->getAtk();
+
+        if (blood > 0)
+        {
+            blockGanYuan->setHealth(blood - atk * (1 - dfs) <= 0 ? 0 : blood - atk * (1 - dfs));
+
+            // 攻击动画
+            // 在这实现
+
+        }
+    }
+}
+
 void Enemy3::enemyExpload()
 {
     hpBgSprite->setVisible(false);

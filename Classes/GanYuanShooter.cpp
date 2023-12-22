@@ -85,3 +85,14 @@ void GanYuanShooter::removeBullet(Node* pSender)
     sprite->removeFromParent();
 }
 
+void GanYuanShooter::ganyuanDie()
+{
+    hpBgSprite->setVisible(false);
+    sprite->stopAllActions();
+
+    unschedule(CC_SCHEDULE_SELECTOR(GanYuanShooter::rotateAndShoot));
+
+    sprite->setAnchorPoint(Point(0.5f, 0.25f));
+    sprite->removeFromParent();
+}
+

@@ -51,11 +51,22 @@ void GanYuanShield::attack(float dt)
 
         }
 
-        if (curBlockedEnemy->getCurrHp() <= 0)
+        /*if (curBlockedEnemy->getCurrHp() <= 0)
         {
             if (blockedEnemy.contains(curBlockedEnemy))
                 blockedEnemy.eraseObject(curBlockedEnemy);
-        }
+        }*/
     }
+}
+
+void GanYuanShield::ganyuanDie()
+{
+    hpBgSprite->setVisible(false);
+    sprite->stopAllActions();
+
+    unschedule(CC_SCHEDULE_SELECTOR(GanYuanShield::attack));
+
+    sprite->setAnchorPoint(Point(0.5f, 0.25f));
+    sprite->removeFromParent();
 }
 

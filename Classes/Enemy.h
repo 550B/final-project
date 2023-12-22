@@ -19,7 +19,20 @@ public:
 
     void changeDirection(float dt);
 
-    void enemyExpload();
+    virtual void enemyExpload();
+
+    // 循环判断小飞机打人
+    virtual void flyAndShoot(float dt);
+
+    virtual void shoot();
+
+    virtual void removeBullet(Node* pSender);
+
+    Sprite* FlyBullet();
+
+private:
+
+    Sprite* enemyFly;
 
 };
 
@@ -35,9 +48,10 @@ public:
 
     void changeDirection(float dt);
 
-    void enemyExpload();
+    virtual void enemyExpload();
 
     // 地面敌人判断阻挡
+    virtual void attack(float dt);
 
 };
 
@@ -53,7 +67,10 @@ public:
 
     void changeDirection(float dt);
 
-    void enemyExpload();
+    virtual void enemyExpload();
+
+    // 地面敌人判断阻挡
+    virtual void attack(float dt);
 
 };
 

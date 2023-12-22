@@ -20,6 +20,8 @@ public:
 
     Sprite* ShooterBullet();
 
+    virtual void ganyuanDie();
+
 private:
 
     Sprite* ganyuanShooter;

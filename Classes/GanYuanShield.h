@@ -14,6 +14,8 @@ public:
 
     void attack(float dt);
 
+    virtual void ganyuanDie();
+
 private:
 
     Sprite* ganyuanShield;
