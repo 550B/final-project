@@ -67,7 +67,6 @@ void GanYuanBase::firstInteract() {
 		selectmenu->addChild(menu_unselect);
 	}*/
 }
-
 void GanYuanBase::selectCallback(Ref* sender)
 {
 	Menu* selectOption = static_cast<Menu*>(sender);
@@ -151,6 +150,7 @@ void GanYuanBase::moveToPosition() {
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
 }
 void GanYuanBase::positionLegal(bool &state) {  }//当前位置是否合法
+
 /*
 void GanYuanBase::checkNearestEnemy()
 {

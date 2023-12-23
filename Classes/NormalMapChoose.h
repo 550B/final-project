@@ -5,8 +5,8 @@
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 #include <string.h>
-#include "GanYuanShield.h"//xjy
-#include "GameManager.h"//xjy
+#include "GanYuanShield.h"
+#include "GameManager.h"
 using namespace cocos2d::ui;
 using namespace std;
 class MapChoose : public cocos2d::Layer
@@ -16,14 +16,14 @@ public:
 
     virtual bool init();
 
-    //æ»šåŠ¨åœ°å›¾èƒŒæ™¯
+    //¹ö¶¯µØÍ¼±³¾°
     void ChooseMap(ScrollView* scrollView);
 
-    //é€‰æ‹©å…³å¡
+    //Ñ¡Ôñ¹Ø¿¨
     void ChooseNmap(ScrollView* scrollView);
 
 
-    //è¿”å›ä¸»èœå•
+    //·µ»ØÖ÷²Ëµ¥
     void reMenu();
 
     // implement the "static create()" method manually
