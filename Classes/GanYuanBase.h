@@ -7,6 +7,7 @@
 #include "cocos2d.h"
 #include "EnemyBase.h"
 #include "Const.h"//xjy
+#include "Bar.h"
 USING_NS_CC;
 class GanYuanBase : public Sprite
 {
@@ -40,6 +41,7 @@ public:
     virtual void ifmove();
     virtual void moveToPosition();
     virtual void positionLegal(bool& state);
+
 
 
 };
