@@ -7,16 +7,6 @@
 #include "GanYuanShield.h"
 USING_NS_CC;
 
-//一些全局变量。声明成全局可操控的
-TMXObjectGroup* road;
-TMXObjectGroup* towers;
-TMXObjectGroup* grounds;
-std::vector<Vec2> road_path;
-std::vector<Vec2> towers_path;
-std::vector<Vec2> grounds_path;
-Emode mode;//模式
-Scene* gameScene;//当前场景（hard/normal地图）
-bool gameStart = false;//是否游戏已经开始运行,如果已经运行则干员选择是不能继续的，初始想法是设计按钮可决定开始
 Scene* Menusys::createScene()
 {
     auto scene = Scene::create();
@@ -134,7 +124,7 @@ void Menusys::MenuMusicCallBack(Ref* pSender) {
 void Menusys::NormalMap(Ref* pSender)
 {
     onButtonEffect();
-    mode=normal;//设置全局变量mode
+    Emode mode=normal;//设置全局变量mode
     Scene* scene = MapChoose::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
 }
@@ -142,7 +132,7 @@ void Menusys::NormalMap(Ref* pSender)
 void Menusys::HardMap(Ref* pSender)
 {
     onButtonEffect();
-    mode = hard;//设置全局变量mode;
+    Emode mode = hard;//设置全局变量mode;
     Scene* scene = HardMap1::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
 }
@@ -150,7 +140,7 @@ void Menusys::HardMap(Ref* pSender)
 void Menusys::OperatorFormation(Ref* pSender)
 {
     onButtonEffect();
-    mode = biandui;//设置全局变量mode;
+    Emode mode = biandui;//设置全局变量mode;
     //Scene* scene = OperatorFormation::createScene();
     //Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
 }

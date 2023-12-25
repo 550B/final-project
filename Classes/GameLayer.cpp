@@ -2,11 +2,10 @@
 #define MAP_HEIGHT (9)
 
 #include "GameLayer.h"
-#include "GameManager.h"
 //#include "WinScene.h"
 //#include "FailedScene.h"
 //#include "LevelScene.h"
-#include "Menu.h"
+//#include "Menu.h"
 #include "editor-support/cocostudio/SimpleAudioEngine.h"
 #include "extensions/cocos-ext.h"
 #include <ctime>
@@ -223,7 +222,8 @@ void GameLayer::menuBackCallback(Ref* pSender)
 
 
 	instance->clear();
-	Director::getInstance()->replaceScene(TransitionFade::create(0.5, Menusys::createScene()));
+	//Director::getInstance()->replaceScene(TransitionFade::create(0.5, Menusys::createScene()));
+	Director::getInstance()->popScene();
 }
 
 // 获取当前波次
