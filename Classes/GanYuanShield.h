@@ -7,6 +7,7 @@
    CC_SYNTHESIZE(float, health, Health);  // 当前血量*/
 #include "GanYuanBase.h"
 #include "Const.h"
+#include "Bar.h"
 class GanYuanBase;
 
 class GanYuanShield : public GanYuanBase
@@ -31,9 +32,9 @@ public:
     virtual void initial();//初始化
     
     //完成初始化，包括内置数值初始化以及动画初始化
-    bool attack();//攻击
-    bool bigMove();//是否达到大招
-    bool castBigMove();//开放大招
+    void shoot();//攻击
+    void bigMove();//是否达到大招
+    void castBigMove();//开放大招
     //冷却状态
     bool beingCool();//冷却状态动画显示及自己退出冷却状态
     //reset
