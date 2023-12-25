@@ -1,12 +1,14 @@
 #include "GanYuanBase.h"
 GanYuanBase::GanYuanBase() :
-	scope(0)
-	, lethality(0)   // 杀伤力
-	, hp(0)  // 最大血量
-	, health(0) // 当前血量
-	, defence(0)  // 防御力
-	, alive(true)//是否仍然活着
-	, intervalTime(0)//攻击间隔时间
+	// 赵明泽注释的，理由：请在Actor里赋初始值
+	//scope(0)
+	//, lethality(0)   // 杀伤力
+	//, hp(0)  // 最大血量
+	//, health(0) // 当前血量
+	//, defence(0)  // 防御力
+	//, alive(true)//是否仍然活着
+	//, intervalTime(0)//攻击间隔时间
+	selected(false)
 	, coolTime(0)//死亡冷却时间;
 {};
 GanYuanBase* GanYuanBase::create(const std::string& filename)
@@ -151,55 +153,3 @@ void GanYuanBase::moveToPosition() {
 }
 void GanYuanBase::positionLegal(bool &state) {  }//当前位置是否合法
 
-/*
-void GanYuanBase::checkNearestEnemy()
-{
-	GameManager* instance = GameManager::getInstance();
-	auto enemyVector = instance->enemyVector;
-
-	auto currMinDistant = this->scope;
-
-	EnemyBase* enemyTemp = NULL;
-	for (int i = 0; i < enemyVector.size(); i++)
-	{
-		auto enemy = enemyVector.at(i);
-		double distance = this->getPosition().getDistance(enemy->sprite->getPosition());
-
-		if (distance < currMinDistant) {
-			currMinDistant = distance;
-			enemyTemp = enemy;
-		}
-	}
-	//nearestEnemy = enemyTemp;
-}
-
-void GanYuanBase::checkBlock()
-{
-	// 先找到最近的敌人(废
-	//checkNearestEnemy();
-
-	GameManager* instance = GameManager::getInstance();
-	auto enemyVector = instance->enemyVector;
-
-	// 判断是否贴贴
-	for (int i = 0; i < enemyVector.size() && curBlock < block; i++)
-	{
-		auto enemy = enemyVector.at(i);
-		double distance = this->getPosition().getDistance(enemy->sprite->getPosition());
-
-		if (distance < 0.1 /*这个数举个例子，后面微调*)
-		{
-			// 加入阻挡队列
-			//blockedEnemy.pushBack(enemy);
-
-			//enemy->setBeBlocked(true);
-
-			curBlock++;
-
-			this->setCurBlock(curBlock);
-		}
-	}
-
-
-}
-*/
