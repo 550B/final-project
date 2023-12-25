@@ -124,7 +124,8 @@ void GanYuanBase::moveToPosition() {
 		log("sprite onTouchesEnded..");
 		target->setOpacity(255);//手势松开时使精灵恢复原来的颜色
 		bool state = false;
-		positionLegal(state);
+		Vec2 p;
+		positionLegal(state, p);
 		if (!state) {
 			// 创建一个标签用于显示提示语
 			Label* label = Label::createWithTTF("Position ILLEGAL!", "fonts/arial.ttf", 100);
@@ -143,7 +144,9 @@ void GanYuanBase::moveToPosition() {
 
 		}
 		else {
-			this->setPose(getPosition());
+			//this->setPose(getPosition());
+			//this->setPose(p);
+			this->setPosition(p);
 		}
 		};
 	//将触摸事件绑定到精灵身上
@@ -151,5 +154,5 @@ void GanYuanBase::moveToPosition() {
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
 }
-void GanYuanBase::positionLegal(bool &state) {  }//当前位置是否合法
+void GanYuanBase::positionLegal(bool &state, Vec2& p) {  }//当前位置是否合法
 

@@ -51,6 +51,8 @@ public:
 	//
 	static Actor* create();
 
+	//GameManager* instance;
+
 };
 
 #endif // !_ACTOR_H_

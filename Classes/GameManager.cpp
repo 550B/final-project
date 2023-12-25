@@ -13,6 +13,9 @@ void GameManager::clear()
 {
 	enemyVector.clear();
 	bulletVector.clear();
+	//towerPosition.clear();
+	//groundPosition.clear();
+	//roadPosition.clear();
 	//ganyuanVector.clear();	// 他想结束时保留场上干员阵型
 	//waveVector.clear();
 }

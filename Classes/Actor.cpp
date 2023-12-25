@@ -1,6 +1,5 @@
 #include "Actor.h"
 #include "Bullet.h"
-#include "GameManager.h"
 
 //Actor::Actor()
 //	: scope(0)
@@ -35,6 +34,7 @@ bool Actor::init()
 {
 	if (Sprite::init())
 	{
+		//instance = GameManager::getInstance();
 		return true;
 	}
 	return false;
