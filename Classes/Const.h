@@ -4,6 +4,8 @@
 #include "HardMap1Scene.h"
 USING_NS_CC;
 
+#define FRAMES_PER_SECOND 60
+
 #define ShieldScope 50
 #define ShieldLethality 193
 #define ShieldHp 1221

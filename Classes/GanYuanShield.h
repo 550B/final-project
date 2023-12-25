@@ -32,7 +32,7 @@ public:
     virtual void initial();//初始化
     
     //完成初始化，包括内置数值初始化以及动画初始化
-    void attack();//攻击
+    void shoot();//攻击
     void bigMove();//是否达到大招
     void castBigMove();//开放大招
     //冷却状态

@@ -133,3 +133,9 @@ void GanYuanShield::bigMove() {
     if (Director::getInstance()->getDeltaTime() == ShieldIntervalTime && health > 0)
         castBigMove();*/
 }//是否达到大招
+
+void GanYuanShield::shoot()
+{
+
+}
+
