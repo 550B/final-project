@@ -1,6 +1,5 @@
 #include "GameManager.h"
 
-// 游戏运行是单例模式
 GameManager* GameManager::instance;
 
 GameManager* GameManager::getInstance()
@@ -14,6 +13,9 @@ void GameManager::clear()
 {
 	enemyVector.clear();
 	bulletVector.clear();
-	//ganyuanVector.clear();	// 结束时保留场上干员阵型
-	waveVector.clear();
+	//towerPosition.clear();
+	//groundPosition.clear();
+	//roadPosition.clear();
+	//ganyuanVector.clear();	// 他想结束时保留场上干员阵型
+	//waveVector.clear();
 }

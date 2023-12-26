@@ -2,13 +2,12 @@
 #define _GAME_LAYER_H_
 
 #include <iostream>
-#include <initializer_list>
+//#include <initializer_list>
 #include "cocos2d.h"
-#include "Enemy.h"
-#include "GanYuanMedical.h"
+//#include "Enemy.h"
+//#include "GanYuanMedical.h"
 #include "GanYuanShield.h"
 #include "GanYuanShooter.h"
-#include "GameSprite.h"
 #include "GameManager.h"
 
 USING_NS_CC;
@@ -36,13 +35,13 @@ public:
     virtual bool init() override;
     CREATE_FUNC(GameLayer);
 
-    virtual void update(float dt) override;
-    virtual bool onTouchBegan(Touch* touch, Event* event) override;
+    //virtual void update(float dt) override;
+    //virtual bool onTouchBegan(Touch* touch, Event* event) override;
 
-    Wave* currentWave();
-    Wave* nextWave();
-    void addWaveEnemy(std::initializer_list<EnemyType> il);
-    void initWave();
+    //Wave* currentWave();
+    //Wave* nextWave();
+    //void addWaveEnemy(std::initializer_list<EnemyType> il);
+    //void initWave();
     void logic(float dt);
     //void initLabelText();
 
@@ -74,7 +73,7 @@ private:
     bool isSuccessful;
 
     bool isTouchEnable;
-    GameSprite* chooseTowerpanel;
+    //GameSprite* chooseTowerpanel;
     void addTowerChoosePanel(Point position);
     Point convertTotileCoord(Point position);
     Point convertToMatrixCoord(Point position);

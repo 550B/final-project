@@ -2,11 +2,10 @@
 #define MAP_HEIGHT (9)
 
 #include "GameLayer.h"
-#include "GameManager.h"
-#include "WinScene.h"
-#include "FailedScene.h"
-#include "LevelScene.h"
-#include "Menu.h"
+//#include "WinScene.h"
+//#include "FailedScene.h"
+//#include "LevelScene.h"
+//#include "Menu.h"
 #include "editor-support/cocostudio/SimpleAudioEngine.h"
 #include "extensions/cocos-ext.h"
 #include <ctime>
@@ -32,7 +31,7 @@ GameLayer::GameLayer()
 	, map(NULL)
 	, objects(NULL)
 	, pointsVector(NULL)
-	, chooseTowerpanel(NULL)
+	//, chooseTowerpanel(NULL)
 	, towerMatrix(NULL)
 	, waveCounter(0)
 	, money(0)
@@ -123,7 +122,7 @@ bool GameLayer::init()
 	//}
 
 	// 初始化波次
-	initWave();
+	//initWave();
 
 	return true;
 }
@@ -223,23 +222,24 @@ void GameLayer::menuBackCallback(Ref* pSender)
 
 
 	instance->clear();
-	Director::getInstance()->replaceScene(TransitionFade::create(0.5, Menusys::createScene()));
+	//Director::getInstance()->replaceScene(TransitionFade::create(0.5, Menusys::createScene()));
+	Director::getInstance()->popScene();
 }
 
 // 获取当前波次
-Wave* GameLayer::currentWave()
-{
-	Wave* w;
-	if (!instance->waveVector.empty())
-	{
-		w = (Wave*)instance->waveVector.at(instance->waveVector.size() - 1);
-	}
-	else 
-	{
-		w = NULL;
-	}
-	return w;
-}
+//Wave* GameLayer::currentWave()
+//{
+//	Wave* w;
+//	if (!instance->waveVector.empty())
+//	{
+//		w = (Wave*)instance->waveVector.at(instance->waveVector.size() - 1);
+//	}
+//	else 
+//	{
+//		w = NULL;
+//	}
+//	return w;
+//}
 
 // 获取下一波
 //Wave* GameLayer::nextWave()
@@ -264,125 +264,125 @@ Wave* GameLayer::currentWave()
 // 加入敌人到波次
 // 参数：{{1,2),{2,3},...}
 // 解释：第1种敌人添加2个，第2种敌人添加3个，无限长参数
-void GameLayer::addWaveEnemy(std::initializer_list<EnemyType> il)
-{
-	instance = GameManager::getInstance();
-
-	Wave* curWave = Wave::create();
-
-	int index = instance->waveVector.size();
-
-	if (curWave->init())
-	{
-		// 设置索引
-		curWave->setIndex(index);
-
-		for (auto ene : il)
-		{
-			curWave->addEnemy(ene.type, ene.count);
-		}
-
-		curWave->finishAdd();
-	}
-}
+//void GameLayer::addWaveEnemy(std::initializer_list<EnemyType> il)
+//{
+//	instance = GameManager::getInstance();
+//
+//	Wave* curWave = Wave::create();
+//
+//	int index = instance->waveVector.size();
+//
+//	if (curWave->init())
+//	{
+//		// 设置索引
+//		curWave->setIndex(index);
+//
+//		for (auto ene : il)
+//		{
+//			curWave->addEnemy(ene.type, ene.count);
+//		}
+//
+//		curWave->finishAdd();
+//	}
+//}
 
 // 初始化波次
 // 在这里编辑出场的敌人
-void GameLayer::initWave()
-{
-	// 第一波
-	// 随机出现3种敌人
-	GameLayer::addWaveEnemy({ {rand() % 3 + 1,1},{rand() % 3 + 1,1}, {rand() % 3 + 1,1} });
-
-	// 第二波
-    // 随机出现3种敌人，每种敌人2个
-	GameLayer::addWaveEnemy({ {rand() % 3 + 1,2},{rand() % 3 + 1,2}, {rand() % 3 + 1,2} });
-
-	// 第三波
-    // 出现敌人1,2,3，每种敌人1个
-	GameLayer::addWaveEnemy({ {1,1},{2,1}, {3,1} });
-
-	// 第四波，第五波...
-}
+//void GameLayer::initWave()
+//{
+//	// 第一波
+//	// 随机出现3种敌人
+//	GameLayer::addWaveEnemy({ {rand() % 3 + 1,1},{rand() % 3 + 1,1}, {rand() % 3 + 1,1} });
+//
+//	// 第二波
+//    // 随机出现3种敌人，每种敌人2个
+//	GameLayer::addWaveEnemy({ {rand() % 3 + 1,2},{rand() % 3 + 1,2}, {rand() % 3 + 1,2} });
+//
+//	// 第三波
+//    // 出现敌人1,2,3，每种敌人1个
+//	GameLayer::addWaveEnemy({ {1,1},{2,1}, {3,1} });
+//
+//	// 第四波，第五波...
+//}
 
 // 加入敌人到场景
-void GameLayer::addSceneEnemy()
-{
-	//GameManager* instance = GameManager::getInstance();
-	instance = GameManager::getInstance();
-
-	Wave* groupEnemy = this->currentWave();
-	if (groupEnemy == NULL)
-	{
-		return;
-	}
-	auto restStructNum = groupEnemy->enemies.size();
-	if (restStructNum <= 0) {
-		//groupEnemy->setIsFinishedAddGroup(true);
-		//groupEnemy->enemies.popBack();
-		instance->waveVector.popBack();
-
-		// 波次之间停的稍微长一点
-		interval = 5.0f;
-		return;
-	}
-	else
-	{
-		interval = 2.0f;
-	}
-
-	//groupEnemy->setEnemyTotal(restStructNum);
-
-	EnemyBase* enemy = NULL;
-	EnemyType et = groupEnemy->enemies.at(restStructNum - 1);
-
-	////////////////////////
-	//********************//
-	//* 在这里面创建敌人 *//
-	//********************//
-	////////////////////////
-	if (et.count > 0 && et.type == 1) {
-		// 入场音效
-		SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
-		// 创建第一种敌人，血量500
-		enemy = Enemy1::createEnemy1(pointsVector, 500);
-		//groupEnemy->setType1Total(groupEnemy->getType1Total() - 1);
-	}
-	else if (et.count > 0 && et.type == 2) {
-		SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
-		enemy = Enemy2::createEnemy2(pointsVector, 700);
-		//groupEnemy->setType2Total(groupEnemy->getType2Total() - 1);
-	}
-	else if (et.count > 0 && et.type == 3) {
-		enemy = Enemy3::createEnemy3(pointsVector, 900);
-		SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
-		//groupEnemy->setType3Total(groupEnemy->getType3Total() - 1);
-	}
-
-	//restStructNum--;
-	et.count--;
-	if (et.count <= 0)
-	{
-		groupEnemy->enemies.popBack();
-	}
-
-	this->addChild(enemy, 10);
-	this->addChild(enemy->getHpBarBg(), 1000);
-	instance->enemyVector.pushBack(enemy);
-}
+//void GameLayer::addSceneEnemy()
+//{
+//	//GameManager* instance = GameManager::getInstance();
+//	instance = GameManager::getInstance();
+//
+//	Wave* groupEnemy = this->currentWave();
+//	if (groupEnemy == NULL)
+//	{
+//		return;
+//	}
+//	auto restStructNum = groupEnemy->enemies.size();
+//	if (restStructNum <= 0) {
+//		//groupEnemy->setIsFinishedAddGroup(true);
+//		//groupEnemy->enemies.popBack();
+//		instance->waveVector.popBack();
+//
+//		// 波次之间停的稍微长一点
+//		interval = 5.0f;
+//		return;
+//	}
+//	else
+//	{
+//		interval = 2.0f;
+//	}
+//
+//	//groupEnemy->setEnemyTotal(restStructNum);
+//
+//	EnemyBase* enemy = NULL;
+//	EnemyType et = groupEnemy->enemies.at(restStructNum - 1);
+//
+//	////////////////////////
+//	//********************//
+//	//* 在这里面创建敌人 *//
+//	//********************//
+//	////////////////////////
+//	if (et.count > 0 && et.type == 1) {
+//		// 入场音效
+//		SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
+//		// 创建第一种敌人，血量500
+//		enemy = Enemy1::createEnemy1(pointsVector, 500);
+//		//groupEnemy->setType1Total(groupEnemy->getType1Total() - 1);
+//	}
+//	else if (et.count > 0 && et.type == 2) {
+//		SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
+//		enemy = Enemy2::createEnemy2(pointsVector, 700);
+//		//groupEnemy->setType2Total(groupEnemy->getType2Total() - 1);
+//	}
+//	else if (et.count > 0 && et.type == 3) {
+//		enemy = Enemy3::createEnemy3(pointsVector, 900);
+//		SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
+//		//groupEnemy->setType3Total(groupEnemy->getType3Total() - 1);
+//	}
+//
+//	//restStructNum--;
+//	et.count--;
+//	if (et.count <= 0)
+//	{
+//		groupEnemy->enemies.popBack();
+//	}
+//
+//	this->addChild(enemy, 10);
+//	this->addChild(enemy->getHpBarBg(), 1000);
+//	instance->enemyVector.pushBack(enemy);
+//}
 
 // 游戏逻辑
 // 每两秒不停跑这个
 void GameLayer::logic(float dt)
 {
-	Wave* groupEnemy = this->currentWave();
+	//Wave* groupEnemy = this->currentWave();
 
-	if (groupEnemy == NULL)
-	{
-		// 2023年12月22日23点52分 赵明泽
-		// 写到这里了
-		return;
-	}
+	//if (groupEnemy == NULL)
+	//{
+	//	// 2023年12月22日23点52分 赵明泽
+	//	// 写到这里了
+	//	return;
+	//}
 	//if (groupEnemy->getIsFinished() == true && instance->enemyVector.size() == 0  && waveCounter < instance->getGroupNum())
 	//{
 	//	groupEnemy = this->nextWave();
@@ -392,7 +392,7 @@ void GameLayer::logic(float dt)
 	//	auto groupTotalText = patch::to_string(groupTotal);
 	//	groupTotalLabel->setString(groupTotalText);
 	//}
-	this->addSceneEnemy();
+	//this->addSceneEnemy();
 }
 
 //　僵尸吃掉了你的脑子
@@ -429,10 +429,10 @@ void GameLayer::enemyIntoHouse()
 // 秦始皇摸电门——赢麻了
 void GameLayer::YingZhengTouchesTheElectricSwitch()
 {
-	if (this->blue > 0 && this->currentWave() == NULL)
+	/*if (this->blue > 0 && this->currentWave() == NULL)
 	{
 		this->isSuccessful = true;
-	}
+	}*/
 
 	if (isSuccessful)
 	{
@@ -440,7 +440,7 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 		isSuccessful = false;
 
 		// 评选星级
-		auto star = this->getBlue();
+		//auto star = this->getBlue();
 		// 
 		//auto star = 0;
 		//auto remainBlue = this->getBlue();
@@ -461,31 +461,31 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 		//auto nextlevel = instance->getNextLevelFile();
 		//UserDefault::getInstance()->setStringForKey("nextLevelFile", nextlevel);
 
-		instance->clear();
-		Director::getInstance()->replaceScene(TransitionFade::create(0.1f, WinScene::createScene()));
+		/*instance->clear();
+		Director::getInstance()->replaceScene(TransitionFade::create(0.1f, WinScene::createScene()));*/
 	}
 
 	return;
 }
 
 // 手指放到屏幕上
-bool GameLayer::onTouchBegan(Touch* touch, Event* event)
-{
-	this->removeChild(chooseTowerpanel);
-	chooseTowerpanel = NULL;
-	auto location = touch->getLocation();
-
-	checkAndAddTowerPanle(location);
-	return true;
-}
+//bool GameLayer::onTouchBegan(Touch* touch, Event* event)
+//{
+//	this->removeChild(chooseTowerpanel);
+//	chooseTowerpanel = NULL;
+//	auto location = touch->getLocation();
+//
+//	checkAndAddTowerPanle(location);
+//	return true;
+//}
 
 // 跳出选塔栏
-void GameLayer::addTowerChoosePanel(Point point)
-{
-	chooseTowerpanel = GameSprite::create();
-	chooseTowerpanel->setPosition(point);
-	this->addChild(chooseTowerpanel);
-}
+//void GameLayer::addTowerChoosePanel(Point point)
+//{
+//	chooseTowerpanel = GameSprite::create();
+//	chooseTowerpanel->setPosition(point);
+//	this->addChild(chooseTowerpanel);
+//}
 
 // 转换成瓦片坐标
 //Point GameLayer::convertTotileCoord(Point position)
@@ -705,11 +705,13 @@ void GameLayer::addTowerChoosePanel(Point point)
 //}
 
 //　每帧都执行这个
-void GameLayer::update(float dt)
-{
-	//addTower();
-	//CollisionDetection();
-	enemyIntoHouse();
-	YingZhengTouchesTheElectricSwitch();
-}
+//void GameLayer::update(float dt)
+//{
+//	//addTower();
+//	//CollisionDetection();
+//	enemyIntoHouse();
+//	YingZhengTouchesTheElectricSwitch();
+//
+//	// 金钱
+//}
 

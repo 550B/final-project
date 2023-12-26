@@ -44,7 +44,13 @@ bool HardMap1::init()
     Size winSize = Director::getInstance()->getWinSize();
     layer_normalmap->setPosition(Point(winSize.width / 2, winSize.height / 2));
     //¶ÔÏó²ã
-    TMXObjectGroup* objects = map->getObjectGroup("road");
+    TMXObjectGroup* aroad = map->getObjectGroup("aroad");
+    TMXObjectGroup* broad = map->getObjectGroup("broad");
+    TMXObjectGroup* croad = map->getObjectGroup("croad");
+    TMXObjectGroup* droad = map->getObjectGroup("droad");
+    TMXObjectGroup* towers = map->getObjectGroup("towers");
+    TMXObjectGroup* grounds = map->getObjectGroup("grounds");
+
     this->addChild(map, 0);
 
 
