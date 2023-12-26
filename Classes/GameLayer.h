@@ -2,13 +2,21 @@
 #define _GAME_LAYER_H_
 
 #include <iostream>
+<<<<<<< HEAD
 #include <initializer_list>
+=======
+//#include <initializer_list>
+>>>>>>> refs/remotes/origin/main
 #include "cocos2d.h"
 //#include "Enemy.h"
 //#include "GanYuanMedical.h"
 #include "GanYuanShield.h"
+<<<<<<< HEAD
 //#include "GanYuanShooter.h"
 //#include "GameSprite.h"
+=======
+#include "GanYuanShooter.h"
+>>>>>>> refs/remotes/origin/main
 #include "GameManager.h"
 
 USING_NS_CC;

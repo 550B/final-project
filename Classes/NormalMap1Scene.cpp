@@ -2,6 +2,7 @@
 2023.12.12
 普通关卡贴图、敌人路径点（还未处理）*/
 #include "NormalMap1Scene.h"
+#include "Menu.h"
 
 USING_NS_CC;
 
@@ -10,9 +11,11 @@ Scene* NormalMap1::createScene()
     auto scene = Scene::create();
     auto layer = NormalMap1::create();
     scene->addChild(layer);
-    gameScene = scene;
+    Scene* gameScene = scene;
     auto spr = GanYuanShield::create();
     scene->addChild(spr);
+    auto shooter = GanYuanShooter::create();
+    scene->addChild(shooter);
     return scene;
 }
 TMXTiledMap* NormalMap1::createMap()
@@ -39,16 +42,29 @@ bool NormalMap1::init()
 
     //载入地图背景
     TMXTiledMap* map = createMap();
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/main
     //图块层
     auto  layer_normalmap = map->getLayer("normalmap1");
     layer_normalmap->setAnchorPoint(Point(0.5f, 0.5f));
     Size winSize = Director::getInstance()->getWinSize();
     layer_normalmap->setPosition(Point(winSize.width / 2, winSize.height / 2));
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/main
     //对象层
     road = map->getObjectGroup("road");
     towers = map->getObjectGroup("towers");
     grounds = map->getObjectGroup("grounds");
+
     this->addChild(map, 0);
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/main
     //将tower,ground，road的Vec2数组初始化
     ValueVector rvalues = road->getObjects();
     for (Value value : rvalues)
@@ -56,12 +72,14 @@ bool NormalMap1::init()
         ValueMap valueMap = value.asValueMap();//获得属性值：Value转换成ValueMap       
         road_path.push_back(Vec2(valueMap["x"].asFloat(), valueMap["y"].asFloat()));//将路径点保存到路径中
     }
+
     ValueVector tvalues = towers->getObjects();
     for (Value value : tvalues)
     {
         ValueMap valueMap = value.asValueMap();//获得属性值：Value转换成ValueMap       
         towers_path.push_back(Vec2(valueMap["x"].asFloat(), valueMap["y"].asFloat()));//将路径点保存到路径中
     }
+
     ValueVector gvalues = grounds->getObjects();
     for (Value value : gvalues)
     {
@@ -69,6 +87,13 @@ bool NormalMap1::init()
         grounds_path.push_back(Vec2(valueMap["x"].asFloat(), valueMap["y"].asFloat()));//将路径点保存到路径中
     }
 
+<<<<<<< HEAD
+=======
+    GameManager* instance = GameManager::getInstance();
+    instance->groundPosition.push_back(grounds_path);
+    instance->towerPosition.push_back(towers_path);
+    instance->roadPosition.push_back(road_path);
+>>>>>>> refs/remotes/origin/main
     
     //创建第一个敌人
     Sprite* enemy_ground = Sprite::create("Pictures/enemy_ground.png");

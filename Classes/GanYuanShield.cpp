@@ -1,4 +1,5 @@
 #include "GanYuanShield.h"
+#include "GameManager.h"
 
 USING_NS_CC;
 //创建一个重装
@@ -42,6 +43,14 @@ void GanYuanShield::setDefaultData() {
     setIntervalTime(ShieldIntervalTime);//攻击间隔时间
     setCoolTime(ShieldCoolTime);//死亡冷却时间;
     setFirstPose(Vec2(getPosition()));
+<<<<<<< HEAD
+=======
+
+    setLastAttackTime(GetCurrentTime() / 1000.f);
+    setIsBlock(false);
+    setIsGround(true);
+
+>>>>>>> refs/remotes/origin/main
     //以下开始初始化血条
     auto lethalityBar = Bar::create(EStateType::Lethality, lethality);
     auto healthBar = Bar::create(EStateType::Health, Health);
@@ -73,15 +82,24 @@ void GanYuanShield::initial()
     castBigMove();
 }
 //检查位置合法
-void GanYuanShield:: positionLegal(bool& state) {
-    for (int i = 0; i < towers_path.size(); i++) {
-        if (this->getPosition() == towers_path[i])//确定是重装可到达位置
+void GanYuanShield:: positionLegal(bool& state, Vec2& p) {
+    GameManager* instance = GameManager::getInstance();
+    for (int i = 0; i < instance->groundPosition.at(0).size(); i++) {
+        //(road_path[i - 1] - road_path[i]).getLength()
+        if ((this->getPosition()).distance(instance->groundPosition.at(0)[i]) < 50.f)//确定是重装可到达位置
         {
             state = true;
-            break;
+            p = instance->groundPosition.at(0)[i];
+            return;
         }
     }
+<<<<<<< HEAD
     state=true;
+=======
+    //state=true;//?
+    //state = false;
+    return;
+>>>>>>> refs/remotes/origin/main
 }
 void GanYuanShield::castBigMove() {
     auto visibleSize = Director::getInstance()->getVisibleSize();

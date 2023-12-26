@@ -8,7 +8,11 @@
 #include "EnemyBase.h"
 #include "Const.h"//xjy
 #include "Bar.h"
+<<<<<<< HEAD
 #include "Actor.h"//zmz
+=======
+#include "Actor.h" //zmz
+>>>>>>> refs/remotes/origin/main
 #include "Bullet.h"//zmz
 USING_NS_CC;
 class GanYuanBase : public Actor
@@ -37,7 +41,8 @@ public:
     virtual void unselectCallback(Ref* sender);
     virtual void ifmove();
     virtual void moveToPosition();
-    virtual void positionLegal(bool& state);
+    virtual void positionLegal(bool& state, Vec2& p);
+
 
 
 

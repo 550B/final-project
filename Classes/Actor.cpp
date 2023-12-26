@@ -1,6 +1,9 @@
 #include "Actor.h"
 #include "Bullet.h"
+<<<<<<< HEAD
 #include "GameManager.h"
+=======
+>>>>>>> refs/remotes/origin/main
 
 //Actor::Actor()
 //	: scope(0)
@@ -35,6 +38,10 @@ bool Actor::init()
 {
 	if (Sprite::init())
 	{
+<<<<<<< HEAD
+=======
+		//instance = GameManager::getInstance();
+>>>>>>> refs/remotes/origin/main
 		return true;
 	}
 	return false;

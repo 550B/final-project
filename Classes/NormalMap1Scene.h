@@ -5,9 +5,13 @@
 
 #include "cocos2d.h"
 #include "GanYuanShield.h"
+#include "GanYuanShooter.h"
 #include "GameManager.h"
+#include "GameLayer.h"
+#include <vector>
 
-class NormalMap1 : public cocos2d::Layer
+//class NormalMap1 : public cocos2d::Layer
+class NormalMap1 : public GameLayer
 {
 public:
     //´´½¨³¡¾°
@@ -19,6 +23,13 @@ public:
     virtual bool init();
     // implement the "static create()" method manually
     CREATE_FUNC(NormalMap1);
+
+    TMXObjectGroup* road;
+    TMXObjectGroup* towers;
+    TMXObjectGroup* grounds;
+    std::vector<Vec2> road_path;
+    std::vector<Vec2> towers_path;
+    std::vector<Vec2> grounds_path;
 
 };
 

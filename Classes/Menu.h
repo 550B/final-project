@@ -7,6 +7,10 @@
 #include"editor-support/cocostudio/SimpleAudioEngine.h"
 using namespace CocosDenshion;
 
+//Emode mode;//模式
+//Scene* gameScene;//当前场景（hard/normal地图）
+//bool gameStart = false;//是否游戏已经开始运行,如果已经运行则干员选择是不能继续的，初始想法是设计按钮可决定开始
+
 class Menusys : public cocos2d::Layer
 {
 public:
@@ -31,6 +35,7 @@ public:
 
     // implement the "static create()" method manually
     CREATE_FUNC(Menusys);
+
 };
 
 #endif // _MENU_H__
