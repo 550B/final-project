@@ -6,12 +6,8 @@ USING_NS_CC;
 
 #define FRAMES_PER_SECOND 60
 
-<<<<<<< HEAD
-#define ShieldScope 50
-=======
 // 地面没有scope？吧
 #define ShieldScope 0
->>>>>>> refs/remotes/origin/main
 #define ShieldLethality 193
 #define ShieldHp 1221
 #define ShieldBlock 3

@@ -43,14 +43,11 @@ void GanYuanShield::setDefaultData() {
     setIntervalTime(ShieldIntervalTime);//攻击间隔时间
     setCoolTime(ShieldCoolTime);//死亡冷却时间;
     setFirstPose(Vec2(getPosition()));
-<<<<<<< HEAD
-=======
 
     setLastAttackTime(GetCurrentTime() / 1000.f);
     setIsBlock(false);
     setIsGround(true);
 
->>>>>>> refs/remotes/origin/main
     //以下开始初始化血条
     auto lethalityBar = Bar::create(EStateType::Lethality, lethality);
     auto healthBar = Bar::create(EStateType::Health, Health);
@@ -93,13 +90,9 @@ void GanYuanShield:: positionLegal(bool& state, Vec2& p) {
             return;
         }
     }
-<<<<<<< HEAD
-    state=true;
-=======
     //state=true;//?
     //state = false;
     return;
->>>>>>> refs/remotes/origin/main
 }
 void GanYuanShield::castBigMove() {
     auto visibleSize = Director::getInstance()->getVisibleSize();

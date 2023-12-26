@@ -154,9 +154,5 @@ void GanYuanBase::moveToPosition() {
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
 }
-<<<<<<< HEAD
-void GanYuanBase::positionLegal(bool &state) {  }//当前位置是否合法
-=======
 void GanYuanBase::positionLegal(bool &state, Vec2& p) {  }//当前位置是否合法
->>>>>>> refs/remotes/origin/main
 

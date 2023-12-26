@@ -51,11 +51,8 @@ public:
 	//
 	static Actor* create();
 
-<<<<<<< HEAD
-=======
 	//GameManager* instance;
 
->>>>>>> refs/remotes/origin/main
 };
 
 #endif // !_ACTOR_H_
