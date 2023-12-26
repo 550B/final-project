@@ -1,19 +1,20 @@
 #include "Actor.h"
 #include "Bullet.h"
+#include "GameManager.h"
 
 //Actor::Actor()
 //	: scope(0)
-//	, lethality(0)   // É±ÉËÁ¦
-//	, hp(0)  // ×î´óÑªÁ¿
-//	, health(0) // µ±Ç°ÑªÁ¿
-//	, defence(0)  // ·ÀÓùÁ¦
-//	, alive(true)//ÊÇ·ñÈÔÈ»»î×Å
-//	, intervalTime(0)//¹¥»÷¼ä¸ôÊ±¼ä
-//	, lastAttackTime(0)//ÉÏÒ»´Î¹¥»÷µÄÊ±¼ä
-//	, isBlock(false)//ÊÇ·ñ×èµ²
-//	, isGround(false)// ÊÇ·ñµØÃæ
-//	, curBlock(0)//ÒÑ¾­×èµ²Êý
-//	, block(0)//×èµ²Êý
+//	, lethality(0)   // É±ï¿½ï¿½ï¿½ï¿½
+//	, hp(0)  // ï¿½ï¿½ï¿½Ñªï¿½ï¿½
+//	, health(0) // ï¿½ï¿½Ç°Ñªï¿½ï¿½
+//	, defence(0)  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//	, alive(true)//ï¿½Ç·ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½ 
+//	, intervalTime(0)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+//	, lastAttackTime(0)//ï¿½ï¿½Ò»ï¿½Î¹ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+//	, isBlock(false)//ï¿½Ç·ï¿½ï¿½èµ²
+//	, isGround(false)// ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+//	, curBlock(0)//ï¿½Ñ¾ï¿½ï¿½èµ²ï¿½ï¿½
+//	, block(0)//ï¿½èµ²ï¿½ï¿½
 //{
 //
 //}
@@ -34,7 +35,6 @@ bool Actor::init()
 {
 	if (Sprite::init())
 	{
-		//instance = GameManager::getInstance();
 		return true;
 	}
 	return false;

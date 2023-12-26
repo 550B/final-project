@@ -1,6 +1,4 @@
 #include"NormalMapChoose.h"
-#include "Menu.h"
-#include "NormalMap1Scene.h"
 
 USING_NS_CC;
 
@@ -27,67 +25,83 @@ bool MapChoose::init()
     {
         return false;
     }
-    //±³¾°¹ö¶¯½çÃæ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     ScrollView* scrollView = ScrollView::create();
 
     ChooseMap(scrollView);
-    //·µ»Ø°´Å¥
+    //ï¿½ï¿½ï¿½Ø°ï¿½Å¥
     reMenu();
-    //²åÈë¹Ø¿¨°´Å¥
+    //ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½ï¿½Å¥
     ChooseNmap(scrollView);
     
     return true;
 }
 void MapChoose::ChooseMap(ScrollView* scrollView) {
-    //Ë®Æ½¹ö¶¯
+    //Ë®Æ½ï¿½ï¿½ï¿½ï¿½
     scrollView->setDirection(ScrollView::Direction::HORIZONTAL);
-    //¿ªÆô´¥ÃþÊÂ¼þ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
     scrollView->setTouchEnabled(true);
-    //ÉèÖÃÄÚÈÝ´óÐ¡
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½Ð¡
     scrollView->setContentSize(Director::getInstance()->getVisibleSize());
-    //Òþ²Ø¹ö¶¯Ìõ
+    //ï¿½ï¿½ï¿½Ø¹ï¿½ï¿½ï¿½ï¿½ï¿½
     scrollView->setScrollBarEnabled(false);
     this->addChild(scrollView);
-    //´´½¨±³¾°µØÍ¼(°´×¡×ó¼ü½øÐÐÍÏ¶¯)
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼(ï¿½ï¿½×¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½)
     Sprite* imageView = nullptr;
     string filePath;
     float nextPosX = 0.f;
-    //ÑÓ³¤Í¼Æ¬£ºfirst1280*720 second580*720
+    //ï¿½Ó³ï¿½Í¼Æ¬ï¿½ï¿½first1280*720 second580*720
     for (int i = 1; i < 3; i++)
     {
         filePath = "Pictures/Normapchoose" + to_string(i) + ".png";
         imageView = Sprite::create(filePath);
-        //³¤¿í·Å´ó2±¶
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Å´ï¿½2ï¿½ï¿½
         imageView->setScale(2);
-        //¸ü¸ÄÃªµãÎ»ÖÃÊÇÒòÎªµØÍ¼¸úÇ°ÃæµÄµØÍ¼¿í¶È²»Ò»ÖÂ
+        //ï¿½ï¿½ï¿½ï¿½Ãªï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Í¼ï¿½ï¿½Ç°ï¿½ï¿½Äµï¿½Í¼ï¿½ï¿½ï¿½È²ï¿½Ò»ï¿½ï¿½
         imageView->setAnchorPoint(Vec2(0, 0.5));
         imageView->setPosition(nextPosX, Director::getInstance()->getVisibleSize().height / 2);
-        nextPosX += imageView->getContentSize().width * 2;//µØÍ¼×Ü³¤¶È
+        nextPosX += imageView->getContentSize().width * 2;//ï¿½ï¿½Í¼ï¿½Ü³ï¿½ï¿½ï¿½
         scrollView->addChild(imageView, 0);
     }
-    //ÉèÖÃScrollViewµÄ²¼¾ÖÈÝÆ÷´óÐ¡
+    //ï¿½ï¿½ï¿½ï¿½ScrollViewï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡
     scrollView->setInnerContainerSize(Size(nextPosX, Director::getInstance()->getVisibleSize().height));
 }
 
 void MapChoose::reMenu() {
-    //·µ»ØÖ÷²Ëµ¥
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
     auto layer = Layer::create();
     this->addChild(layer);
-    //¸Ã±³¾°Í¼Ê¼ÖÕÔÚÆÁÄ»µÄ×óÉÏ½Ç(µ¥¶Àlayer£©
+    //ï¿½Ã±ï¿½ï¿½ï¿½Í¼Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½Ï½ï¿½(ï¿½ï¿½ï¿½ï¿½layerï¿½ï¿½
     Sprite* back_pic = Sprite::create("Pictures/back64.png");
     back_pic->setAnchorPoint(Vec2(0, 1));
     back_pic->setPosition(0, Director::getInstance()->getVisibleSize().height);
     layer->addChild(back_pic);
-    //´´½¨±³¾°Í¼¾«ÁéµÄ×Ó½Úµã
+
+    //ÏµÍ³bgm
+    auto audio_menu = SimpleAudioEngine::getInstance();
+    if (!audio_menu->isBackgroundMusicPlaying()) {
+        audio_menu->playBackgroundMusic("Music/m_choose.mp3", true);
+    }
+    auto offMusic = MenuItemImage::create("Pictures/stopMusic.png", "Pictures/stopMusic.png");
+    auto onMusic = MenuItemImage::create("Pictures/continueMusic.png", "Pictures/continueMusic.png");
+
+    //Õ¹Ê¾ï¿½ï¿½Í¬ï¿½ï¿½Å¥×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½
+    MenuItemToggle* MusicMenu = MenuItemToggle::createWithCallback(CC_CALLBACK_1(MapChoose::MenuMusicCallBack, this), onMusic, offMusic, NULL);
+    auto Menu_Music = Menu::create(MusicMenu, NULL);
+    Menu_Music->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
+    Menu_Music->setPosition(Vec2(1221, 661));
+    this->addChild(Menu_Music, 1);
+
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó½Úµï¿½
     string back_y = "Pictures/back_n.png";
     string back_n = "Pictures/back_y.png";
-    Button* back = Button::create(back_n, back_y, "");//±íÊ¾Ò»¸öÕý³£×´Ì¬£¬Ò»¸öÑ¡Ôñ×´Ì¬£¬Ò»¸ö²»¿Éµã»÷×´Ì¬
-    back->setScale(0.125);//ËõÐ¡8±¶
+    Button* back = Button::create(back_n, back_y, "");//ï¿½ï¿½Ê¾Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½×´Ì¬ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½ï¿½×´Ì¬
+    back->setScale(0.125);//ï¿½ï¿½Ð¡8ï¿½ï¿½
     back->setAnchorPoint(Vec2(0, 0));
     back->setPosition(Vec2(8, 10));
     back->setPressedActionEnabled(true);
     back_pic->addChild(back);
-    //Ôö¼Ó´¥ÃþÊÂ¼þ µ¯³ö¸Ã³¡¾°
+    //ï¿½ï¿½ï¿½Ó´ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ï¿½
     back->addTouchEventListener([](Ref* sender, Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             Scene* scene = Menusys::createScene();
@@ -100,39 +114,71 @@ void MapChoose::reMenu() {
 void MapChoose::ChooseNmap(ScrollView* scrollView)
 {
     TMXTiledMap* map = TMXTiledMap::create("ChooseNmap.tmx");
-    //»ñÈ¡ÍßÆ¬µØÍ¼ÖÐµÄ¶ÔÏó²ã
+    //ï¿½ï¿½È¡ï¿½ï¿½Æ¬ï¿½ï¿½Í¼ï¿½ÐµÄ¶ï¿½ï¿½ï¿½ï¿½
     TMXObjectGroup* objectGroup = map->getObjectGroup("Nmaps");
-    //½«¶ÔÏó²ãÖÐµÄËùÓÐ¶ÔÏó»ñÈ¡³öÀ´
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
     ValueVector objs = objectGroup->getObjects();
     
-    //°´Å¥
+    //ï¿½ï¿½Å¥
     Button* button;
-    //ÎÄ¼þÃû
+    //ï¿½Ä¼ï¿½ï¿½ï¿½
     string Normap_n, Normap_y;
     for (int i = 1; i <= (int)objs.size()-1; i++)
     {
         Normap_n = "Pictures/Normap" + to_string(i) + "_n.png";
         Normap_y = "Pictures/Normap" + to_string(i) + "_y.png";
-        //¸ù¾ÝÍßÆ¬µØÍ¼ÖÐÎ»ÖÃ×ø±êÐÅÏ¢ÅäÖÃ¹Ø¿¨°´Å¥
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¬ï¿½ï¿½Í¼ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Ã¹Ø¿ï¿½ï¿½ï¿½Å¥
         button = Button::create(Normap_n, Normap_y,"");
-        scrollView->addChild(button,10, i);//i±íÊ¾tag
+        scrollView->addChild(button,10, i);//iï¿½ï¿½Ê¾tag
        
-        ValueMap valueMap = objs[i].asValueMap(); //»ñµÃÊôÐÔÖµ£ºValue×ª»»³ÉValueMap
-        //°´Å¥µÄÎ»ÖÃ×ø±ê
-        button->setPosition(Vec2(valueMap["x"].asFloat(),valueMap["y"].asFloat()));//»ñÈ¡¶ÔÏóµÄÊôÐÔ:(asÒ»ÀàµÄ·½·¨ £¨×ª»»ÀàÐÍ£©
-        //ÉèÖÃ°´Å¥Tag£¬Êµ¼ÊÉÏ¾ÍÊÇµ±Ç°¹Ø¿¨Êý£¬Ë÷Òý´Ó1¿ªÊ¼
+        ValueMap valueMap = objs[i].asValueMap(); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Value×ªï¿½ï¿½ï¿½ï¿½ValueMap
+        //ï¿½ï¿½Å¥ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        button->setPosition(Vec2(valueMap["x"].asFloat(),valueMap["y"].asFloat()));//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:(asÒ»ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½
+        //ï¿½ï¿½ï¿½Ã°ï¿½Å¥Tagï¿½ï¿½Êµï¿½ï¿½ï¿½Ï¾ï¿½ï¿½Çµï¿½Ç°ï¿½Ø¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½Ê¼
         button->setTag(i);
-        button->setScale(0.70);
-        //´¥ÃþÊÂ¼þ¼àÌýÆ÷
+        button->setScale(0.70f);
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (i == 1) {
             button->addTouchEventListener([](Ref* sender, Widget::TouchEventType type) {
             if (type == ui::Widget::TouchEventType::ENDED)
             {
+                SimpleAudioEngine::getInstance()->stopBackgroundMusic(); //Í£Ö¹ÏµÍ³bgm
                 Scene* scene = NormalMap1::createScene();
                 Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
             }
             });
         }
+        else if (i == 2) {
+            button->addTouchEventListener([](Ref* sender, Widget::TouchEventType type) {
+                if (type == ui::Widget::TouchEventType::ENDED)
+                {
+                    SimpleAudioEngine::getInstance()->stopBackgroundMusic(); //Í£Ö¹ÏµÍ³bgm
+                    Scene* scene = NormalMap2::createScene();
+                    Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
+                }
+                });
+        }
+        else if (i == 3) {
+            button->addTouchEventListener([](Ref* sender, Widget::TouchEventType type) {
+                if (type == ui::Widget::TouchEventType::ENDED)
+                {
+                    SimpleAudioEngine::getInstance()->stopBackgroundMusic(); //Í£Ö¹ÏµÍ³bgm
+                    Scene* scene = NormalMap3::createScene();
+                    Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
+                }
+                });
+        }
     }
 
+}
+
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+void  MapChoose::MenuMusicCallBack(Ref* pSender) {
+    auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+    if (audio->isBackgroundMusicPlaying()) {
+        audio->pauseBackgroundMusic();
+    }
+    else {
+        audio->resumeBackgroundMusic();
+    }
 }
