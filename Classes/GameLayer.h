@@ -2,17 +2,22 @@
 #define _GAME_LAYER_H_
 
 #include <iostream>
-//#include <initializer_list>
+#include <initializer_list>
 #include "cocos2d.h"
 //#include "Enemy.h"
 //#include "GanYuanMedical.h"
 #include "GanYuanShield.h"
-#include "GanYuanShooter.h"
+//#include "GanYuanShooter.h"
+//#include "GameSprite.h"
 #include "GameManager.h"
-
+#include "cocos2d.h"
+#include "Menu.h"
+#include "editor-support/cocostudio/SimpleAudioEngine.h"
+#include "extensions/cocos-ext.h"
+using namespace cocos2d::ui;
 USING_NS_CC;
 
-// µÐÈËÖÖÀà£¬ÕâÖÖµÐÈËµÄÊýÁ¿
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à£¬ï¿½ï¿½ï¿½Öµï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½
 struct EnemyType
 {
     int type;
@@ -26,11 +31,9 @@ public:
     GameLayer();
     ~GameLayer();
 
-    //´´½¨³¡¾°
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     static cocos2d::Scene* createScene();
 
-    //´´½¨ÍßÆ¬µØÍ¼
-    static cocos2d::TMXTiledMap* createMap();
 
     virtual bool init() override;
     CREATE_FUNC(GameLayer);
@@ -45,15 +48,18 @@ public:
     void logic(float dt);
     //void initLabelText();
 
-private:
+protected://ï¿½ï¿½Îªprojected
 
     float interval;
 
     SpriteBatchNode* spriteSheet;
-    TMXTiledMap* map;
-    TMXLayer* bgLayer;
-    TMXObjectGroup* objects;
-    Vector<Node*> pointsVector;
+    TMXTiledMap* map;//ï¿½ï¿½Í¼
+    TMXLayer* bgLayer;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    TMXObjectGroup* towers;//ï¿½ï¿½ï¿½ï¿½
+    TMXObjectGroup* grounds;//ï¿½ï¿½ï¿½ï¿½
+    std::vector<Vec2> towers_path;
+    std::vector<Vec2> grounds_path;
+
 
     GameManager* instance;
     float offX;
@@ -65,10 +71,14 @@ private:
     Label* groupLabel;
     Label* groupTotalLabel;
     Layer* toolLayer;
+
+    Sprite* sprite_money;//ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
+    ProgressTimer* playHpBar;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    Sprite* star3;//3ï¿½ï¿½Í¼ï¿½ï¿½
     void initToolLayer();
     CC_SYNTHESIZE(int, blue, Blue);
 
-    // ²»ÐèÒª¹Ø¿¨ÑªÌõ
+    // ï¿½ï¿½ï¿½ï¿½Òªï¿½Ø¿ï¿½Ñªï¿½ï¿½
     //CC_SYNTHESIZE_READONLY(ProgressTimer*, playHpBar, PlayHpBar);
     bool isSuccessful;
 
@@ -80,6 +90,7 @@ private:
     void checkAndAddTowerPanle(Point position);
     void CollisionDetection();
     void enemyIntoHouse();
+    void menuCallback(Ref* pSender);
     void menuBackCallback(Ref* pSender);
 
     Point towerPos;
@@ -88,7 +99,7 @@ private:
     void addTower();
     GanYuanBase** towerMatrix;
 
-    // ÅÐ¶ÏÊäÓ®
+    // ï¿½Ð¶ï¿½ï¿½ï¿½Ó®
     void YingZhengTouchesTheElectricSwitch();
 
 };

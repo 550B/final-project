@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-up" width="20" height="12" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="41">
+ <tileset firstgid="1" name="NormalMap2" tilewidth="64" tileheight="64" tilecount="220" columns="20">
+  <image source="Pictures/NormalMap2.png" width="1280" height="720"/>
+ </tileset>
+ <layer id="1" name="normalmap2" width="20" height="12">
+  <data encoding="base64" compression="zlib">
+   eJytzNdCDQAAANCbKDPZO7JH9hZSZJcte++ZEUJG9iYje++998yWWWZ8TOcjPJzXExQIBAoQTEEKEUIohSlCUYpRnBKEUZJwSlGaMpQl6D9/5ShPBSpSicpUoSrViKA6NYikJrWoTR3qUo/6NKAhjYiiMU1oSjOa04KWtKI1bWhLO9rTgWg60onOxNCFWOLoSjfi6U4PetKL3vShLwkk0o/+DGAggxjMEIaSxDCGM4KRjGI0YxjLOMYzgYlMYjJTmMo0pjODmcxiNnOYSzLzmM8CFpLCIhazhFSWsozlpLGClaxiNemsYS3rWM8GNrKJzWxhK9vYzg52sosMdrOHvewjk/0c4CCHOMwRjnKM45zgJKc4zRnOco7zXOAil7jMFa5yjevc4Ca3uM0d7nKP+zzgIY94zBOe8oznvCCLl7ziNW94yzve84FsPvKJz3zhK9/IIZfv/OAnv/jNH/L4yz/yAcCwX8k=
+  </data>
+ </layer>
+ <objectgroup id="2" name="towers" visible="0">
+  <object id="1" name="tower0" x="230" y="212" width="103" height="76"/>
+  <object id="2" name="tower1" x="204" y="294" width="107" height="81"/>
+  <object id="3" name="tower2" x="160" y="490" width="119" height="93"/>
+  <object id="4" name="tower3" x="334" y="213" width="103" height="78"/>
+  <object id="5" name="tower4" x="281" y="489" width="117" height="93"/>
+  <object id="6" name="tower5" x="440" y="216" width="95" height="74"/>
+  <object id="7" name="tower6" x="399" y="491" width="120" height="89"/>
+  <object id="8" name="tower7" x="538" y="218" width="100" height="74"/>
+  <object id="9" name="tower8" x="532" y="294" width="106" height="93"/>
+  <object id="10" name="tower9" x="525" y="487" width="113" height="95"/>
+  <object id="11" name="tower10" x="638" y="215" width="99" height="79"/>
+  <object id="12" name="tower11" x="640" y="487" width="118" height="94"/>
+  <object id="13" name="tower12" x="738" y="216" width="112" height="74"/>
+  <object id="14" name="tower13" x="759" y="385" width="107" height="94"/>
+  <object id="15" name="tower14" x="762" y="487" width="120" height="95"/>
+  <object id="16" name="tower15" x="853" y="217" width="99" height="73"/>
+  <object id="17" name="tower16" x="868" y="387" width="108" height="96"/>
+  <object id="18" name="tower17" x="880" y="485" width="114" height="102"/>
+  <object id="19" name="tower18" x="955" y="216" width="94" height="70"/>
+ </objectgroup>
+ <objectgroup id="3" name="grounds" visible="0">
+  <object id="20" name="ground0" x="191" y="402" width="112" height="81"/>
+  <object id="21" name="ground1" x="326" y="310" width="110" height="89"/>
+  <object id="22" name="ground2" x="306" y="403" width="124" height="78"/>
+  <object id="23" name="ground3" x="437" y="311" width="92" height="86"/>
+  <object id="24" name="ground4" x="431" y="404" width="96" height="78"/>
+  <object id="25" name="ground5" x="530" y="404" width="117" height="80"/>
+  <object id="26" name="ground6" x="647" y="308" width="97" height="82"/>
+  <object id="27" name="ground7" x="648" y="393" width="102" height="91"/>
+  <object id="28" name="ground8" x="747" y="308" width="116" height="80"/>
+  <object id="29" name="ground9" x="858" y="310" width="106" height="79"/>
+  <object id="30" name="ground10" x="961" y="309" width="98" height="80"/>
+  <object id="31" name="ground11" x="973" y="396" width="119" height="87"/>
+  <object id="32" name="ground12" x="997" y="488" width="112" height="103"/>
+ </objectgroup>
+ <objectgroup id="4" name="aroad" visible="0">
+  <object id="33" name="aroad0" x="125" y="435"/>
+  <object id="34" name="aroad1" x="191" y="402" width="112" height="81"/>
+  <object id="35" name="aroad2" x="306" y="403" width="124" height="78"/>
+  <object id="36" name="aroad3" x="431" y="404" width="96" height="78"/>
+  <object id="37" name="aroad4" x="530" y="404" width="117" height="80"/>
+  <object id="38" name="aroad5" x="648" y="393" width="102" height="91"/>
+  <object id="39" name="aroad6" x="647" y="308" width="97" height="82"/>
+  <object id="40" name="aroad7" x="747" y="308" width="116" height="80"/>
+  <object id="41" name="aroad8" x="858" y="310" width="106" height="79"/>
+  <object id="42" name="aroad9" x="961" y="309" width="98" height="80"/>
+  <object id="43" name="aroad10" x="973" y="396" width="119" height="87"/>
+  <object id="44" name="aroad11" x="997" y="488" width="112" height="103"/>
+  <object id="45" name="aroad12" x="1069" y="654"/>
+ </objectgroup>
+ <objectgroup id="5" name="broad">
+  <object id="46" name="broad0" x="144" y="316"/>
+  <object id="47" name="broad1" x="589" y="334"/>
+  <object id="48" name="broad2" x="1091" y="651"/>
+ </objectgroup>
+</map>

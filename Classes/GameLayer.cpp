@@ -5,9 +5,7 @@
 //#include "WinScene.h"
 //#include "FailedScene.h"
 //#include "LevelScene.h"
-//#include "Menu.h"
-#include "editor-support/cocostudio/SimpleAudioEngine.h"
-#include "extensions/cocos-ext.h"
+
 #include <ctime>
 #include <sstream>
 
@@ -29,8 +27,8 @@ GameLayer::GameLayer()
 	:isTouchEnable(false)
 	, spriteSheet(NULL)
 	, map(NULL)
-	, objects(NULL)
-	, pointsVector(NULL)
+	//, objects(NULL)
+	//, pointsVector(NULL)
 	//, chooseTowerpanel(NULL)
 	, towerMatrix(NULL)
 	, waveCounter(0)
@@ -50,7 +48,7 @@ GameLayer::~GameLayer()
 	if (towerMatrix) {
 		free(towerMatrix);
 	}
-	pointsVector.clear();
+	//pointsVector.clear();
 }
 
 Scene* GameLayer::createScene()
@@ -67,50 +65,41 @@ bool GameLayer::init()
 		return false;
 	}
 
-	// Ëæ»úÊýÖÖ×Ó
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	srand((unsigned int)(time(0)));
 
-	// ³õÊ¼Ã¿Á½ÃëÌí¼ÓÒ»²¨
+	// ï¿½ï¿½Ê¼Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
 	interval = 2.0f;
 
-	// »ñÈ¡µ¼ÑÝ
+	// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 	Size winSize = Director::getInstance()->getWinSize();
 	instance = GameManager::getInstance();
 
-	// ±³¾°
-	//auto gameBg = Sprite::create(instance->getCurBgName());
-	//gameBg->setPosition(Point(winSize.width / 2, winSize.height / 2));
-	//addChild(gameBg, -20);
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("Music/battle.mp3");
+	auto audio_battle = SimpleAudioEngine::getInstance();
+	if (!audio_battle->isBackgroundMusicPlaying()) {
+		audio_battle->playBackgroundMusic("Music/battle.mp3", true);
+	}
+	// ï¿½ï¿½ï¿½Ó°ï¿½Å¥
+	initToolLayer();
 
-	// Ìí¼Óµ±Ç°µØÍ¼±³¾°
-	//map = TMXTiledMap::create(instance->getCurMapName());
-	//bgLayer = map->getLayer("bg");
-	//bgLayer->setAnchorPoint(Point(0.5f, 0.5f));
-	//bgLayer->setPosition(Point(winSize.width / 2, winSize.height / 2));
-
-	// Ìí¼Óobject½Úµã
-	//objects = map->getObjectGroup("obj");
-	//this->addChild(map, -10);
-
-	// Ìí¼Ó°´Å¥
-	//initToolLayer();
-
-	// ¼ÆËãÒ»ÏÂ»­ÃæÆ«ÒÆ£¬¶ÔÕýµãÎ»
+	// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Â»ï¿½ï¿½ï¿½Æ«ï¿½Æ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»
 	//offX = (map->getContentSize().width - winSize.width) / 2;
 	//initPointsVector(offX);
 
-	// Ã¿Á½Ãë¼ì²éÒ»ÏÂÓÎÏ·Âß¼­
+	// Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ß¼ï¿½
 	schedule(CC_SCHEDULE_SELECTOR(GameLayer::logic), interval);
 
-	// µã»÷ÊÂ¼þ¼àÌý
+	// ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(GameLayer::onTouchBegan, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
-	// ¿ªÊ¼schedule
+	// ï¿½ï¿½Ê¼schedule
 	scheduleUpdate();
 
-	// ºóÃæ¸ÄÒ»ÏÂ¿É·ÅÖÃµã£¬¸Ä³ÉVector
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Â¿É·ï¿½ï¿½Ãµã£¬ï¿½Ä³ï¿½Vector
 	//int arraySize = sizeof(GanYuanBase*) * MAP_WIDTH * MAP_HEIGHT;
 	//towerMatrix = (GanYuanBase**)malloc(arraySize);
 	//memset((void*)towerMatrix, 0, arraySize);
@@ -121,13 +110,13 @@ bool GameLayer::init()
 	//	}
 	//}
 
-	// ³õÊ¼»¯²¨´Î
+	// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	//initWave();
 
 	return true;
 }
 
-// ³õÊ¼»¯µã¼¯ÏòÁ¿
+// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ã¼¯ï¿½ï¿½ï¿½ï¿½
 //void GameLayer::initPointsVector(float offX)
 //{
 //	Node* runOfPoint = NULL;
@@ -142,7 +131,7 @@ bool GameLayer::init()
 //		runOfPoint->setPosition(Point(x - offX, y));
 //
 //		/////////////////////////////////////////
-//		// ÔÚÕâÀï³õÊ¼»¯µã¼¯£¡£¡£¡£¡
+//		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ã¼¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //		/////////////////////////////////////////
 //		this->pointsVector.pushBack(runOfPoint);
 //		count++;
@@ -151,82 +140,101 @@ bool GameLayer::init()
 //	runOfPoint = NULL;
 //}
 
-// ÔÚÕâÀïÃæÌí¼Ó°´Å¥
-//void GameLayer::initToolLayer()
-//{
-//	auto size = Director::getInstance()->getWinSize();
-//	toolLayer = Layer::create();
-//	addChild(toolLayer);
-//
-//	auto spritetool = Sprite::createWithSpriteFrameName("toolbg.png");
-//	spritetool->setAnchorPoint(Point(0.5f, 1));
-//	spritetool->setPosition(Point(size.width / 2, size.height));
-//	toolLayer->addChild(spritetool);
-//
-//	//
-//	money = instance->getMoney();
-//	moneyLabel = Label::createWithBMFont("fonts/bitmapFontChinese.fnt", " ");
-//	moneyLabel->setPosition(Point(spritetool->getContentSize().width / 8, spritetool->getContentSize().height / 2));
-//	moneyLabel->setAnchorPoint(Point(0, 0.5f));
-//	auto moneyText = patch::to_string(money);
-//	moneyLabel->setString(moneyText);
-//	spritetool->addChild(moneyLabel);
-//
-//	//
-//	/*playHpBar = ProgressTimer::create(Sprite::createWithSpriteFrameName("playhp.png"));
-//	playHpBar->setType(ProgressTimer::Type::BAR);
-//	playHpBar->setMidpoint(Point(0, 0.4f));
-//	playHpBar->setBarChangeRate(Point(1, 0));
-//	playHpBar->setPercentage(playHpPercentage);
-//	playHpBar->setPosition(Point(spritetool->getContentSize().width / 5 * 4, spritetool->getContentSize().height / 2));
-//	spritetool->addChild(playHpBar);*/
-//
-//	auto star = Sprite::createWithSpriteFrameName("playstar.png");
-//	star->setPosition(Point(spritetool->getContentSize().width / 5 * 4, spritetool->getContentSize().height / 2));
-//	spritetool->addChild(star);
-//
-//	//
-//	/*int groupTotal = instance->getGroupNum();
-//	groupLabel = Label::createWithBMFont("fonts/bitmapFontChinese.fnt", " ");
-//	groupLabel->setPosition(Point(spritetool->getContentSize().width / 8 * 3, spritetool->getContentSize().height / 2));
-//	groupLabel->setAnchorPoint(Point(0.5f, 0.5f));
-//	auto groupInfoText = patch::to_string(waveCounter + 1);
-//	groupLabel->setString(groupInfoText);
-//	spritetool->addChild(groupLabel);*/
-//
-//	/*groupTotalLabel = Label::createWithBMFont("fonts/bitmapFontChinese.fnt", " ");
-//	groupTotalLabel->setPosition(Point(spritetool->getContentSize().width / 2, spritetool->getContentSize().height / 2));
-//	groupTotalLabel->setAnchorPoint(Point(0.5f, 0.5f));
-//	auto groupTotalText = patch::to_string(groupTotal);
-//	groupTotalLabel->setString(groupTotalText);
-//	spritetool->addChild(groupTotalLabel);*/
-//
-//	// back
-//	Sprite* backItem1 = Sprite::createWithSpriteFrameName("playbutton1.png");
-//	Sprite* backItem2 = Sprite::createWithSpriteFrameName("playbutton2.png");
-//	MenuItemSprite* pPauseItem = MenuItemSprite::create(backItem1, backItem2, CC_CALLBACK_1(GameLayer::menuBackCallback, this));
-//	pPauseItem->setPosition(Point(spritetool->getContentSize().width - backItem1->getContentSize().width / 2, spritetool->getContentSize().height / 2));
-//	pPauseItem->setAnchorPoint(Point(0, 0.4f));
-//	Menu* pMenu = Menu::create(pPauseItem, NULL);
-//	pMenu->setPosition(Point::ZERO);
-//	spritetool->addChild(pMenu);
-//}
-
-// ÍË³ö°´Å¥
-void GameLayer::menuBackCallback(Ref* pSender)
+void GameLayer::initToolLayer()
 {
-	// ²¥·ÅÒôÐ§
-	SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("Music/button.mp3").c_str(), false);
+	auto size = Director::getInstance()->getWinSize();
+	toolLayer = Layer::create();
+	addChild(toolLayer, 10);
 
-	// ÔÚÕâÀïÊµÏÖÎÄ¼þ¶ÁÈ¡£¬»º´æ¹Ø¿¨
+	//ï¿½ï¿½ï¿½
 
+	/*money = instance->getMoney();
+	moneyLabel = Label::createWithBMFont("fonts/bitmapFontChinese.fnt", " ");
+	moneyLabel->setPosition(Point(spritetool->getContentSize().width / 8, spritetool->getContentSize().height / 2));
+	moneyLabel->setAnchorPoint(Point(0, 0.5f));
+	auto moneyText = patch::to_string(money);
+	moneyLabel->setString(moneyText);
+	toolLayer->addChild(moneyLabel);*/
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	money = 10;
+	auto moneyText = patch::to_string(money);//×ªï¿½ï¿½Îªstring
+	moneyLabel = Label::createWithSystemFont(moneyText, "fonts/arial.ttf", 50);
+	moneyLabel->setColor(Color3B(255, 215, 0));
+	moneyLabel->setAnchorPoint(Point(1, 1));
+	moneyLabel->setPosition(Point(Director::getInstance()->getVisibleSize().width - 20, Director::getInstance()->getVisibleSize().height));
+	
+	toolLayer->addChild(moneyLabel);
 
-	instance->clear();
-	//Director::getInstance()->replaceScene(TransitionFade::create(0.5, Menusys::createScene()));
-	Director::getInstance()->popScene();
+	sprite_money = Sprite::create("Pictures/money.png");
+	sprite_money->setAnchorPoint(Point(1, 1));
+	sprite_money->setScale(2);//32*32
+	sprite_money->setPosition(Point(Director::getInstance()->getVisibleSize().width-100, Director::getInstance()->getVisibleSize().height));
+	toolLayer->addChild(sprite_money);
+
+	/*
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	playHpBar = ProgressTimer::create(Sprite::create("Pictures/progressing.png"));
+	playHpBar->setType(ProgressTimer::Type::BAR);//cc.PROGRESS_TIMER_TYPE_RADIALÎªÔ²ï¿½ï¿½	cc.PROGRESS_TIMER_TYPE_BARÎªï¿½ï¿½ï¿½ï¿½
+	playHpBar->setMidpoint(Point(0, 0.4f));//Ë®Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÙµÄ·ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½
+	playHpBar->setBarChangeRate(Point(1, 0));//ï¿½ï¿½Ê¾Ë®Æ½ï¿½ï¿½ï¿½ï¿½ï¿½Ð½ï¿½ï¿½È£ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Þ½ï¿½ï¿½ï¿½
+	playHpBar->setPercentage(100);//ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½0-100
+	playHpBar->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, 0));
+	toolLayer->addChild(playHpBar);
+*/
+	//3ï¿½ï¿½
+	star3 = Sprite::create("Pictures/star3.png");
+	star3->setScale(0.5);
+	star3->setAnchorPoint(Point(0.5f, 1));
+	star3->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
+	toolLayer->addChild(star3);
+
+	/*
+	int groupTotal = instance->getGroupNum();
+	groupLabel = Label::createWithBMFont("fonts/bitmapFontChinese.fnt", " ");
+	groupLabel->setPosition(Point(spritetool->getContentSize().width / 8 * 3, spritetool->getContentSize().height / 2));
+	groupLabel->setAnchorPoint(Point(0.5f, 0.5f));
+	auto groupInfoText = patch::to_string(waveCounter + 1);
+	groupLabel->setString(groupInfoText);
+	spritetool->addChild(groupLabel);
+
+	groupTotalLabel = Label::createWithBMFont("fonts/bitmapFontChinese.fnt", " ");
+	groupTotalLabel->setPosition(Point(spritetool->getContentSize().width / 2, spritetool->getContentSize().height / 2));
+	groupTotalLabel->setAnchorPoint(Point(0.5f, 0.5f));
+	auto groupTotalText = patch::to_string(groupTotal);
+	groupTotalLabel->setString(groupTotalText);
+	spritetool->addChild(groupTotalLabel);*/
+
+	// back
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó½Úµï¿½
+	Button* back = Button::create("Pictures/pause.png", "Pictures/pause.png", "");//ï¿½ï¿½Ê¾Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½×´Ì¬ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Éµï¿½ï¿½×´Ì¬
+	back->setScale(2);
+	back->setAnchorPoint(Vec2(0, 1));
+	back->setPosition(Vec2(0, Director::getInstance()->getVisibleSize().height));
+	back->setPressedActionEnabled(true);
+	toolLayer->addChild(back);
+	//ï¿½ï¿½ï¿½Ó´ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ï¿½
+	back->addTouchEventListener(CC_CALLBACK_1(GameLayer::menuBackCallback, this));
 }
 
-// »ñÈ¡µ±Ç°²¨´Î
+//ï¿½Ëµï¿½ï¿½ï¿½Å¥
+void GameLayer::menuCallback(Ref* pSender)
+{
+
+}
+// ï¿½Ë³ï¿½ï¿½ï¿½Å¥
+void GameLayer::menuBackCallback(Ref* pSender)
+{
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§
+	SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("Music/button.mp3").c_str(), false);
+	SimpleAudioEngine::getInstance()->stopBackgroundMusic(); //Í£Ö¹ÏµÍ³bgm
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½
+
+	//instance->clear();
+	Scene* scene = Menusys::createScene();
+	Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
+}
+
+// ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
 //Wave* GameLayer::currentWave()
 //{
 //	Wave* w;
@@ -241,7 +249,7 @@ void GameLayer::menuBackCallback(Ref* pSender)
 //	return w;
 //}
 
-// »ñÈ¡ÏÂÒ»²¨
+// ï¿½ï¿½È¡ï¿½ï¿½Ò»ï¿½ï¿½
 //Wave* GameLayer::nextWave()
 //{
 //	if (instance->waveVector.empty())
@@ -261,9 +269,9 @@ void GameLayer::menuBackCallback(Ref* pSender)
 //
 //}
 
-// ¼ÓÈëµÐÈËµ½²¨´Î
-// ²ÎÊý£º{{1,2),{2,3},...}
-// ½âÊÍ£ºµÚ1ÖÖµÐÈËÌí¼Ó2¸ö£¬µÚ2ÖÖµÐÈËÌí¼Ó3¸ö£¬ÎÞÏÞ³¤²ÎÊý
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½{{1,2),{2,3},...}
+// ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½1ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ³ï¿½ï¿½ï¿½ï¿½ï¿½
 //void GameLayer::addWaveEnemy(std::initializer_list<EnemyType> il)
 //{
 //	instance = GameManager::getInstance();
@@ -274,7 +282,7 @@ void GameLayer::menuBackCallback(Ref* pSender)
 //
 //	if (curWave->init())
 //	{
-//		// ÉèÖÃË÷Òý
+//		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //		curWave->setIndex(index);
 //
 //		for (auto ene : il)
@@ -286,26 +294,26 @@ void GameLayer::menuBackCallback(Ref* pSender)
 //	}
 //}
 
-// ³õÊ¼»¯²¨´Î
-// ÔÚÕâÀï±à¼­³ö³¡µÄµÐÈË
+// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à¼­ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½
 //void GameLayer::initWave()
 //{
-//	// µÚÒ»²¨
-//	// Ëæ»ú³öÏÖ3ÖÖµÐÈË
+//	// ï¿½ï¿½Ò»ï¿½ï¿½
+//	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½3ï¿½Öµï¿½ï¿½ï¿½
 //	GameLayer::addWaveEnemy({ {rand() % 3 + 1,1},{rand() % 3 + 1,1}, {rand() % 3 + 1,1} });
 //
-//	// µÚ¶þ²¨
-//    // Ëæ»ú³öÏÖ3ÖÖµÐÈË£¬Ã¿ÖÖµÐÈË2¸ö
+//	// ï¿½Ú¶ï¿½ï¿½ï¿½
+//    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½3ï¿½Öµï¿½ï¿½Ë£ï¿½Ã¿ï¿½Öµï¿½ï¿½ï¿½2ï¿½ï¿½
 //	GameLayer::addWaveEnemy({ {rand() % 3 + 1,2},{rand() % 3 + 1,2}, {rand() % 3 + 1,2} });
 //
-//	// µÚÈý²¨
-//    // ³öÏÖµÐÈË1,2,3£¬Ã¿ÖÖµÐÈË1¸ö
+//	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//    // ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½1,2,3ï¿½ï¿½Ã¿ï¿½Öµï¿½ï¿½ï¿½1ï¿½ï¿½
 //	GameLayer::addWaveEnemy({ {1,1},{2,1}, {3,1} });
 //
-//	// µÚËÄ²¨£¬µÚÎå²¨...
+//	// ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å²¨...
 //}
 
-// ¼ÓÈëµÐÈËµ½³¡¾°
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½
 //void GameLayer::addSceneEnemy()
 //{
 //	//GameManager* instance = GameManager::getInstance();
@@ -322,7 +330,7 @@ void GameLayer::menuBackCallback(Ref* pSender)
 //		//groupEnemy->enemies.popBack();
 //		instance->waveVector.popBack();
 //
-//		// ²¨´ÎÖ®¼äÍ£µÄÉÔÎ¢³¤Ò»µã
+//		// ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½Í£ï¿½ï¿½ï¿½ï¿½Î¢ï¿½ï¿½Ò»ï¿½ï¿½
 //		interval = 5.0f;
 //		return;
 //	}
@@ -338,13 +346,13 @@ void GameLayer::menuBackCallback(Ref* pSender)
 //
 //	////////////////////////
 //	//********************//
-//	//* ÔÚÕâÀïÃæ´´½¨µÐÈË *//
+//	//* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ´´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ *//
 //	//********************//
 //	////////////////////////
 //	if (et.count > 0 && et.type == 1) {
-//		// Èë³¡ÒôÐ§
+//		// ï¿½ë³¡ï¿½ï¿½Ð§
 //		SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
-//		// ´´½¨µÚÒ»ÖÖµÐÈË£¬ÑªÁ¿500
+//		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Öµï¿½ï¿½Ë£ï¿½Ñªï¿½ï¿½500
 //		enemy = Enemy1::createEnemy1(pointsVector, 500);
 //		//groupEnemy->setType1Total(groupEnemy->getType1Total() - 1);
 //	}
@@ -371,16 +379,16 @@ void GameLayer::menuBackCallback(Ref* pSender)
 //	instance->enemyVector.pushBack(enemy);
 //}
 
-// ÓÎÏ·Âß¼­
-// Ã¿Á½Ãë²»Í£ÅÜÕâ¸ö
+// ï¿½ï¿½Ï·ï¿½ß¼ï¿½
+// Ã¿ï¿½ï¿½ï¿½ë²»Í£ï¿½ï¿½ï¿½ï¿½ï¿½
 void GameLayer::logic(float dt)
 {
 	//Wave* groupEnemy = this->currentWave();
 
 	//if (groupEnemy == NULL)
 	//{
-	//	// 2023Äê12ÔÂ22ÈÕ23µã52·Ö ÕÔÃ÷Ôó
-	//	// Ð´µ½ÕâÀïÁË
+	//	// 2023ï¿½ï¿½12ï¿½ï¿½22ï¿½ï¿½23ï¿½ï¿½52ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//	// Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	//	return;
 	//}
 	//if (groupEnemy->getIsFinished() == true && instance->enemyVector.size() == 0  && waveCounter < instance->getGroupNum())
@@ -395,17 +403,17 @@ void GameLayer::logic(float dt)
 	//this->addSceneEnemy();
 }
 
-//¡¡½©Ê¬³ÔµôÁËÄãµÄÄÔ×Ó
+//ï¿½ï¿½ï¿½ï¿½Ê¬ï¿½Ôµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void GameLayer::enemyIntoHouse()
 {
 	auto enemyVector = instance->enemyVector;
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
 
-		// Âß¼­£ºµÐÈË×ßµ½×îºóÒ»¸öµã²¢ÇÒÓÐÑª
-		// ÉèÖÃµÐÈËÊ¤Àû
-		// À¶µã-1
-		// µÈ´ó¼Ò°ÑµÐÈË×ø±êÅÐ¶Ï¸ã³öÀ´£¬°ÑÏÂÃæÕâ¶ÎÊÍ·Å
+		// ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ã²¢ï¿½ï¿½ï¿½ï¿½Ñª
+		// ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½Ê¤ï¿½ï¿½
+		// ï¿½ï¿½ï¿½ï¿½-1
+		// ï¿½È´ï¿½Ò°Ñµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½
 
 
 		//auto enemy = enemyVector.at(i);
@@ -426,7 +434,7 @@ void GameLayer::enemyIntoHouse()
 	}
 }
 
-// ÇØÊ¼»ÊÃþµçÃÅ¡ª¡ªÓ®ÂéÁË
+// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¡ï¿½ï¿½ï¿½Ó®ï¿½ï¿½ï¿½ï¿½
 void GameLayer::YingZhengTouchesTheElectricSwitch()
 {
 	/*if (this->blue > 0 && this->currentWave() == NULL)
@@ -436,10 +444,10 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 
 	if (isSuccessful)
 	{
-		// ²»ÖªµÀÓÃÒâ
+		// ï¿½ï¿½Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		isSuccessful = false;
 
-		// ÆÀÑ¡ÐÇ¼¶
+		// ï¿½ï¿½Ñ¡ï¿½Ç¼ï¿½
 		//auto star = this->getBlue();
 		// 
 		//auto star = 0;
@@ -449,8 +457,8 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 		//else if (remainBlue > 1 && remainBlue <= 2) { star = 2; }
 		//else if (remainBlue > 60 && remainBlue <= 100) { star = 3; }
 
-		// ÏÂÒ»¹Ø
-		// ²»ÕâÑù×ö£¬ÍË»ØÖ÷½çÃæ
+		// ï¿½ï¿½Ò»ï¿½ï¿½
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		//if (star > UserDefault::getInstance()->getIntegerForKey(instance->getCurrLevelFile().c_str()))
 		//{
 		//	UserDefault::getInstance()->setIntegerForKey(instance->getCurrLevelFile().c_str(), star);
@@ -468,7 +476,7 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 	return;
 }
 
-// ÊÖÖ¸·Åµ½ÆÁÄ»ÉÏ
+// ï¿½ï¿½Ö¸ï¿½Åµï¿½ï¿½ï¿½Ä»ï¿½ï¿½
 //bool GameLayer::onTouchBegan(Touch* touch, Event* event)
 //{
 //	this->removeChild(chooseTowerpanel);
@@ -479,7 +487,7 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 //	return true;
 //}
 
-// Ìø³öÑ¡ËþÀ¸
+// ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½
 //void GameLayer::addTowerChoosePanel(Point point)
 //{
 //	chooseTowerpanel = GameSprite::create();
@@ -487,7 +495,7 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 //	this->addChild(chooseTowerpanel);
 //}
 
-// ×ª»»³ÉÍßÆ¬×ø±ê
+// ×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¬ï¿½ï¿½ï¿½ï¿½
 //Point GameLayer::convertTotileCoord(Point position)
 //{
 //	int x = (position.x + offX) / map->getContentSize().width * map->getMapSize().width;
@@ -495,8 +503,8 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 //	return Point(x, y);
 //}
 
-// ×ª»»³É¾ØÕó×ø±ê
-// ¸ÄÍêÖ®ºóÓ¦¸Ã²»ÐèÒªÁË
+// ×ªï¿½ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½Ó¦ï¿½Ã²ï¿½ï¿½ï¿½Òªï¿½ï¿½
 //Point GameLayer::convertToMatrixCoord(Point position)
 //{
 //	int x = (position.x + offX) / map->getContentSize().width * map->getMapSize().width;
@@ -504,28 +512,28 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 //	return Point(x, y);
 //}
 
-// ¼ì²éÎ»ÖÃ£¬·ÅÖÃ¸ÉÔ±
+// ï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½Ô±
 //void GameLayer::checkAndAddTowerPanle(Point position)
 //{
-//	// ¸ÉÔ±ÍßÆ¬×ø±ê
+//	// ï¿½ï¿½Ô±ï¿½ï¿½Æ¬ï¿½ï¿½ï¿½ï¿½
 //	Point towerCoord = convertTotileCoord(position);
-//	// ¾ØÕó×ø±ê
+//	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //	Point matrixCoord = convertToMatrixCoord(position);
 //
-//	// »ñÈ¡ÍßÆ¬µÄGID
+//	// ï¿½ï¿½È¡ï¿½ï¿½Æ¬ï¿½ï¿½GID
 //	int gid = bgLayer->getTileGIDAt(towerCoord);
 //
-//	// ÔÚmapÀïÃæ¸ù¾ÝGIDËÑË÷ÎïÆ·
+//	// ï¿½ï¿½mapï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½GIDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ·
 //	auto tmp_value = map->getPropertiesForGID(gid);
-//	//¡¡²»ÊÇºÏÊÊµÄ·ÅÖÃÎ»ÖÃ
+//	//ï¿½ï¿½ï¿½ï¿½ï¿½Çºï¿½ï¿½ÊµÄ·ï¿½ï¿½ï¿½Î»ï¿½ï¿½
 //	if (tmp_value.getType() != Value::Type::MAP)
 //	{
 //		return;
 //	}
-//	//¡¡»ñÈ¡·ÅÖÃÎ»ÖÃµÄÄÇ¸öÍßÆ¬
+//	//ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ãµï¿½ï¿½Ç¸ï¿½ï¿½ï¿½Æ¬
 //	auto tileTemp = map->getPropertiesForGID(gid).asValueMap();
-//	//¡¡¾ØÕó×ø±ê£¬
-//	//¡¡·ÏÁË£¬²»ÓÃ
+//	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê£¬
+//	//ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½ï¿½ï¿½
 //	int MatrixIndex = static_cast<int>(matrixCoord.y * MAP_WIDTH + matrixCoord.x);
 //
 //	int TouchVaule;
@@ -557,7 +565,7 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 //	}
 //}
 
-//¡¡Âò¸ÉÔ±
+//ï¿½ï¿½ï¿½ï¿½ï¿½Ô±
 //void GameLayer::addTower()
 //{
 //	if (chooseTowerpanel)
@@ -629,8 +637,8 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 //	}
 //}
 
-//¡¡¾É°æ×Óµ¯Åö×²¼ì²â
-//¡¡ÕâÀïÒª´ó¸Ä£¬ÊÊÅäÃ÷ÈÕ·½ÖÛµÄ¹¥»÷Âß¼­
+//ï¿½ï¿½ï¿½É°ï¿½ï¿½Óµï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ·ï¿½ï¿½ÛµÄ¹ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
 //void GameLayer::CollisionDetection()
 //{
 //	auto bulletVector = instance->bulletVector;
@@ -704,7 +712,7 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 //	bulletNeedToDelete.clear();
 //}
 
-//¡¡Ã¿Ö¡¶¼Ö´ÐÐÕâ¸ö
+//ï¿½ï¿½Ã¿Ö¡ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½
 //void GameLayer::update(float dt)
 //{
 //	//addTower();
@@ -712,6 +720,6 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 //	enemyIntoHouse();
 //	YingZhengTouchesTheElectricSwitch();
 //
-//	// ½ðÇ®
+//	// ï¿½ï¿½Ç®
 //}
 

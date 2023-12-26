@@ -1,6 +1,3 @@
-/*ÎäÜÆ¶ä2151422
-2023.12.12
-À§ÄÑ¹Ø¿¨ÌùÍ¼¡¢µÐÈËÂ·¾¶µã£¨»¹Î´´¦Àí£©*/
 #include "HardMap1Scene.h"
 
 USING_NS_CC;
@@ -10,11 +7,13 @@ Scene* HardMap1::createScene()
     auto scene = Scene::create();
     auto layer = HardMap1::create();
     scene->addChild(layer);
+    auto spr = GanYuanShield::create();
+    scene->addChild(spr);
     return scene;
 }
 TMXTiledMap* HardMap1::createMap()
 {
-    //ÔØÈëµØÍ¼±³¾°
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
     TMXTiledMap* map = TMXTiledMap::create("hardmap1.tmx");
     return map;
 }
@@ -36,22 +35,25 @@ bool HardMap1::init()
         return false;
     }
 
-    //ÔØÈëµØÍ¼±³¾°
-    TMXTiledMap* map = createMap();
-    //Í¼¿é²ã
-    auto  layer_normalmap = map->getLayer("hardmap1");
-    layer_normalmap->setAnchorPoint(Point(0.5f, 0.5f));
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
+    map = createMap();
+    //Í¼ï¿½ï¿½ï¿½
+    bgLayer = map->getLayer("hardmap1");
+    bgLayer->setAnchorPoint(Point(0.5f, 0.5f));
     Size winSize = Director::getInstance()->getWinSize();
-    layer_normalmap->setPosition(Point(winSize.width / 2, winSize.height / 2));
-    //¶ÔÏó²ã
-    TMXObjectGroup* aroad = map->getObjectGroup("aroad");
-    TMXObjectGroup* broad = map->getObjectGroup("broad");
-    TMXObjectGroup* croad = map->getObjectGroup("croad");
-    TMXObjectGroup* droad = map->getObjectGroup("droad");
-    TMXObjectGroup* towers = map->getObjectGroup("towers");
-    TMXObjectGroup* grounds = map->getObjectGroup("grounds");
+    bgLayer->setPosition(Point(winSize.width / 2, winSize.height / 2));
+    //ï¿½ï¿½ï¿½ï¿½ï¿½
+    aroad = map->getObjectGroup("aroad");
+    broad = map->getObjectGroup("broad");
+    croad = map->getObjectGroup("croad");
+    droad = map->getObjectGroup("droad");//ï¿½ï¿½ï¿½Ë»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+    towers = map->getObjectGroup("towers");
+    grounds = map->getObjectGroup("grounds");
 
     this->addChild(map, 0);
+
+    // ï¿½ï¿½ï¿½Ó°ï¿½Å¥
+    GameLayer::init();
 
 
     return true;

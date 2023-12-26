@@ -4,15 +4,14 @@
 #define __HARDMAP1SCENE_H__
 
 #include "cocos2d.h"
+#include "GameLayer.h"
 
-
-class HardMap1 : public cocos2d::Layer
+class HardMap1 : public GameLayer
 {
 public:
-    //´´½¨³¡¾°
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     static cocos2d::Scene* createScene();
-
-    //´´½¨ÍßÆ¬µØÍ¼
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¬ï¿½ï¿½Í¼
     static cocos2d::TMXTiledMap* createMap();
 
     virtual bool init();
@@ -21,6 +20,15 @@ public:
 
     // implement the "static create()" method manually
     CREATE_FUNC(HardMap1);
+
+    TMXObjectGroup* aroad = {};
+    TMXObjectGroup* broad = {};
+    TMXObjectGroup* croad = {};
+    TMXObjectGroup* droad = {};//ï¿½ï¿½ï¿½Ë»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+    std::vector<Vec2> aroad_path = {};
+    std::vector<Vec2> broad_path = {};
+    std::vector<Vec2> croad_path = {};
+    std::vector<Vec2> droad_path = {};
 };
 
 #endif // _HARDMAP1SCENE_H__
