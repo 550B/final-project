@@ -8,10 +8,10 @@
 class NormalMap1 : public GameLayer
 {
 public:
-    //´´½¨³¡¾°
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     static cocos2d::Scene* createScene();
 
-    //´´½¨ÍßÆ¬µØÍ¼
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¬ï¿½ï¿½Í¼
     static cocos2d::TMXTiledMap* createMap();
 
     virtual bool init();

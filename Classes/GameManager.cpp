@@ -13,6 +13,6 @@ void GameManager::clear()
 {
 	enemyVector.clear();
 	bulletVector.clear();
-	//ganyuanVector.clear();	// ËûÏë½áÊøÊ±±£Áô³¡ÉÏ¸ÉÔ±ÕóĞÍ
+	//ganyuanVector.clear();	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½Ô±ï¿½ï¿½ï¿½ï¿½
 	//waveVector.clear();
 }

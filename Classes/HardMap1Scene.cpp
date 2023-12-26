@@ -13,7 +13,7 @@ Scene* HardMap1::createScene()
 }
 TMXTiledMap* HardMap1::createMap()
 {
-    //ÔØÈëµØÍ¼±³¾°
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
     TMXTiledMap* map = TMXTiledMap::create("hardmap1.tmx");
     return map;
 }
@@ -35,24 +35,24 @@ bool HardMap1::init()
         return false;
     }
 
-    //ÔØÈëµØÍ¼±³¾°
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
     map = createMap();
-    //Í¼¿é²ã
+    //Í¼ï¿½ï¿½ï¿½
     bgLayer = map->getLayer("hardmap1");
     bgLayer->setAnchorPoint(Point(0.5f, 0.5f));
     Size winSize = Director::getInstance()->getWinSize();
     bgLayer->setPosition(Point(winSize.width / 2, winSize.height / 2));
-    //¶ÔÏó²ã
+    //ï¿½ï¿½ï¿½ï¿½ï¿½
     aroad = map->getObjectGroup("aroad");
     broad = map->getObjectGroup("broad");
     croad = map->getObjectGroup("croad");
-    droad = map->getObjectGroup("droad");//ÎÞÈË»ú ÎÞ×è¸ô
+    droad = map->getObjectGroup("droad");//ï¿½ï¿½ï¿½Ë»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
     towers = map->getObjectGroup("towers");
     grounds = map->getObjectGroup("grounds");
 
     this->addChild(map, 0);
 
-    // Ìí¼Ó°´Å¥
+    // ï¿½ï¿½ï¿½Ó°ï¿½Å¥
     GameLayer::init();
 
 

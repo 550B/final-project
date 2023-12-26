@@ -26,7 +26,7 @@ extern std::vector<Vec2> road_path;
 extern std::vector<Vec2> towers_path;
 extern std::vector<Vec2> grounds_path;
 extern Emode mode;//Ä£Ê½
-extern Scene* gameScene;//µ±Ç°³¡¾°£¨hard/normalµØÍ¼£©
+extern Scene* gameScene;//ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½hard/normalï¿½ï¿½Í¼ï¿½ï¿½
 extern bool gameStart;
 
 #endif // !Constant_H
