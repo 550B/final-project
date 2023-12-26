@@ -5,9 +5,9 @@
 #include "GanYuanShield.h"
 USING_NS_CC;
 
-//Ò»Ð©È«¾Ö±äÁ¿¡£ÉùÃ÷³ÉÈ«¾Ö¿É²Ù¿ØµÄ
+//Ò»Ð©È«ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½Ö¿É²Ù¿Øµï¿½
 Emode mode;//Ä£Ê½
-bool gameStart = false;//ÊÇ·ñÓÎÏ·ÒÑ¾­¿ªÊ¼ÔËÐÐ,Èç¹ûÒÑ¾­ÔËÐÐÔò¸ÉÔ±Ñ¡ÔñÊÇ²»ÄÜ¼ÌÐøµÄ£¬³õÊ¼Ïë·¨ÊÇÉè¼Æ°´Å¥¿É¾ö¶¨¿ªÊ¼
+bool gameStart = false;//ï¿½Ç·ï¿½ï¿½ï¿½Ï·ï¿½Ñ¾ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±Ñ¡ï¿½ï¿½ï¿½Ç²ï¿½ï¿½Ü¼ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Ê¼ï¿½ë·¨ï¿½ï¿½ï¿½ï¿½Æ°ï¿½Å¥ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼
 Scene* Menusys::createScene()
 {
     auto scene = Scene::create();
@@ -35,11 +35,11 @@ bool Menusys::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    //Ô¤¼ÓÔØ
+    //Ô¤ï¿½ï¿½ï¿½ï¿½
     SimpleAudioEngine::getInstance()->preloadBackgroundMusic("Music/m_sys.mp3");
     SimpleAudioEngine::getInstance()->preloadBackgroundMusic("Music/button.mp3");
 
-    //ÔØÈë²Ëµ¥±³¾°Í¼£¨×îµ×²ã£©
+    //ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½×²ã£©
     auto sprite = Sprite::create("Pictures/Menu.jpg");
     sprite->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     this->addChild(sprite, 0);
@@ -52,19 +52,19 @@ bool Menusys::init()
     auto offMusic = MenuItemImage::create("Pictures/stopMusic.png", "Pictures/stopMusic.png");
     auto onMusic = MenuItemImage::create("Pictures/continueMusic.png", "Pictures/continueMusic.png");
 
-    //Õ¹Ê¾²»Í¬°´Å¥×´Ì¬£¨¿ª¹ØÒôÀÖ£©
+    //Õ¹Ê¾ï¿½ï¿½Í¬ï¿½ï¿½Å¥×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½
     MenuItemToggle* MusicMenu = MenuItemToggle::createWithCallback(CC_CALLBACK_1(Menusys::MenuMusicCallBack, this), onMusic, offMusic,NULL );
     auto Menu_Music= Menu::create(MusicMenu, NULL);
     Menu_Music->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     Menu_Music->setPosition(Vec2(1221, 661));
     this->addChild(Menu_Music, 1);
 
-    //1 ÆÕÍ¨¹Ø¿¨--Normal
-    //²åÈëÎÄ×Ö 
+    //1 ï¿½ï¿½Í¨ï¿½Ø¿ï¿½--Normal
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
     auto label_normal = Label::createWithSystemFont("NormalMap", "fonts/arial.ttf", 30);
     auto menuitem_normal = MenuItemLabel::create(label_normal, CC_CALLBACK_1(Menusys::NormalMap, this));
 
-    //´´½¨ºÃÁË²Ëµ¥ÌõÄ¿£¬¾ÍÐèÒª¼ÓÈë²Ëµ¥ÖÐ£¬ËùÒÔÏÂÃæ¾ÍÊÇ´´½¨²Ëµ¥
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë²Ëµï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ï¿½ï¿½ï¿½Ëµï¿½
     auto menu_normal = Menu::create(menuitem_normal, NULL);
     if (menu_normal == nullptr || menu_normal->getContentSize().width <= 0 || menu_normal->getContentSize().height <= 0) {
         problemLoading("'NormalMap'");
@@ -77,8 +77,8 @@ bool Menusys::init()
     }
 
 
-    //2 ½ËÃð×÷Õ½--Hard
-    //²åÈëÎÄ×Ö
+    //2 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ½--Hard
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     auto label_Hard = Label::createWithSystemFont("HardMap", "fonts/arial.ttf", 30);
     auto menuitem_Hard = MenuItemLabel::create(label_Hard, CC_CALLBACK_1(Menusys::HardMap, this));
 
@@ -94,7 +94,7 @@ bool Menusys::init()
     }
     
 
-    //3¸ÉÔ±±à¶Ó¡ªOperator
+    //3ï¿½ï¿½Ô±ï¿½ï¿½Ó¡ï¿½Operator
     auto label_Operator = Label::createWithSystemFont("OperatorFormation", "fonts/arial.ttf", 30);
     auto menuitem_Operator = MenuItemLabel::create(label_Operator, CC_CALLBACK_1(Menusys::OperatorFormation, this));
 
@@ -111,7 +111,7 @@ bool Menusys::init()
 
     return true;
 }
-//¿ª¹ØÒôÀÖ
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void Menusys::MenuMusicCallBack(Ref* pSender) {
     auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
     if (audio->isBackgroundMusicPlaying()) {
@@ -121,34 +121,34 @@ void Menusys::MenuMusicCallBack(Ref* pSender) {
         audio->resumeBackgroundMusic();
     }
 }
-//ÆÕÍ¨¹Ø¿¨
+//ï¿½ï¿½Í¨ï¿½Ø¿ï¿½
 void Menusys::NormalMap(Ref* pSender)
 {
     onButtonEffect();
-    mode=normal;//ÉèÖÃÈ«¾Ö±äÁ¿mode
+    mode=normal;//ï¿½ï¿½ï¿½ï¿½È«ï¿½Ö±ï¿½ï¿½ï¿½mode
     Scene* scene = MapChoose::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
 }
-//½ËÃð×÷Õ½
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ½
 void Menusys::HardMap(Ref* pSender)
 {
     onButtonEffect();
-    mode = hard;//ÉèÖÃÈ«¾Ö±äÁ¿mode;
+    mode = hard;//ï¿½ï¿½ï¿½ï¿½È«ï¿½Ö±ï¿½ï¿½ï¿½mode;
     Scene* scene = HardMap1::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
 }
-//¸ÉÔ±±à¶Ó
+//ï¿½ï¿½Ô±ï¿½ï¿½ï¿½
 void Menusys::OperatorFormation(Ref* pSender)
 {
     onButtonEffect();
-    mode = biandui;//ÉèÖÃÈ«¾Ö±äÁ¿mode;
+    mode = biandui;//ï¿½ï¿½ï¿½ï¿½È«ï¿½Ö±ï¿½ï¿½ï¿½mode;
     Scene* scene = OperatorFormation::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
 }
-//°´Å¥ÌØÐ§
+//ï¿½ï¿½Å¥ï¿½ï¿½Ð§
 void Menusys::onButtonEffect()
 {
     SimpleAudioEngine::getInstance()->stopBackgroundMusic(); //Í£Ö¹ÏµÍ³bgm
-    SimpleAudioEngine::getInstance()->playBackgroundMusic("Music/button.mp3", false); //false±íÊ¾²»Ñ­»·
+    SimpleAudioEngine::getInstance()->playBackgroundMusic("Music/button.mp3", false); //falseï¿½ï¿½Ê¾ï¿½ï¿½Ñ­ï¿½ï¿½
 }
 

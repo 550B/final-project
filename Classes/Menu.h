@@ -14,19 +14,19 @@ public:
 
     virtual bool init();
 
-    //¿ª¹ØÒôÀÖ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void MenuMusicCallBack(Ref* pSender);
 
-    //Ìø×ªÆÕÍ¨¹Ø¿¨
+    //ï¿½ï¿½×ªï¿½ï¿½Í¨ï¿½Ø¿ï¿½
     void NormalMap(Ref* pSender);
 
-    //Ìø×ª½ËÃð×÷Õ½
+    //ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ½
     void HardMap(Ref* pSender);
 
-    //Ìø×ª¸ÉÔ±±à¶Ó
+    //ï¿½ï¿½×ªï¿½ï¿½Ô±ï¿½ï¿½ï¿½
     void OperatorFormation(Ref* pSender);
 
-    //°´¼üÉùÒô
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void onButtonEffect();
 
     // implement the "static create()" method manually

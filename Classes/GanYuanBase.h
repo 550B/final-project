@@ -8,7 +8,7 @@
 #include "EnemyBase.h"
 #include "Const.h"//xjy
 #include "Bar.h"
-#include "Actor.h"//zmz
+#include "Actor.h" //zmz
 #include "Bullet.h"//zmz
 USING_NS_CC;
 class GanYuanBase : public Actor
@@ -19,7 +19,7 @@ public:
 
     static GanYuanBase* create(const std::string& filename);
 
-    // ÕÔÃ÷Ôó×¢ÊÍµÄ£¬ÀíÓÉ£º·ÅActorÀïÁË
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ÍµÄ£ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½Actorï¿½ï¿½ï¿½ï¿½
     //CC_SYNTHESIZE(int, scope, Scope);
     //CC_SYNTHESIZE(int, lethality, Lethality);
     //CC_SYNTHESIZE(float, hp, Hp);
@@ -37,7 +37,7 @@ public:
     virtual void unselectCallback(Ref* sender);
     virtual void ifmove();
     virtual void moveToPosition();
-   // virtual void positionLegal(bool& state);
+    virtual void positionLegal(bool& state, Vec2& p);
 
 
 

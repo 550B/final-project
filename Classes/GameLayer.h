@@ -17,7 +17,7 @@
 using namespace cocos2d::ui;
 USING_NS_CC;
 
-// µÐÈËÖÖÀà£¬ÕâÖÖµÐÈËµÄÊýÁ¿
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à£¬ï¿½ï¿½ï¿½Öµï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½
 struct EnemyType
 {
     int type;
@@ -31,7 +31,7 @@ public:
     GameLayer();
     ~GameLayer();
 
-    //´´½¨³¡¾°
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     static cocos2d::Scene* createScene();
 
 
@@ -48,15 +48,15 @@ public:
     void logic(float dt);
     //void initLabelText();
 
-protected://¸ÄÎªprojected
+protected://ï¿½ï¿½Îªprojected
 
     float interval;
 
     SpriteBatchNode* spriteSheet;
-    TMXTiledMap* map;//µØÍ¼
-    TMXLayer* bgLayer;//±³¾°²ã
-    TMXObjectGroup* towers;//Ïä×Ó
-    TMXObjectGroup* grounds;//µØÃæ
+    TMXTiledMap* map;//ï¿½ï¿½Í¼
+    TMXLayer* bgLayer;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    TMXObjectGroup* towers;//ï¿½ï¿½ï¿½ï¿½
+    TMXObjectGroup* grounds;//ï¿½ï¿½ï¿½ï¿½
     std::vector<Vec2> towers_path;
     std::vector<Vec2> grounds_path;
 
@@ -72,13 +72,13 @@ protected://¸ÄÎªprojected
     Label* groupTotalLabel;
     Layer* toolLayer;
 
-    Sprite* sprite_money;//½ð±ÒÍ¼±ê
-    ProgressTimer* playHpBar;//½ø¶ÈÌõ
-    Sprite* star3;//3ÐÇÍ¼±ê
+    Sprite* sprite_money;//ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
+    ProgressTimer* playHpBar;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    Sprite* star3;//3ï¿½ï¿½Í¼ï¿½ï¿½
     void initToolLayer();
     CC_SYNTHESIZE(int, blue, Blue);
 
-    // ²»ÐèÒª¹Ø¿¨ÑªÌõ
+    // ï¿½ï¿½ï¿½ï¿½Òªï¿½Ø¿ï¿½Ñªï¿½ï¿½
     //CC_SYNTHESIZE_READONLY(ProgressTimer*, playHpBar, PlayHpBar);
     bool isSuccessful;
 
@@ -99,7 +99,7 @@ protected://¸ÄÎªprojected
     void addTower();
     GanYuanBase** towerMatrix;
 
-    // ÅÐ¶ÏÊäÓ®
+    // ï¿½Ð¶ï¿½ï¿½ï¿½Ó®
     void YingZhengTouchesTheElectricSwitch();
 
 };

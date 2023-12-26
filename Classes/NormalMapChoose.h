@@ -22,17 +22,17 @@ public:
 
     virtual bool init();
 
-    //¹ö¶¯µØÍ¼±³¾°
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
     void ChooseMap(ScrollView* scrollView);
 
-    //Ñ¡Ôñ¹Ø¿¨
+    //Ñ¡ï¿½ï¿½Ø¿ï¿½
     void ChooseNmap(ScrollView* scrollView);
 
 
-    //·µ»ØÖ÷²Ëµ¥
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
     void reMenu();
 
-    //¿ª¹ØÒôÀÖ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void  MenuMusicCallBack(Ref* pSender);
 
     // implement the "static create()" method manually

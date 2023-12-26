@@ -9,9 +9,9 @@
 class HardMap1 : public GameLayer
 {
 public:
-    //´´½¨³¡¾°
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     static cocos2d::Scene* createScene();
-    //´´½¨ÍßÆ¬µØÍ¼
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¬ï¿½ï¿½Í¼
     static cocos2d::TMXTiledMap* createMap();
 
     virtual bool init();
@@ -24,7 +24,7 @@ public:
     TMXObjectGroup* aroad = {};
     TMXObjectGroup* broad = {};
     TMXObjectGroup* croad = {};
-    TMXObjectGroup* droad = {};//ÎÞÈË»ú ÎÞ×è¸ô
+    TMXObjectGroup* droad = {};//ï¿½ï¿½ï¿½Ë»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
     std::vector<Vec2> aroad_path = {};
     std::vector<Vec2> broad_path = {};
     std::vector<Vec2> croad_path = {};
