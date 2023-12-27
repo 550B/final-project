@@ -4,11 +4,17 @@
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
+#include"editor-support/cocostudio/SimpleAudioEngine.h"
+using namespace CocosDenshion;
 #include <string.h>
 #include "GanYuanShield.h"
 #include "GameManager.h"
 using namespace cocos2d::ui;
 using namespace std;
+#include "Menu.h"
+#include "NormalMap1Scene.h"
+#include "NormalMap2Scene.h"
+#include "NormalMap3Scene.h"
 class MapChoose : public cocos2d::Layer
 {
 public:
@@ -16,15 +22,18 @@ public:
 
     virtual bool init();
 
-    //¹ö¶¯µØÍ¼±³¾°
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
     void ChooseMap(ScrollView* scrollView);
 
-    //Ñ¡Ôñ¹Ø¿¨
+    //Ñ¡ï¿½ï¿½Ø¿ï¿½
     void ChooseNmap(ScrollView* scrollView);
 
 
-    //·µ»ØÖ÷²Ëµ¥
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
     void reMenu();
+
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    void  MenuMusicCallBack(Ref* pSender);
 
     // implement the "static create()" method manually
     CREATE_FUNC(MapChoose);

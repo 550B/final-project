@@ -32,6 +32,7 @@ GanYuanShield* GanYuanShield::create()
 
 void GanYuanShield::setDefaultData() {
     // 设定重装默认数值
+    setType(SHIELD_TYPE);
     scope = ShieldScope;
     setLethality(ShieldLethality);   // 杀伤力
     setHp(ShieldHp);  // 最大血量
@@ -81,12 +82,12 @@ void GanYuanShield::initial()
 //检查位置合法
 void GanYuanShield:: positionLegal(bool& state, Vec2& p) {
     GameManager* instance = GameManager::getInstance();
-    for (int i = 0; i < instance->groundPosition.at(0).size(); i++) {
+    for (int i = 0; i < instance->groundsPosition.size(); i++) {
         //(road_path[i - 1] - road_path[i]).getLength()
-        if ((this->getPosition()).distance(instance->groundPosition.at(0)[i]) < 50.f)//确定是重装可到达位置
+        if ((this->getPosition()).distance(instance->groundsPosition[i]) < 50.f)//确定是重装可到达位置
         {
             state = true;
-            p = instance->groundPosition.at(0)[i];
+            p = instance->groundsPosition[i];
             return;
         }
     }

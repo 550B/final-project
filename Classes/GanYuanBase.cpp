@@ -1,4 +1,6 @@
 #include "GanYuanBase.h"
+#include "GameManager.h"
+
 GanYuanBase::GanYuanBase() :
 	// 赵明泽注释的，理由：请在Actor里赋初始值
 	//scope(0)
@@ -146,7 +148,9 @@ void GanYuanBase::moveToPosition() {
 		else {
 			//this->setPose(getPosition());
 			//this->setPose(p);
+			GameManager* instance = GameManager::getInstance();
 			this->setPosition(p);
+			instance->occupied.push_back(p);
 		}
 		};
 	//将触摸事件绑定到精灵身上

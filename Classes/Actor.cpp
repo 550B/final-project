@@ -1,19 +1,20 @@
 #include "Actor.h"
 #include "Bullet.h"
+#include "GameManager.h"
 
 //Actor::Actor()
 //	: scope(0)
-//	, lethality(0)   // É±ÉËÁ¦
-//	, hp(0)  // ×î´óÑªÁ¿
-//	, health(0) // µ±Ç°ÑªÁ¿
-//	, defence(0)  // ·ÀÓùÁ¦
-//	, alive(true)//ÊÇ·ñÈÔÈ»»î×Å
-//	, intervalTime(0)//¹¥»÷¼ä¸ôÊ±¼ä
-//	, lastAttackTime(0)//ÉÏÒ»´Î¹¥»÷µÄÊ±¼ä
-//	, isBlock(false)//ÊÇ·ñ×èµ²
-//	, isGround(false)// ÊÇ·ñµØÃæ
-//	, curBlock(0)//ÒÑ¾­×èµ²Êý
-//	, block(0)//×èµ²Êý
+//	, lethality(0)   // É±ï¿½ï¿½ï¿½ï¿½
+//	, hp(0)  // ï¿½ï¿½ï¿½Ñªï¿½ï¿½
+//	, health(0) // ï¿½ï¿½Ç°Ñªï¿½ï¿½
+//	, defence(0)  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//	, alive(true)//ï¿½Ç·ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½
+//	, intervalTime(0)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+//	, lastAttackTime(0)//ï¿½ï¿½Ò»ï¿½Î¹ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+//	, isBlock(false)//ï¿½Ç·ï¿½ï¿½èµ²
+//	, isGround(false)// ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+//	, curBlock(0)//ï¿½Ñ¾ï¿½ï¿½èµ²ï¿½ï¿½
+//	, block(0)//ï¿½èµ²ï¿½ï¿½
 //{
 //
 //}
@@ -34,7 +35,6 @@ bool Actor::init()
 {
 	if (Sprite::init())
 	{
-		//instance = GameManager::getInstance();
 		return true;
 	}
 	return false;
@@ -42,9 +42,12 @@ bool Actor::init()
 
 void Actor::takeDamage(INT32 damage)
 {
-	INT32 actualDamage = static_cast<INT32>((1 - defence) * damage);
+	float actualDefence = damage < 0 ? 1 - defence : 1;
 
-	this->setHealth(getHealth() - actualDamage <= 0 ? 0 : getHealth() - actualDamage);
+	INT32 actualDamage = static_cast<INT32>(actualDefence * damage * -1);
+
+	// å…¬å¼
+	this->setHealth(getHealth() - actualDamage <= 0 ? 0 : getHealth() - actualDamage >= getHp() ? getHp() : getHealth() - actualDamage);
 
 	if (getHealth() <= 0)
 	{
@@ -52,8 +55,10 @@ void Actor::takeDamage(INT32 damage)
 	}
 }
 
-bool Actor::attack()
+bool Actor::attack(Actor* target)
 {
+	GameManager* instance = GameManager::getInstance();
+
 	auto nowTime = GetCurrentTime() / 1000.f;
 
 	if (nowTime - lastAttackTime < intervalTime)
@@ -63,12 +68,35 @@ bool Actor::attack()
 	else
 	{
 		lastAttackTime = nowTime;
+		std::string tmpPath;
 
-		//auto projectile = Projectile::create("pictures/others/bullet.png", _attack, SPEED_FLY, this, _attackTarget);
-		//projectile->setPosition(getPosition());
-		//projectile->setScale(2);
-		//_combatScene->getMap()->addChild(projectile);
-		//_combatScene->_bullets.pushBack(projectile);
+		switch (target->getType())
+		{
+		case SHIELD_TYPE:
+			tmpPath = SHIELD_PATH;
+			break;
+		case SHOOTER_TYPE:
+			tmpPath = SHOOTER_PATH;
+			break;
+		case MEDICAL_TYPE:
+			tmpPath = MEDICAL_PATH;
+			break;
+		case ENEMY1_TYPE:
+			tmpPath = ENEMY1_PATH;
+			break;
+		case ENEMY2_TYPE:
+			tmpPath = ENEMY2_PATH;
+			break;
+		case ENEMY3_TYPE:
+			tmpPath = ENEMY3_PATH;
+			break;
+		}
+
+		auto bullet = Bullet::create(tmpPath, this->getLethality(), 100, this, target);
+		bullet->setPosition(this->getPosition());
+		bullet->setScale(2);
+		instance->gameScene->addChild(bullet);
+		instance->bulletVector.pushBack(bullet);
 
 		return true;
 	}

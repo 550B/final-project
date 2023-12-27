@@ -15,6 +15,8 @@ class Actor : public cocos2d::Sprite
 
 protected:
 
+	CC_SYNTHESIZE(int, type, Type);
+
 	CC_SYNTHESIZE(int, scope, Scope);
 
 	CC_SYNTHESIZE(int, lethality, Lethality);
@@ -31,27 +33,25 @@ protected:
 
 	CC_SYNTHESIZE(float, lastAttackTime, LastAttackTime);
 
-	CC_SYNTHESIZE(bool, isBlock, IsBlock);  //ÊÇ·ñ×èµ²
+	CC_SYNTHESIZE(bool, isBlock, IsBlock);  //ï¿½Ç·ï¿½ï¿½èµ²
 
-	CC_SYNTHESIZE(int, block, Block);  //×èµ²Êý
+	CC_SYNTHESIZE(int, block, Block);  //ï¿½èµ²ï¿½ï¿½
 
-	CC_SYNTHESIZE(int, curBlock, CurBlock);  //ÒÑ¾­×èµ²Êý
+	CC_SYNTHESIZE(int, curBlock, CurBlock);  //ï¿½Ñ¾ï¿½ï¿½èµ²ï¿½ï¿½
 
-	CC_SYNTHESIZE(bool, isGround, IsGround);  // ÊÇ·ñµØÃæ
+	CC_SYNTHESIZE(bool, isGround, IsGround);  // ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 
 public:
 
 	virtual void die();
 
-	virtual bool attack();
+	virtual bool attack(Actor* target);
 
 	virtual void takeDamage(INT32 damge);
 
 	virtual bool init();
 	//
 	static Actor* create();
-
-	//GameManager* instance;
 
 };
 

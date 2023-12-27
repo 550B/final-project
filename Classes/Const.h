@@ -1,13 +1,11 @@
 #ifndef _CONSTANT_H_
 #define _CONSTANT_H_
 #include "cocos2d.h"
-#include "HardMap1Scene.h"
 USING_NS_CC;
 
 #define FRAMES_PER_SECOND 60
 
-// 地面没有scope？吧
-#define ShieldScope 0
+#define ShieldScope 50
 #define ShieldLethality 193
 #define ShieldHp 1221
 #define ShieldBlock 3
@@ -23,7 +21,23 @@ USING_NS_CC;
 #define ShooterIntervalTime 1.6
 #define ShooterCoolTime 70
 
-//class GanYuanBase;
+// types of GanYuans
+#define SHIELD_TYPE 1
+#define SHOOTER_TYPE 2
+#define MEDICAL_TYPE 3
+
+// types of Enemies
+#define ENEMY1_TYPE 4
+#define ENEMY2_TYPE 5
+#define ENEMY3_TYPE 6
+
+const std::string SHIELD_PATH = "Pictures/HelloWorld.png";
+const std::string SHOOTER_PATH = "Pictures/HelloWorld.png";
+const std::string MEDICAL_PATH = "Pictures/HelloWorld.png";
+
+const std::string ENEMY1_PATH = "Pictures/HelloWorld.png";
+const std::string ENEMY2_PATH = "Pictures/HelloWorld.png";
+const std::string ENEMY3_PATH = "Pictures/HelloWorld.png";
 
 enum Emode
 {
@@ -31,10 +45,5 @@ enum Emode
 	hard,
 	biandui,
 };
-
-//一些全局变量。声明成全局可操控的
-//Emode mode;//模式
-//Scene* gameScene;//当前场景（hard/normal地图）
-//bool gameStart = false;//是否游戏已经开始运行,如果已经运行则干员选择是不能继续的，初始想法是设计按钮可决定开始
 
 #endif // !Constant_H

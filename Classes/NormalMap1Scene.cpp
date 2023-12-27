@@ -1,8 +1,4 @@
-/*ÎäÜÆ¶ä2151422
-2023.12.12
-ÆÕÍ¨¹Ø¿¨ÌùÍ¼¡¢µÐÈËÂ·¾¶µã£¨»¹Î´´¦Àí£©*/
 #include "NormalMap1Scene.h"
-#include "Menu.h"
 
 USING_NS_CC;
 
@@ -11,7 +7,6 @@ Scene* NormalMap1::createScene()
     auto scene = Scene::create();
     auto layer = NormalMap1::create();
     scene->addChild(layer);
-    Scene* gameScene = scene;
     auto spr = GanYuanShield::create();
     scene->addChild(spr);
     auto shooter = GanYuanShooter::create();
@@ -20,7 +15,7 @@ Scene* NormalMap1::createScene()
 }
 TMXTiledMap* NormalMap1::createMap()
 {
-    //ÔØÈëµØÍ¼±³¾°
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
     TMXTiledMap* map = TMXTiledMap::create("normalmap1.tmx");
     return map;
 }
@@ -28,7 +23,7 @@ TMXTiledMap* NormalMap1::createMap()
 static void problemLoading(const char* filename)
 {
     printf("Error while loading: %s\n", filename);
-    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in MapScene1.cpp\n");
+    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in  NormalMapScene1.cpp\n");
 }
 
 // on "init" you need to initialize your instance
@@ -39,72 +34,71 @@ bool NormalMap1::init()
     {
         return false;
     }
-
-    //ÔØÈëµØÍ¼±³¾°
-    TMXTiledMap* map = createMap();
-
-    //Í¼¿é²ã
-    auto  layer_normalmap = map->getLayer("normalmap1");
-    layer_normalmap->setAnchorPoint(Point(0.5f, 0.5f));
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
+    map = createMap();
+    //Í¼ï¿½ï¿½ï¿½
+    bgLayer = map->getLayer("normalmap1");
+    bgLayer->setAnchorPoint(Point(0.5f, 0.5f));
     Size winSize = Director::getInstance()->getWinSize();
-    layer_normalmap->setPosition(Point(winSize.width / 2, winSize.height / 2));
-
-    //¶ÔÏó²ã
+    bgLayer->setPosition(Point(winSize.width / 2, winSize.height / 2));
+    //ï¿½ï¿½ï¿½ï¿½ï¿½
     road = map->getObjectGroup("road");
     towers = map->getObjectGroup("towers");
     grounds = map->getObjectGroup("grounds");
-
     this->addChild(map, 0);
 
-    //½«tower,ground£¬roadµÄVec2Êý×é³õÊ¼»¯
+    // ï¿½ï¿½ï¿½Ó°ï¿½Å¥
+    GameLayer::init();
+
+    //ï¿½ï¿½tower,groundï¿½ï¿½roadï¿½ï¿½Vec2ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
     ValueVector rvalues = road->getObjects();
     for (Value value : rvalues)
     {
-        ValueMap valueMap = value.asValueMap();//»ñµÃÊôÐÔÖµ£ºValue×ª»»³ÉValueMap       
-        road_path.push_back(Vec2(valueMap["x"].asFloat(), valueMap["y"].asFloat()));//½«Â·¾¶µã±£´æµ½Â·¾¶ÖÐ
+        ValueMap valueMap = value.asValueMap();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Value×ªï¿½ï¿½ï¿½ï¿½ValueMap       
+        road_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//ï¿½ï¿½Â·ï¿½ï¿½ï¿½ã±£ï¿½æµ½Â·ï¿½ï¿½ï¿½ï¿½
     }
+
+    instance->roadsPosition.push_back(road_path);
 
     ValueVector tvalues = towers->getObjects();
     for (Value value : tvalues)
     {
-        ValueMap valueMap = value.asValueMap();//»ñµÃÊôÐÔÖµ£ºValue×ª»»³ÉValueMap       
-        towers_path.push_back(Vec2(valueMap["x"].asFloat(), valueMap["y"].asFloat()));//½«Â·¾¶µã±£´æµ½Â·¾¶ÖÐ
+        ValueMap valueMap = value.asValueMap();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Value×ªï¿½ï¿½ï¿½ï¿½ValueMap       
+        towers_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//ï¿½ï¿½Â·ï¿½ï¿½ï¿½ã±£ï¿½æµ½Â·ï¿½ï¿½ï¿½ï¿½
     }
 
     ValueVector gvalues = grounds->getObjects();
     for (Value value : gvalues)
     {
-        ValueMap valueMap = value.asValueMap();//»ñµÃÊôÐÔÖµ£ºValue×ª»»³ÉValueMap       
-        grounds_path.push_back(Vec2(valueMap["x"].asFloat(), valueMap["y"].asFloat()));//½«Â·¾¶µã±£´æµ½Â·¾¶ÖÐ
+        ValueMap valueMap = value.asValueMap();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Value×ªï¿½ï¿½ï¿½ï¿½ValueMap       
+        grounds_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//ï¿½ï¿½Â·ï¿½ï¿½ï¿½ã±£ï¿½æµ½Â·ï¿½ï¿½ï¿½ï¿½
     }
 
-    GameManager* instance = GameManager::getInstance();
-    instance->groundPosition.push_back(grounds_path);
-    instance->towerPosition.push_back(towers_path);
-    instance->roadPosition.push_back(road_path);
+    instance->towersPosition = towers_path;
+    instance->groundsPosition = grounds_path;
     
-    //´´½¨µÚÒ»¸öµÐÈË
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     Sprite* enemy_ground = Sprite::create("Pictures/enemy_ground.png");
     enemy_ground->setScale(0.125);
     enemy_ground->setPosition(road_path[0]);
     this->addChild(enemy_ground);
     
-    //´æ´¢¶¯»­
+    //ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½
     Vector<FiniteTimeAction*> actions;
 
-    for (int i = 1; i < (int)road_path.size(); i++)//±éÀúÆäËûÂ·¾¶µã
+    for (int i = 1; i < (int)road_path.size(); i++)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½
     {
         /*Vec2 offset = road_path[i-1] - road_path[i ];
         int lenth = offset.getLength();*/
     
-        float lenth = (road_path[i - 1] - road_path[i]).getLength();//ºóÒ»¸ö¼õÈ¥Ç°Ò»¸öµØÖ·£¬ÔÙÈ¡µÃ³¤¶È
-        MoveTo* moveTo = MoveTo::create(lenth / 100, road_path[i]);//ÔÈËÙ
-        actions.pushBack(moveTo);//¶¯»­¼ÓÈëµ½Ë³Ðò±íÖÐ
+        float lenth = (road_path[i - 1] - road_path[i]).getLength();//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½È¥Ç°Ò»ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½È¡ï¿½Ã³ï¿½ï¿½ï¿½
+        MoveTo* moveTo = MoveTo::create(lenth / 100, road_path[i]);//ï¿½ï¿½ï¿½ï¿½
+        actions.pushBack(moveTo);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ëµ½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½
 
     }
 
-    Sequence* seqAct = Sequence::create(actions);//×é³ÉÐòÁÐ¶¯×÷
-    enemy_ground->runAction(seqAct);//Ö´ÐÐ¶¯»­
+    Sequence* seqAct = Sequence::create(actions);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½
+    enemy_ground->runAction(seqAct);//Ö´ï¿½Ð¶ï¿½ï¿½ï¿½
 
     
     

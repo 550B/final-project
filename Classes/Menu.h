@@ -7,10 +7,6 @@
 #include"editor-support/cocostudio/SimpleAudioEngine.h"
 using namespace CocosDenshion;
 
-//Emode mode;//Ä£Ê½
-//Scene* gameScene;//µ±Ç°³¡¾°£¨hard/normalµØÍ¼£©
-//bool gameStart = false;//ÊÇ·ñÓÎÏ·ÒÑ¾­¿ªÊ¼ÔËĞĞ,Èç¹ûÒÑ¾­ÔËĞĞÔò¸ÉÔ±Ñ¡ÔñÊÇ²»ÄÜ¼ÌĞøµÄ£¬³õÊ¼Ïë·¨ÊÇÉè¼Æ°´Å¥¿É¾ö¶¨¿ªÊ¼
-
 class Menusys : public cocos2d::Layer
 {
 public:
@@ -18,24 +14,23 @@ public:
 
     virtual bool init();
 
-    //¿ª¹ØÒôÀÖ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void MenuMusicCallBack(Ref* pSender);
 
-    //Ìø×ªÆÕÍ¨¹Ø¿¨
+    //ï¿½ï¿½×ªï¿½ï¿½Í¨ï¿½Ø¿ï¿½
     void NormalMap(Ref* pSender);
 
-    //Ìø×ª½ËÃğ×÷Õ½
+    //ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ½
     void HardMap(Ref* pSender);
 
-    //Ìø×ª¸ÉÔ±±à¶Ó
+    //ï¿½ï¿½×ªï¿½ï¿½Ô±ï¿½ï¿½ï¿½
     void OperatorFormation(Ref* pSender);
 
-    //°´¼üÉùÒô
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void onButtonEffect();
 
     // implement the "static create()" method manually
     CREATE_FUNC(Menusys);
-
 };
 
 #endif // _MENU_H__

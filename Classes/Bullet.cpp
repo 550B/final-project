@@ -40,28 +40,38 @@ bool Bullet::init(const std::string& filename, float damage, float velo, Actor* 
 void Bullet::calculatePosition()
 {
 	// Ðý×ªµÄÂß¼­
-	auto delta = target->getPosition() - this->getPosition();
+	if (target != NULL)
+	{
+		auto delta = target->getPosition() - this->getPosition();
 
-	auto distance = delta.length();
-	auto dx = delta.x;
-	auto dy = delta.y;
+		auto distance = delta.length();
+		auto dx = delta.x;
+		auto dy = delta.y;
 
-	auto rotateRadians = delta.getAngle();
-	auto rotateDegrees = CC_RADIANS_TO_DEGREES(-1 * rotateRadians);
+		auto rotateRadians = delta.getAngle();
+		auto rotateDegrees = CC_RADIANS_TO_DEGREES(-1 * rotateRadians);
 
-	auto speed = 0.5 / M_PI;
-	auto rotateDuration = fabs(rotateRadians * speed);
+		auto speed = 0.5 / M_PI;
+		auto rotateDuration = fabs(rotateRadians * speed);
 
-	//setRotation(360 - getRad(getPosition(), target->getPosition()) / M_PI * 180);
-	setRotation(rotateDegrees);
-	setPosition(getPosition() + Vec2(dx / distance * velo / FRAMES_PER_SECOND, dy / distance * velo / FRAMES_PER_SECOND));
+		//setRotation(360 - getRad(getPosition(), target->getPosition()) / M_PI * 180);
+		setRotation(rotateDegrees);
+		setPosition(getPosition() + Vec2(dx / distance * velo / FRAMES_PER_SECOND, dy / distance * velo / FRAMES_PER_SECOND));
+	}
 }
 
 float Bullet::calculateDistance() const
 {
-	auto delta = target->getPosition() - this->getPosition();
+	if (target != NULL)
+	{
+		auto delta = target->getPosition() - this->getPosition();
 
-	return delta.getLength();
+		return delta.getLength();
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 void Bullet::removeBullet(Node* pSender)
