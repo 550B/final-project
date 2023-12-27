@@ -8,7 +8,7 @@
 //	, hp(0)  // ���Ѫ��
 //	, health(0) // ��ǰѪ��
 //	, defence(0)  // ������
-//	, alive(true)//�Ƿ���Ȼ���� 
+//	, alive(true)//�Ƿ���Ȼ����
 //	, intervalTime(0)//�������ʱ��
 //	, lastAttackTime(0)//��һ�ι�����ʱ��
 //	, isBlock(false)//�Ƿ��赲

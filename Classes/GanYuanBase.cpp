@@ -1,15 +1,15 @@
 #include "GanYuanBase.h"
 GanYuanBase::GanYuanBase() :
-	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ÍµÄ£ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ï¿½Actorï¿½ï¸³ï¿½ï¿½Ê¼Öµ
+	// ÕÔÃ÷Ôó×¢ÊÍµÄ£¬ÀíÓÉ£ºÇëÔÚActorÀï¸³³õÊ¼Öµ
 	//scope(0)
-	//, lethality(0)   // É±ï¿½ï¿½ï¿½ï¿½
-	//, hp(0)  // ï¿½ï¿½ï¿½Ñªï¿½ï¿½
-	//, health(0) // ï¿½ï¿½Ç°Ñªï¿½ï¿½
-	//, defence(0)  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	//, alive(true)//ï¿½Ç·ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½
-	//, intervalTime(0)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+	//, lethality(0)   // É±ÉËÁ¦
+	//, hp(0)  // ×î´óÑªÁ¿
+	//, health(0) // µ±Ç°ÑªÁ¿
+	//, defence(0)  // ·ÀÓùÁ¦
+	//, alive(true)//ÊÇ·ñÈÔÈ»»î×Å
+	//, intervalTime(0)//¹¥»÷¼ä¸ôÊ±¼ä
 	selected(false)
-	, coolTime(0)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´Ê±ï¿½ï¿½;
+	, coolTime(0)//ËÀÍöÀäÈ´Ê±¼ä;
 {};
 GanYuanBase* GanYuanBase::create(const std::string& filename)
 {
@@ -36,9 +36,9 @@ static void problemLoading(const char* filename)
 	printf("Error while loading: %s\n", filename);
 	printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in Menu.cpp\n");
 }
-//ï¿½ï¿½Ê¼ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½
+//³õÊ¼»¯Ò»¸ö¸ÉÔ±»ùÀà
 void GanYuanBase::firstInteract() {
-	/*Ô­ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ô±ï¿½Ô´ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½menuï¿½ï¿½Ñ¡ï¿½Ç·ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½Ï³ï¿½ï¿½ï¿½ï¿½ï¿½Ì«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½
+	/*Ô­À´µÄÄ¿µÄÊÇÉèÖÃÒ»¸ö¸ÉÔ±×Ô´øµÄÑ¡Ôñmenu¿ÉÑ¡ÊÇ·ñÑ¡ÔñËüÉÏ³¡µ«ÊÇÌ«¼¦ÀßÁËÉ¾³ý
 	//auto visibleSize = Director::getInstance()->getVisibleSize();
 	//Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	auto selectmenu = Sprite::create("Pictures/selectBackground.png");
@@ -73,20 +73,20 @@ void GanYuanBase::selectCallback(Ref* sender)
 {
 	Menu* selectOption = static_cast<Menu*>(sender);
 	selectOption->setColor(Color3B::RED);
-	// ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ÖµÎªtrue
+	// ÉèÖÃ²¼¶ûÖµÎªtrue
 	selected = true;
 }
-// ï¿½ï¿½Ñ¡ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
+// ²»Ñ¡Ôñ»Øµ÷º¯Êý
 void GanYuanBase::unselectCallback(Ref* sender)
 {
 	Menu* unselectOption = static_cast<Menu*>(sender);
 	unselectOption->setColor(Color3B::RED);
 
-	// ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ÖµÎªfalse
+	// ÉèÖÃ²¼¶ûÖµÎªfalse
 	selected = false;
 }
 void GanYuanBase::ifmove() {
-	//ï¿½ï¿½Ê¼ï¿½ï¿½Î»ï¿½ï¿½
+	//³õÊ¼»¯Î»ÖÃ
 	/*
 	while (1) {
 		moveToPosition();
@@ -94,13 +94,13 @@ void GanYuanBase::ifmove() {
 		
 		//state = true;
 	}
-	this->setPose(getPosition());//ï¿½ï¿½Â¼ï¿½ï¿½Ô±ï¿½ï¿½Î»ï¿½ï¿½*/
+	this->setPose(getPosition());//¼ÇÂ¼¸ÉÔ±µÄÎ»ÖÃ*/
 }
 void GanYuanBase::moveToPosition() {
-	//ï¿½ï¿½×§ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½csdnï¿½ï¿½ï¿½ë£©
+	//ÍÏ×§²¿·Ö£¨½è¼øcsdn´úÂë£©
 	auto listener1 = EventListenerTouchOneByOne::create();
 	listener1->setSwallowTouches(true);
-	//Í¨ï¿½ï¿½ lambda ï¿½ï¿½ï¿½ï¿½Ê½ Ö±ï¿½ï¿½Êµï¿½Ö´ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ä»Øµï¿½ï¿½ï¿½ï¿½ï¿½
+	//Í¨¹ý lambda ±í´ïÊ½ Ö±½ÓÊµÏÖ´¥ÃþÊÂ¼þµÄ»Øµô·½·¨
 	listener1->onTouchBegan = [](Touch* touch, Event* event) {
 		auto target = static_cast<Sprite*>(event->getCurrentTarget());
 		Point locationInNode = target->convertToNodeSpace(touch->getLocation());
@@ -110,7 +110,7 @@ void GanYuanBase::moveToPosition() {
 		if (rect.containsPoint(locationInNode))
 		{
 			log("sprite began... x = %f, y = %f", locationInNode.x, locationInNode.y);
-			target->setOpacity(180);//ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ä°µï¿½ï¿½255Îªï¿½ï¿½ï¿½Öµï¿½ï¿½9ï¿½ï¿½Ð¡return true;
+			target->setOpacity(180);//µã»÷µÄÊ±ºò¾«ÁéÑÕÉ«±ä°µ£¬255Îª×î´óÖµ£¬9×îÐ¡return true;
 			return true;
 		}
 		return false;
@@ -122,25 +122,25 @@ void GanYuanBase::moveToPosition() {
 	listener1->onTouchEnded = [=](Touch* touch, Event* event) {
 		auto target = static_cast<Sprite*>(event->getCurrentTarget());
 		log("sprite onTouchesEnded..");
-		target->setOpacity(255);//ï¿½ï¿½ï¿½ï¿½ï¿½É¿ï¿½Ê±Ê¹ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½Ô­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«
+		target->setOpacity(255);//ÊÖÊÆËÉ¿ªÊ±Ê¹¾«Áé»Ö¸´Ô­À´µÄÑÕÉ«
 		bool state = false;
 		Vec2 p;
 		positionLegal(state, p);
 		if (!state) {
-			// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ç©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ê¾ï¿½ï¿½
+			// ´´½¨Ò»¸ö±êÇ©ÓÃÓÚÏÔÊ¾ÌáÊ¾Óï
 			Label* label = Label::createWithTTF("Position ILLEGAL!", "fonts/arial.ttf", 100);
 			label->setPosition(Vec2(Director::getInstance()->getVisibleSize().width, Director::getInstance()->getVisibleSize().height+50));
 			label->setColor(Color3B::RED);
 			this->addChild(label);
 
-			// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ó³Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½5ï¿½ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½
+			// ´´½¨Ò»¸öÑÓ³Ù¶¯×÷£¬ÔÚ5ÃëºóÒÆ³ýÌáÊ¾Óï
 			DelayTime* delay = DelayTime::create(1.0f);
 			CallFunc* removeLabel = CallFunc::create([label]() {
 				label->removeFromParent();
 				});
-			// Ó¦ï¿½ï¿½ï¿½Ó³Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Ç©
+			// Ó¦ÓÃÑÓ³Ù¶¯×÷µ½ÌáÊ¾Óï±êÇ©
 			label->runAction(Sequence::create(delay, removeLabel, nullptr));
-			this->setPosition(firstPose);//ï¿½ï¿½ï¿½Ã»ï¿½Ô­ï¿½ï¿½Î»ï¿½ï¿½
+			this->setPosition(firstPose);//·ÅÖÃ»ØÔ­À´Î»ÖÃ
 
 		}
 		else {
@@ -149,10 +149,10 @@ void GanYuanBase::moveToPosition() {
 			this->setPosition(p);
 		}
 		};
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ó¶¨µï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//½«´¥ÃþÊÂ¼þ°ó¶¨µ½¾«ÁéÉíÉÏ
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
 }
-void GanYuanBase::positionLegal(bool &state, Vec2& p) {  }//ï¿½ï¿½Ç°Î»ï¿½ï¿½ï¿½Ç·ï¿½Ï·ï¿½
+void GanYuanBase::positionLegal(bool &state, Vec2& p) {  }//µ±Ç°Î»ÖÃÊÇ·ñºÏ·¨
 

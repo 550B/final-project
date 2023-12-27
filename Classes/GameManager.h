@@ -2,7 +2,6 @@
 #define _GAME_MANAGER_H_
 
 #include <iostream>
-#include <vector>
 #include "cocos2d.h"
 #include "EnemyBase.h"
 #include "GanYuanBase.h"
@@ -16,13 +15,14 @@ USING_NS_CC;
 class GameManager
 {
 public:
+
 	Scene* gameScene;
 	Vector<EnemyBase*> enemyVector;
 	Vector<Bullet*> bulletVector;
 	Vector<GanYuanBase*> ganyuanVector;
-	std::vector<std::vector<Vec2>> towerPosition;
-	std::vector<std::vector<Vec2>> groundPosition;
-	std::vector<std::vector<Vec2>> roadPosition;
+	std::vector<Vec2> towersPosition;
+	std::vector<Vec2> groundsPosition;
+	std::vector<std::vector<Vec2> > roadsPosition;
 	//Vector<Wave*> waveVector;
 	CC_SYNTHESIZE(int, money, Money);
 	CC_SYNTHESIZE(int, groupNum, GroupNum);

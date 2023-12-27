@@ -7,14 +7,13 @@
 //#include "Enemy.h"
 //#include "GanYuanMedical.h"
 #include "GanYuanShield.h"
-//#include "GanYuanShooter.h"
-//#include "GameSprite.h"
+#include "GanYuanShooter.h"
 #include "GameManager.h"
-#include "cocos2d.h"
 #include "Menu.h"
 #include "editor-support/cocostudio/SimpleAudioEngine.h"
 #include "extensions/cocos-ext.h"
 using namespace cocos2d::ui;
+#include "Gamepause.h"
 USING_NS_CC;
 
 // �������࣬���ֵ��˵�����
@@ -38,6 +37,7 @@ public:
     virtual bool init() override;
     CREATE_FUNC(GameLayer);
 
+   
     //virtual void update(float dt) override;
     //virtual bool onTouchBegan(Touch* touch, Event* event) override;
 
@@ -45,7 +45,8 @@ public:
     //Wave* nextWave();
     //void addWaveEnemy(std::initializer_list<EnemyType> il);
     //void initWave();
-    void logic(float dt);
+     void updatemoney(float dt);
+     void logic(float dt);
     //void initLabelText();
 
 protected://��Ϊprojected
@@ -66,16 +67,18 @@ protected://��Ϊprojected
 
     int waveCounter;
     int money;
-
     Label* moneyLabel;
     Label* groupLabel;
     Label* groupTotalLabel;
     Layer* toolLayer;
 
     Sprite* sprite_money;//���ͼ��
-    ProgressTimer* playHpBar;//������
     Sprite* star3;//3��ͼ��
+    Sprite* star2;//2��ͼ��
+    Sprite* star1;//1��ͼ��
+    Sprite* star0;//0��ͼ��
     void initToolLayer();
+
     CC_SYNTHESIZE(int, blue, Blue);
 
     // ����Ҫ�ؿ�Ѫ��
@@ -90,7 +93,6 @@ protected://��Ϊprojected
     void checkAndAddTowerPanle(Point position);
     void CollisionDetection();
     void enemyIntoHouse();
-    void menuCallback(Ref* pSender);
     void menuBackCallback(Ref* pSender);
 
     Point towerPos;

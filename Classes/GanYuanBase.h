@@ -19,7 +19,7 @@ public:
 
     static GanYuanBase* create(const std::string& filename);
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ÍµÄ£ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½Actorï¿½ï¿½ï¿½ï¿½
+    // ÕÔÃ÷Ôó×¢ÊÍµÄ£¬ÀíÓÉ£º·ÅActorÀïÁË
     //CC_SYNTHESIZE(int, scope, Scope);
     //CC_SYNTHESIZE(int, lethality, Lethality);
     //CC_SYNTHESIZE(float, hp, Hp);

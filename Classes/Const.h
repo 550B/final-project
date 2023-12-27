@@ -12,21 +12,27 @@ USING_NS_CC;
 #define ShieldDefence 249
 #define ShieldIntervalTime 1.2
 #define ShieldCoolTime 60
-class GanYuanBase;
+
+#define ShooterScope 50
+#define ShooterLethality 337
+#define ShooterHp 709
+#define ShooterBlock 0
+#define ShooterDefence 79
+#define ShooterIntervalTime 1.6
+#define ShooterCoolTime 70
+
+//class GanYuanBase;
+
 enum Emode
 {
 	normal,
 	hard,
 	biandui,
 };
-extern TMXObjectGroup* road;
-extern TMXObjectGroup* towers;
-extern TMXObjectGroup* grounds;
-extern std::vector<Vec2> road_path;
-extern std::vector<Vec2> towers_path;
-extern std::vector<Vec2> grounds_path;
-extern Emode mode;//ģʽ
-extern Scene* gameScene;//��ǰ������hard/normal��ͼ��
-extern bool gameStart;
+
+//һЩȫ�ֱ�����������ȫ�ֿɲٿص�
+//Emode mode;//ģʽ
+//Scene* gameScene;//��ǰ������hard/normal��ͼ��
+//bool gameStart = false;//�Ƿ���Ϸ�Ѿ���ʼ����,����Ѿ��������Աѡ���ǲ��ܼ����ģ���ʼ�뷨����ư�ť�ɾ�����ʼ
 
 #endif // !Constant_H

@@ -52,26 +52,36 @@ bool NormalMap3::init()
 
     //将tower,ground，road的Vec2数组初始化
 
-
-    ValueVector rvalues = aroad->getObjects();
-    for (Value value : rvalues)
+    
+    ValueVector ravalues = aroad->getObjects();
+    for (Value value : ravalues)
     {
         ValueMap valueMap = value.asValueMap();//获得属性值：Value转换成ValueMap       
-        aroad_path.push_back(Vec2(valueMap["x"].asFloat(), valueMap["y"].asFloat()));//将路径点保存到路径中
+        aroad_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//将路径点保存到路径中
     }
+    ValueVector rbvalues = broad->getObjects();
+    for (Value value : rbvalues)
+    {
+        ValueMap valueMap = value.asValueMap();//获得属性值：Value转换成ValueMap       
+        broad_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//将路径点保存到路径中
+    }
+    instance->roadsPosition.push_back(aroad_path);
+    instance->roadsPosition.push_back(broad_path);
+
     ValueVector tvalues = towers->getObjects();
     for (Value value : tvalues)
     {
         ValueMap valueMap = value.asValueMap();//获得属性值：Value转换成ValueMap       
-        towers_path.push_back(Vec2(valueMap["x"].asFloat(), valueMap["y"].asFloat()));//将路径点保存到路径中
+        towers_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//将路径点保存到路径中
     }
     ValueVector gvalues = grounds->getObjects();
     for (Value value : gvalues)
     {
         ValueMap valueMap = value.asValueMap();//获得属性值：Value转换成ValueMap       
-        grounds_path.push_back(Vec2(valueMap["x"].asFloat(), valueMap["y"].asFloat()));//将路径点保存到路径中
+        grounds_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//将路径点保存到路径中
     }
-
+    instance->towersPosition = towers_path;
+    instance->groundsPosition = grounds_path;
 
     //创建第一个敌人
     Sprite* enemy_ground = Sprite::create("Pictures/enemy_ground.png");
@@ -86,17 +96,14 @@ bool NormalMap3::init()
     {
 
 
-        float lenth = (aroad_path[i - 1] - aroad_path[i]).getLength();//后一个减去前一个地址，再取得长度
-        MoveTo* moveTo = MoveTo::create(lenth / 100, aroad_path[i]);//匀速
+        float lenth = (aroad_path[i - 1] - aroad_path[i]).getLength();
+        MoveTo* moveTo = MoveTo::create(lenth / 100, aroad_path[i]);
         actions.pushBack(moveTo);//动画加入到顺序表中
 
     }
 
     Sequence* seqAct = Sequence::create(actions);//组成序列动作
     enemy_ground->runAction(seqAct);//执行动画
-
-
-
 
     return true;
 }

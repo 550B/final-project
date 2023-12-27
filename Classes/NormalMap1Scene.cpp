@@ -9,6 +9,8 @@ Scene* NormalMap1::createScene()
     scene->addChild(layer);
     auto spr = GanYuanShield::create();
     scene->addChild(spr);
+    auto shooter = GanYuanShooter::create();
+    scene->addChild(shooter);
     return scene;
 }
 TMXTiledMap* NormalMap1::createMap()
@@ -53,21 +55,27 @@ bool NormalMap1::init()
     for (Value value : rvalues)
     {
         ValueMap valueMap = value.asValueMap();//�������ֵ��Valueת����ValueMap       
-        road_path.push_back(Vec2(valueMap["x"].asFloat(), valueMap["y"].asFloat()));//��·���㱣�浽·����
+        road_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//��·���㱣�浽·����
     }
+
+    instance->roadsPosition.push_back(road_path);
+
     ValueVector tvalues = towers->getObjects();
     for (Value value : tvalues)
     {
         ValueMap valueMap = value.asValueMap();//�������ֵ��Valueת����ValueMap       
-        towers_path.push_back(Vec2(valueMap["x"].asFloat(), valueMap["y"].asFloat()));//��·���㱣�浽·����
+        towers_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//��·���㱣�浽·����
     }
+
     ValueVector gvalues = grounds->getObjects();
     for (Value value : gvalues)
     {
         ValueMap valueMap = value.asValueMap();//�������ֵ��Valueת����ValueMap       
-        grounds_path.push_back(Vec2(valueMap["x"].asFloat(), valueMap["y"].asFloat()));//��·���㱣�浽·����
+        grounds_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//��·���㱣�浽·����
     }
 
+    instance->towersPosition = towers_path;
+    instance->groundsPosition = grounds_path;
     
     //������һ������
     Sprite* enemy_ground = Sprite::create("Pictures/enemy_ground.png");
@@ -80,7 +88,8 @@ bool NormalMap1::init()
 
     for (int i = 1; i < (int)road_path.size(); i++)//��������·����
     {
-
+        /*Vec2 offset = road_path[i-1] - road_path[i ];
+        int lenth = offset.getLength();*/
     
         float lenth = (road_path[i - 1] - road_path[i]).getLength();//��һ����ȥǰһ����ַ����ȡ�ó���
         MoveTo* moveTo = MoveTo::create(lenth / 100, road_path[i]);//����

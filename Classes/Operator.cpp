@@ -119,9 +119,12 @@ void OperatorFormation::Shield(Ref* pSender) {
     this->removeChildByTag(2);
     this->removeChildByTag(3);
     Sprite* Shield = Sprite::create("Pictures/Shield_.png");
-    Shield->setScale(0.5);
+    Shield->setScale(0.6);
     Shield->setPosition(Vec2(visibleSize.width / 2.00 + origin.x, visibleSize.height / 2.00+origin.y));
     this->addChild(Shield, 1);
+    Sprite* Shield_value = Sprite::create("Pictures/Shield_value.png");
+    Shield_value->setPosition(Vec2(visibleSize.width / 2.00 - 400, visibleSize.height / 2.00 -200 ));
+    this->addChild(Shield_value, 1);
 }
 void OperatorFormation::Shooter(Ref* pSender) {
     onButtonEffect();
@@ -132,6 +135,9 @@ void OperatorFormation::Shooter(Ref* pSender) {
     Shooter->setScale(0.5);
     Shooter->setPosition(Vec2(visibleSize.width / 2.00 + origin.x, visibleSize.height / 2.00 + origin.y));
     this->addChild(Shooter, 1);
+    Sprite* Shooter_value = Sprite::create("Pictures/Shooter_value.png");
+    Shooter_value->setPosition(Vec2(visibleSize.width / 2.00 - 400, visibleSize.height / 2.00 - 200));
+    this->addChild(Shooter_value, 1);
 }
 void OperatorFormation::Medical(Ref* pSender) {
     onButtonEffect();
@@ -142,6 +148,9 @@ void OperatorFormation::Medical(Ref* pSender) {
     Medical ->setScale(0.5);
     Medical ->setPosition(Vec2(visibleSize.width / 2.00 + origin.x, visibleSize.height / 2.00 + origin.y));
     this->addChild(Medical, 1);
+    Sprite* Medical_value = Sprite::create("Pictures/Medical_value.png");
+    Medical_value->setPosition(Vec2(visibleSize.width / 2.00 - 400, visibleSize.height / 2.00 - 200));
+    this->addChild(Medical_value, 1);
 }
 void OperatorFormation::onButtonEffect()
 {

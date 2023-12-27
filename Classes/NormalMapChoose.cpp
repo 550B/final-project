@@ -105,7 +105,7 @@ void MapChoose::reMenu() {
     back->addTouchEventListener([](Ref* sender, Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED) {
             Scene* scene = Menusys::createScene();
-            Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
+            Director::getInstance()->replaceScene(TransitionFade::create(0, scene));
         }
      });
 

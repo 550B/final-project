@@ -135,7 +135,7 @@ void Menusys::HardMap(Ref* pSender)
     onButtonEffect();
     mode = hard;//����ȫ�ֱ���mode;
     Scene* scene = HardMap1::createScene();
-    Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
+    Director::getInstance()->replaceScene(TransitionFade::create(0, scene));
 }
 //��Ա���
 void Menusys::OperatorFormation(Ref* pSender)
