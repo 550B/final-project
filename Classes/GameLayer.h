@@ -68,6 +68,7 @@ protected://��Ϊprojected
 
     int waveCounter;
     int money;
+    int star;
     Label* moneyLabel;
     Label* groupLabel;
     Label* groupTotalLabel;

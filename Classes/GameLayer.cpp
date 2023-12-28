@@ -2,8 +2,8 @@
 #define MAP_HEIGHT (9)
 
 #include "GameLayer.h"
-//#include "WinScene.h"
-//#include "FailedScene.h"
+#include "WinScene.h"
+#include "FailedScene.h"
 //#include "LevelScene.h"
 
 #include <ctime>
@@ -374,7 +374,8 @@ void GameLayer::enemyIntoHouse()
 		//	}
 		//	else {
 		//		instance->clear();
-		//		Director::getInstance()->replaceScene(TransitionFade::create(0.1f, FailedScene::create()));
+		//      Director::getInstance()->replaceScene(TransitionFade::create(0.1f,FailedScene::scene(renderTexture));
+		//		
 		//	}
 		//}
 	}
@@ -416,7 +417,8 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 		//UserDefault::getInstance()->setStringForKey("nextLevelFile", nextlevel);
 
 		/*instance->clear();
-		Director::getInstance()->replaceScene(TransitionFade::create(0.1f, WinScene::createScene()));*/
+		Director::getInstance()->replaceScene(TransitionFade::create(0.1f,WinScene::scene(renderTexture));
+		*/
 	}
 
 	return;
