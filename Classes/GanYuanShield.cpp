@@ -11,7 +11,8 @@ bool GanYuanShield::init()
     }
     auto visibleSize = Director::getInstance()->getVisibleSize();
     // 初始化GanYuanShield的其他属性和行为
-    this->setPosition(Vec2(visibleSize.width / 5, visibleSize.height / 4));//对于Shield设计成在x的四分之一处，y的
+    //this->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
+    this->setPosition(Vec2(visibleSize.width / 2, 75));//对于Shield设计成在x的四分之一处，y的
     this->setScale(0.3);
     initial();
     return true;
@@ -33,6 +34,7 @@ GanYuanShield* GanYuanShield::create()
 void GanYuanShield::setDefaultData() {
     // 设定重装默认数值
     setType(SHIELD_TYPE);
+    setPrice(ShieldPrice);
     scope = ShieldScope;
     setLethality(ShieldLethality);   // 杀伤力
     setHp(ShieldHp);  // 最大血量
@@ -58,17 +60,17 @@ void GanYuanShield::setDefaultData() {
     lethalityBar->setScaleX(0.5);
     lethalityBar->setScaleY(0.7);
     lethalityBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    lethalityBar->setPosition(position + Vec2(size.width / 2+80, size.height + 35));
+    lethalityBar->setPosition(Vec2(200, 450+70));
     addChild(lethalityBar);
     healthBar->setScaleX(0.5);
     healthBar->setScaleY(0.7);
     healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    healthBar->setPosition(position + Vec2(size.width / 2 + 80, size.height));
+    healthBar->setPosition(Vec2(200, 450+35));
     addChild(healthBar);
     defenceBar->setScaleX(0.5);
     defenceBar->setScaleY(0.7);
     defenceBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    defenceBar->setPosition(position + Vec2(size.width / 2 + 80, size.height-35));
+    defenceBar->setPosition(Vec2(200, 450));
     addChild(defenceBar);
 
 }
@@ -76,8 +78,8 @@ void GanYuanShield::initial()
 {
     //完成屏幕的初始化
     setDefaultData();//设置默认值
-    moveToPosition();//干员移动
-    castBigMove();
+    firstInteract();
+    //castBigMove();
 }
 //检查位置合法
 void GanYuanShield:: positionLegal(bool& state, Vec2& p) {
@@ -88,6 +90,7 @@ void GanYuanShield:: positionLegal(bool& state, Vec2& p) {
         {
             state = true;
             p = instance->groundsPosition[i];
+            instance->setMoney(instance->getMoney() - price);
             return;
         }
     }

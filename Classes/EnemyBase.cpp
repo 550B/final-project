@@ -7,6 +7,9 @@ EnemyBase::EnemyBase()
     , entered(false)
     , firstPose(NULL)
     , lastPose(NULL)
+    , curPose(NULL)
+    , nextPose(NULL)
+    , ptr(0)
 {
 
 }

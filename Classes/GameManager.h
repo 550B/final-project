@@ -8,7 +8,7 @@
 #include "GanYuanBase.h"
 #include "Bullet.h"
 #include "Const.h"
-//#include "Wave.h"
+#include "Wave.h"
 
 
 USING_NS_CC;
@@ -23,16 +23,22 @@ public:
 	Vector<EnemyBase*> enemyVector;
 	Vector<Bullet*> bulletVector;
 	Vector<GanYuanBase*> ganyuanVector;
+	std::vector<Wave*> waveVector;
+
 	std::vector<Vec2> towersPosition;
 	std::vector<Vec2> groundsPosition;
 	std::vector<std::vector<Vec2> > roadsPosition;
-	//Vector<Wave*> waveVector;
+
 	CC_SYNTHESIZE(int, money, Money);
-	CC_SYNTHESIZE(int, groupNum, GroupNum);
+
+	CC_SYNTHESIZE(int, waveIndex, WaveIndex);
+	//CC_SYNTHESIZE(int, groupNum, GroupNum);
+	//CC_SYNTHESIZE(bool, isFinishedAddGroup, IsFinishedAddGroup);
+
 	CC_SYNTHESIZE(std::string, curMapName, CurMapName);
 	CC_SYNTHESIZE(std::string, currLevelFile, CurrLevelFile);
 	CC_SYNTHESIZE(std::string, nextLevelFile, NextLevelFile);
-	CC_SYNTHESIZE(bool, isFinishedAddGroup, IsFinishedAddGroup);
+
 	CC_SYNTHESIZE(std::string, curBgName, CurBgName);
 
 	bool init();

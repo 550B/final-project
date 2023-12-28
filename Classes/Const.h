@@ -12,6 +12,7 @@ USING_NS_CC;
 #define ShieldDefence 249
 #define ShieldIntervalTime 1.2
 #define ShieldCoolTime 60
+#define ShieldPrice 10//开局可买干员
 
 #define ShooterScope 50
 #define ShooterLethality 337
@@ -31,6 +32,7 @@ USING_NS_CC;
 #define ENEMY2_TYPE 5
 #define ENEMY3_TYPE 6
 
+// pathes of bullets
 const std::string SHIELD_PATH = "Pictures/HelloWorld.png";
 const std::string SHOOTER_PATH = "Pictures/HelloWorld.png";
 const std::string MEDICAL_PATH = "Pictures/HelloWorld.png";
@@ -39,11 +41,26 @@ const std::string ENEMY1_PATH = "Pictures/HelloWorld.png";
 const std::string ENEMY2_PATH = "Pictures/HelloWorld.png";
 const std::string ENEMY3_PATH = "Pictures/HelloWorld.png";
 
+const float MAX_GAME_DURATION = 9999.f;
+
+// types of roads
+#define AROAD 1
+#define BROAD 2
+#define CROAD 3
+#define DROAD 4
+
 enum Emode
 {
 	normal,
 	hard,
 	biandui,
+};
+
+// 敌人种类，这种敌人的数量
+struct EnemyType
+{
+	int type;
+	int road;
 };
 
 #endif // !Constant_H

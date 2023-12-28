@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <initializer_list>
+#include <unordered_set>
+#include <cmath>
 #include "cocos2d.h"
 //#include "Enemy.h"
 //#include "GanYuanMedical.h"
@@ -11,23 +13,17 @@
 #include "GameManager.h"
 #include "Menu.h"
 #include "Bullet.h"
+#include "Wave.h"
+#include "Const.h"
 #include "editor-support/cocostudio/SimpleAudioEngine.h"
 #include "extensions/cocos-ext.h"
 using namespace cocos2d::ui;
 #include "Gamepause.h"
 USING_NS_CC;
 
-// �������࣬���ֵ��˵�����
-struct EnemyType
-{
-    int type;
-    int count;
-};
-
 class GameLayer : public Layer
 {
 public:
-
     GameLayer();
 
     //��������
@@ -37,23 +33,35 @@ public:
     virtual bool init() override;
     CREATE_FUNC(GameLayer);
 
+    float startTime;
+    float getNowTime();
+    float getInterval(float a, float b);
    
     virtual void update(float dt) override;
     //virtual bool onTouchBegan(Touch* touch, Event* event) override;
 
-    //Wave* currentWave();
-    //Wave* nextWave();
-    //void addWaveEnemy(std::initializer_list<EnemyType> il);
-    //void initWave();
-     void updatemoney(float dt);
-     void logic(float dt);
-     void bulletFlying();
+    int totalEnemies;
+
+    std::unordered_set<Wave*> waveQ;
+    std::unordered_set<Wave*>::iterator it;
+    void addSceneEnemy(float dt);
+    bool allWavesSuccessful();
+    void addWaveEnemy(float showtime, std::initializer_list<EnemyType> il);
+    void initWave();
+    Wave* findEarliestWave();
+    void logic();
+
+    void updatemoney(float dt);
+
+    void bulletFlying();
     //void initLabelText();
 
 protected://��Ϊprojected
 
     float interval;
 
+    GameManager* instance;
+    int money;
     SpriteBatchNode* spriteSheet;
     TMXTiledMap* map;//��ͼ
     TMXLayer* bgLayer;//������
@@ -63,11 +71,13 @@ protected://��Ϊprojected
     std::vector<Vec2> grounds_path;
 
 
-    GameManager* instance;
     float offX;
 
     int waveCounter;
-    int money;
+
+
+    int moneyL;
+    int star;
     Label* moneyLabel;
     Label* groupLabel;
     Label* groupTotalLabel;
@@ -87,7 +97,6 @@ protected://��Ϊprojected
     bool isSuccessful;
 
     bool isTouchEnable;
-    //GameSprite* chooseTowerpanel;
     void addTowerChoosePanel(Point position);
     Point convertTotileCoord(Point position);
     Point convertToMatrixCoord(Point position);
@@ -97,10 +106,6 @@ protected://��Ϊprojected
     void menuBackCallback(Ref* pSender);
 
     Point towerPos;
-    void initPointsVector(float offX);
-    void addSceneEnemy();
-    //void addTower();
-    //GanYuanBase** towerMatrix;
 
     // to judge whether win or lose
     // win

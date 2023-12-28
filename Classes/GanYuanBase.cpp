@@ -1,6 +1,5 @@
 #include "GanYuanBase.h"
 #include "GameManager.h"
-
 GanYuanBase::GanYuanBase() :
 	// 赵明泽注释的，理由：请在Actor里赋初始值
 	//scope(0)
@@ -40,44 +39,50 @@ static void problemLoading(const char* filename)
 }
 //初始化一个干员基类
 void GanYuanBase::firstInteract() {
-	/*原来的目的是设置一个干员自带的选择menu可选是否选择它上场但是太鸡肋了删除
-	//auto visibleSize = Director::getInstance()->getVisibleSize();
-	//Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	auto selectmenu = Sprite::create("Pictures/selectBackground.png");
-	selectmenu->setScale(0.4);
-	selectmenu->setPosition(Vec2(this->getPositionX(), this->getPositionY() + 100));
-	selectmenu->setOpacity(150);
-	this->addChild(selectmenu);
-	auto label_select = Label::createWithSystemFont("CHOOSE", "fonts/arial.ttf", 100);
-	auto menuitem_select = MenuItemLabel::create(label_select, CC_CALLBACK_1(GanYuanBase::selectCallback, this));
-	auto menu_select = Menu::create(menuitem_select, NULL);
+	auto selectmenu = MenuItemImage::create("Pictures/select.jpg", "Pictures/select.jpg", CC_CALLBACK_1(GanYuanBase::selectCallback, this));
+	auto menu_select = Menu::create(selectmenu,NULL, NULL);
 	if (menu_select == nullptr || menu_select->getContentSize().width <= 0 || menu_select->getContentSize().height <= 0) {
 		problemLoading("'select'");
 	}
 	else {
-		menu_select->setPosition(Vec2(this->getPositionX()+100, this->getPositionY() + 20));
-		menu_select->setColor(Color3B::BLACK);
-		selectmenu->addChild(menu_select);
+		menu_select->setPosition(Vec2(-500, 0));
+		menu_select->setScale(0.3);
+		menu_select->setOpacity(200);
+		this->addChild(menu_select);
 	}
-	auto label_unselect = Label::createWithSystemFont("UNCHOOSE", "fonts/arial.ttf", 100);
-	auto menuitem_unselect = MenuItemLabel::create(label_unselect, CC_CALLBACK_1(GanYuanBase::unselectCallback, this));
-	auto menu_unselect = Menu::create(menuitem_unselect, NULL);
-	if (menu_unselect == nullptr || menu_unselect->getContentSize().width <= 0 || menu_unselect->getContentSize().height <= 0) {
-		problemLoading("'unselect'");
-	}
-	else {
-		menu_unselect->setPosition(Vec2(this->getPositionX() +100, this->getPositionY() + 150));
-		menu_unselect->setColor(Color3B::BLACK);
-		selectmenu->addChild(menu_unselect);
-	}*/
+	// 将selectmenu和menu_select保存为成员变量
+	m_selectMenu = selectmenu;
+	m_menuSelect = menu_select;
 }
 void GanYuanBase::selectCallback(Ref* sender)
 {
-	Menu* selectOption = static_cast<Menu*>(sender);
-	selectOption->setColor(Color3B::RED);
-	// 设置布尔值为true
-	selected = true;
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	GameManager* managerInstance = GameManager::getInstance();
+	if (managerInstance->getMoney() > price) {
+		this->removeChild(m_selectMenu, true);
+		this->removeChild(m_menuSelect, true);
+		moveToPosition();
+	}
+	else {
+		Label* label = Label::createWithTTF("MONEY NOT ENOUGH!", "fonts/arial.ttf", 200);
+		label->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+		label->setColor(Color3B::RED);
+		this->addChild(label);
+
+		// 创建一个延迟动作，在5秒后移除提示语
+		DelayTime* delay = DelayTime::create(1.0f);
+		CallFunc* removeLabel = CallFunc::create([label]() {
+			label->removeFromParent();
+			});
+		// 应用延迟动作到提示语标签
+		label->runAction(Sequence::create(delay, removeLabel, nullptr));
+	}
+	
+	//selected = true;
 }
+
+
 // 不选择回调函数
 void GanYuanBase::unselectCallback(Ref* sender)
 {
@@ -100,8 +105,11 @@ void GanYuanBase::ifmove() {
 }
 void GanYuanBase::moveToPosition() {
 	//拖拽部分（借鉴csdn代码）
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	auto listener1 = EventListenerTouchOneByOne::create();
 	listener1->setSwallowTouches(true);
+
 	//通过 lambda 表达式 直接实现触摸事件的回掉方法
 	listener1->onTouchBegan = [](Touch* touch, Event* event) {
 		auto target = static_cast<Sprite*>(event->getCurrentTarget());
@@ -130,8 +138,8 @@ void GanYuanBase::moveToPosition() {
 		positionLegal(state, p);
 		if (!state) {
 			// 创建一个标签用于显示提示语
-			Label* label = Label::createWithTTF("Position ILLEGAL!", "fonts/arial.ttf", 100);
-			label->setPosition(Vec2(Director::getInstance()->getVisibleSize().width, Director::getInstance()->getVisibleSize().height+50));
+			Label* label = Label::createWithTTF("Position ILLEGAL!", "fonts/arial.ttf", 200);
+			label->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));;
 			label->setColor(Color3B::RED);
 			this->addChild(label);
 
