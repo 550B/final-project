@@ -12,6 +12,7 @@ USING_NS_CC;
 #define ShieldDefence 249
 #define ShieldIntervalTime 1.2
 #define ShieldCoolTime 60
+#define ShieldPrice 10//开局可买干员
 
 #define ShooterScope 50
 #define ShooterLethality 337

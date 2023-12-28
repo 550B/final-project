@@ -27,7 +27,6 @@ struct EnemyType
 class GameLayer : public Layer
 {
 public:
-
     GameLayer();
 
     //��������
@@ -49,11 +48,12 @@ public:
      void logic(float dt);
      void bulletFlying();
     //void initLabelText();
-
 protected://��Ϊprojected
 
     float interval;
 
+    GameManager* instance;
+    int money;
     SpriteBatchNode* spriteSheet;
     TMXTiledMap* map;//��ͼ
     TMXLayer* bgLayer;//������
@@ -63,11 +63,9 @@ protected://��Ϊprojected
     std::vector<Vec2> grounds_path;
 
 
-    GameManager* instance;
     float offX;
 
     int waveCounter;
-    int money;
     Label* moneyLabel;
     Label* groupLabel;
     Label* groupTotalLabel;

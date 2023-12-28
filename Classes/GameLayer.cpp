@@ -38,7 +38,6 @@ GameLayer::GameLayer()
 {
 
 }
-
 Scene* GameLayer::createScene()
 {
 	auto scene = Scene::create();
@@ -100,10 +99,11 @@ void GameLayer::initToolLayer()
 	auto size = Director::getInstance()->getWinSize();
 	toolLayer = Layer::create();
 	addChild(toolLayer, 10);
-
+	
 
 	//�������
 	money = 8;
+	instance->setMoney(money);
 	auto moneyText = patch::to_string(money);//ת��Ϊstring
 	moneyLabel = Label::createWithSystemFont(moneyText, "fonts/arial.ttf", 50);
 	moneyLabel->setColor(Color3B(255, 215, 0));
@@ -156,7 +156,13 @@ void GameLayer::initToolLayer()
 
 void GameLayer::updatemoney(float dt)
 {
-	money+=1; //ÿ��+2
+	if (money - instance->getMoney() == 1) {
+		money += 1;
+		instance->setMoney(money);
+	}
+	else {
+		money= instance->getMoney() + 1;
+	}
 	auto moneyText = patch::to_string(money);
 	moneyLabel->setString(moneyText);
 }

@@ -82,7 +82,7 @@ bool NormalMap3::init()
     }
     instance->towersPosition = towers_path;
     instance->groundsPosition = grounds_path;
-
+    //instance->setMoney(money);//xjy加，使得manager money更新
     //创建第一个敌人
     Sprite* enemy_ground = Sprite::create("Pictures/enemy_ground.png");
     enemy_ground->setScale(0.125);
