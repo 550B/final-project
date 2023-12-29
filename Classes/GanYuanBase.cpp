@@ -168,3 +168,143 @@ void GanYuanBase::moveToPosition() {
 }
 void GanYuanBase::positionLegal(bool &state, Vec2& p) {  }//当前位置是否合法
 
+//战斗
+void GanYuanBase::checkNearestEnemy()
+{
+	GameManager* instance = GameManager::getInstance();
+	auto enemyVector = instance->enemyVector;
+
+	auto currMinDistant = this->scope;
+
+	EnemyBase* enemyTemp = NULL;
+	for (int i = 0; i < enemyVector.size(); i++)
+	{
+		auto enemy = enemyVector.at(i);
+		double distance = this->getPosition().getDistance(enemy->getPosition());
+
+		if (distance < currMinDistant) {
+			currMinDistant = distance;
+			enemyTemp = enemy;
+		}
+	}
+	nearestEnemy = enemyTemp;
+}
+//die,需要在调用之前check 生命值
+void GanYuanBase::die()
+{
+	// 设置干员的位置为初始位置
+	this->setPosition(firstPose);
+	// 设置干员为非存活状态
+	alive = false;
+	// 设置干员为灰色
+	this->setColor(Color3B::GRAY);
+	// 停止所有动作（如果有进行中的动作）
+	this->stopAllActions();
+	// 创建一个延时动作，用于在指定时间间隔后执行特定操作
+	auto delay = DelayTime::create(intervalTime);
+	// 创建一个序列动作，延时结束后执行一系列动作
+	auto sequence = Sequence::create(
+		// 恢复干员的原色
+		CallFunc::create([&]() {
+			this->setColor(Color3B::WHITE);
+			}),
+		// 在干员的头顶显示提示
+		CallFunc::create([&]() {
+			auto label = Label::createWithSystemFont("Ganyuan ready to go", "fonts/arial.ttf", 30);
+			label->setPosition(Vec2(0, this->getContentSize().height));
+			this->addChild(label);
+			// 创建一个延时动作，用于在指定时间后移除提示
+			auto delayRemove = DelayTime::create(3.0f);
+			// 创建一个序列动作，延时结束后移除提示
+			auto sequenceRemove = Sequence::create(
+				FadeOut::create(0.5f),
+				RemoveSelf::create(),
+				nullptr);
+			// 将移除动作绑定到提示上
+			label->runAction(sequenceRemove);
+			}),
+		nullptr);
+	// 将序列动作绑定到干员上
+	this->runAction(sequence);
+}
+
+// 单体奶检查血量最低干员
+/*
+void GanYuanBase::checkInjuredGanYuan()
+{
+	GameManager* instance = GameManager::getInstance();
+
+	auto ganyaunVector = instance->ganyuanVector;
+
+	GanYuanBase* ganyuanTemp = NULL;
+
+	for (int i = 0; i < ganyaunVector.size(); i++)
+	{
+		auto ganyuan = ganyaunVector.at(i);
+
+		if (ganyuan->getHealth() < hp * 1.0 && ganyuan->getHealth() > 0)
+		{
+			injuredGanYuan.pushBack(ganyuan);
+		}
+	}
+}
+
+void GanYuanBase::sortInjuredGanYuan()
+{
+	// 快排筛出血量最低的干员
+	qSort(injuredGanYuan, 0, injuredGanYuan.size() - 1);
+
+}
+
+
+void qSort(Vector<GanYuanBase*>array, int low, int high) {
+	int i = low;
+	int j = high;
+	if (i >= j) {
+		return;
+	}
+
+	int temp = array.at(low)->getHealth();
+	while (i != j) {
+		while (array.at(j)->getHealth() >= temp && i < j) {
+			j--;
+		}
+		while (array.at(i)->getHealth() <= temp && i < j) {
+			i++;
+		}
+		if (i < j) {
+			//swap(array[i], array[j]);
+			array.swap(i, j);
+		}
+	}
+
+	//将基准temp放于自己的位置，（第i个位置）
+	array.swap(low, i);
+	qSort(array, low, i - 1);
+	qSort(array, i + 1, high);
+}*/
+
+void GanYuanBase::checkBlock()
+{
+	GameManager* instance = GameManager::getInstance();
+	auto enemyVector = instance->enemyVector;
+
+	// 判断是否贴贴
+	for (int i = 0; i < enemyVector.size() && curBlock < block; i++)
+	{
+		auto enemy = enemyVector.at(i);
+		double distance = this->getPosition().getDistance(enemy->getPosition());
+
+		if (distance < 0.1 /*这个数举个例子，后面微调*/)
+		{
+			// 加入阻挡队列
+			instance->blockedEnemy.pushBack(enemy);
+
+			enemy->setBlocked(true);
+			curBlock++;
+			this->setCurBlock(curBlock);
+		}
+	}
+
+
+}

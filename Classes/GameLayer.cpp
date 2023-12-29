@@ -2,8 +2,8 @@
 #define MAP_HEIGHT (9)
 
 #include "GameLayer.h"
-//#include "WinScene.h"
-//#include "FailedScene.h"
+#include "WinScene.h"
+#include "FailedScene.h"
 //#include "LevelScene.h"
 
 #include <ctime>
@@ -35,6 +35,8 @@ GameLayer::GameLayer()
 	, groupTotalLabel(NULL)
 	, isSuccessful(false)
 	, interval(0)
+	, startTime(0)
+	, totalEnemies(0)
 {
 
 }
@@ -51,6 +53,9 @@ bool GameLayer::init()
 	if (!Layer::init()) {
 		return false;
 	}
+
+	// record start time first
+	this->startTime = GetCurrentTime() / 1000.f;
 
 	// ���������
 	srand((unsigned int)(time(0)));
@@ -70,11 +75,20 @@ bool GameLayer::init()
 	if (!audio_battle->isBackgroundMusicPlaying()) {
 		audio_battle->playBackgroundMusic("Music/battle.mp3", true);
 	}
+
+	shield= GanYuanShield::create();
+	this->addChild(shield);
+	instance->ganyuanVector.pushBack(shield);
+	shooter = GanYuanShooter::create();
+	this->addChild(shooter);
+	instance->ganyuanVector.pushBack(shooter);
 	// ���Ӱ�ť
 	initToolLayer();
 
+
 	// ÿ������һ����Ϸ�߼�
-	schedule(CC_SCHEDULE_SELECTOR(GameLayer::logic), interval);
+	schedule(CC_SCHEDULE_SELECTOR(GameLayer::addSceneEnemy), interval);
+	//schedule(CC_SCHEDULE_SELECTOR(GameLayer::logic), 0.5f);
 	schedule(CC_SCHEDULE_SELECTOR(GameLayer::updatemoney), 1.0f);
 
 	// ����¼�����
@@ -156,6 +170,7 @@ void GameLayer::initToolLayer()
 
 void GameLayer::updatemoney(float dt)
 {
+
 	if (money - instance->getMoney() == 1) {
 		money += 1;
 		instance->setMoney(money);
@@ -164,6 +179,7 @@ void GameLayer::updatemoney(float dt)
 		money= instance->getMoney() + 1;
 	}
 	auto moneyText = patch::to_string(money);
+
 	moneyLabel->setString(moneyText);
 }
 
@@ -188,7 +204,19 @@ void GameLayer::menuBackCallback(Ref* pSender)
 	Director::getInstance()->pushScene(Gamepause::scene(renderTexture));
 }
 
-// ��ȡ��ǰ����
+// return a float value of current time in a formal way
+float GameLayer::getNowTime()
+{
+	return GetCurrentTime() / 1000.f;
+}
+
+// calculate the interval between two parameters
+float GameLayer::getInterval(float a, float b)
+{
+	return a - b;
+}
+
+// wasted
 //Wave* GameLayer::currentWave()
 //{
 //	Wave* w;
@@ -203,156 +231,158 @@ void GameLayer::menuBackCallback(Ref* pSender)
 //	return w;
 //}
 
-// ��ȡ��һ��
-//Wave* GameLayer::nextWave()
-//{
-//	if (instance->waveVector.empty())
-//	{
-//		return NULL;
-//	}
-//
-//	if (waveCounter < instance->getGroupNum() - 1)
-//	{
-//		waveCounter++;
-//	}
-//	else {
-//		isSuccessful = true;
-//	}
-//	Wave* groupEnemy = (Wave*)instance->waveVector.at(waveCounter);
-//	return groupEnemy;
-//
-//}
-
-// ������˵�����
-// ������{{1,2),{2,3},...}
-// ���ͣ���1�ֵ�������2������2�ֵ�������3�������޳�����
-//void GameLayer::addWaveEnemy(std::initializer_list<EnemyType> il)
-//{
-//	instance = GameManager::getInstance();
-//
-//	Wave* curWave = Wave::create();
-//
-//	int index = instance->waveVector.size();
-//
-//	if (curWave->init())
-//	{
-//		// ��������
-//		curWave->setIndex(index);
-//
-//		for (auto ene : il)
-//		{
-//			curWave->addEnemy(ene.type, ene.count);
-//		}
-//
-//		curWave->finishAdd();
-//	}
-//}
-
-// ��ʼ������
-// ������༭�����ĵ���
-//void GameLayer::initWave()
-//{
-//	// ��һ��
-//	// �������3�ֵ���
-//	GameLayer::addWaveEnemy({ {rand() % 3 + 1,1},{rand() % 3 + 1,1}, {rand() % 3 + 1,1} });
-//
-//	// �ڶ���
-//    // �������3�ֵ��ˣ�ÿ�ֵ���2��
-//	GameLayer::addWaveEnemy({ {rand() % 3 + 1,2},{rand() % 3 + 1,2}, {rand() % 3 + 1,2} });
-//
-//	// ������
-//    // ���ֵ���1,2,3��ÿ�ֵ���1��
-//	GameLayer::addWaveEnemy({ {1,1},{2,1}, {3,1} });
-//
-//	// ���Ĳ������岨...
-//}
-
-// ������˵�����
-//void GameLayer::addSceneEnemy()
-//{
-//	//GameManager* instance = GameManager::getInstance();
-//	instance = GameManager::getInstance();
-//
-//	Wave* groupEnemy = this->currentWave();
-//	if (groupEnemy == NULL)
-//	{
-//		return;
-//	}
-//	auto restStructNum = groupEnemy->enemies.size();
-//	if (restStructNum <= 0) {
-//		//groupEnemy->setIsFinishedAddGroup(true);
-//		//groupEnemy->enemies.popBack();
-//		instance->waveVector.popBack();
-//
-//		// ����֮��ͣ����΢��һ��
-//		interval = 5.0f;
-//		return;
-//	}
-//	else
-//	{
-//		interval = 2.0f;
-//	}
-//
-//	//groupEnemy->setEnemyTotal(restStructNum);
-//
-//	EnemyBase* enemy = NULL;
-//	EnemyType et = groupEnemy->enemies.at(restStructNum - 1);
-//
-//	////////////////////////
-//	//********************//
-//	//* �������洴������ *//
-//	//********************//
-//	////////////////////////
-//	if (et.count > 0 && et.type == 1) {
-//		// �볡��Ч
-//		SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
-//		// ������һ�ֵ��ˣ�Ѫ��500
-//		enemy = Enemy1::createEnemy1(pointsVector, 500);
-//		//groupEnemy->setType1Total(groupEnemy->getType1Total() - 1);
-//	}
-//	else if (et.count > 0 && et.type == 2) {
-//		SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
-//		enemy = Enemy2::createEnemy2(pointsVector, 700);
-//		//groupEnemy->setType2Total(groupEnemy->getType2Total() - 1);
-//	}
-//	else if (et.count > 0 && et.type == 3) {
-//		enemy = Enemy3::createEnemy3(pointsVector, 900);
-//		SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
-//		//groupEnemy->setType3Total(groupEnemy->getType3Total() - 1);
-//	}
-//
-//	//restStructNum--;
-//	et.count--;
-//	if (et.count <= 0)
-//	{
-//		groupEnemy->enemies.popBack();
-//	}
-//
-//	this->addChild(enemy, 10);
-//	this->addChild(enemy->getHpBarBg(), 1000);
-//	instance->enemyVector.pushBack(enemy);
-//}
-
-void GameLayer::logic(float dt)
+// give you the earliest showed wave
+Wave* GameLayer::findEarliestWave()
 {
-	//Wave* groupEnemy = this->currentWave();
+	Wave* w = NULL;
+	if (!instance->waveVector.empty() && this->allWavesSuccessful())
+	{
+		/*w = (Wave*)instance->waveVector.at(instance->waveVector.size() - 1);*/
+		float minShowTime = MAX_GAME_DURATION;
+		for (auto tmp : instance->waveVector)
+		{
+			if (tmp->getShowTime() < minShowTime/*tmp->getShowTime() > 5.f*/)
+			{
+				minShowTime = tmp->getShowTime();
+				w = tmp;
+			}
+		}
+	}
+	else
+	{
+		w = NULL;
+	}
+	return w;
+}
 
-	//if (groupEnemy == NULL)
-	//{
-	//	// 2023��12��22��23��52�� ������
-	//	// д��������
-	//	return;
-	//}
-	//if (groupEnemy->getIsFinished() == true && instance->enemyVector.size() == 0  && waveCounter < instance->getGroupNum())
-	//{
-	//	groupEnemy = this->nextWave();
-	//	int groupTotal = instance->getGroupNum();
-	//	auto groupInfoText = patch::to_string(waveCounter + 1);
-	//	groupLabel->setString(groupInfoText);
-	//	auto groupTotalText = patch::to_string(groupTotal);
-	//	groupTotalLabel->setString(groupTotalText);
-	//}
-	//this->addSceneEnemy();
+// example codes below
+void GameLayer::addWaveEnemy(float showtime, std::initializer_list<EnemyType> il)
+{
+	instance = GameManager::getInstance();
+
+	Wave* curWave = Wave::create();
+
+	if (curWave->init())
+	{
+		curWave->setShowTime(showtime);
+
+		for (auto ene : il)
+		{
+			curWave->addEnemy(ene.type, ene.road);
+		}
+
+		curWave->finishAdd();
+	}
+}
+
+// initiate it in each Scene!
+void GameLayer::initWave()
+{
+	GameLayer::addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
+
+	GameLayer::addWaveEnemy(20.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
+
+	GameLayer::addWaveEnemy(30.f, { {1,AROAD},{2,AROAD}, {3,AROAD} });
+
+}
+
+// handle enemies in waves waiting to be added in Scene
+void GameLayer::addSceneEnemy(float dt)
+{
+	instance = GameManager::getInstance();
+
+	it = waveQ.begin();
+
+	while (it != waveQ.end())
+	{
+		auto groupEnemy = *it;
+
+		EnemyType et;
+
+		if (groupEnemy == NULL)
+		{
+			return;
+		}
+		else if (!groupEnemy->enemies.empty())
+		{
+			et = groupEnemy->enemies.front();
+
+			if (et.type == ENEMY1_TYPE) {
+				// �볡��Ч
+				//SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
+				// ������һ�ֵ��ˣ�Ѫ��500
+				//enemy = Enemy1::createEnemy1(pointsVector, 500);
+				//groupEnemy->setType1Total(groupEnemy->getType1Total() - 1);
+			/*	this->addChild(enemy, 10);
+				instance->enemyVector.pushBack(enemy);*/
+			}
+			else if (et.type == ENEMY2_TYPE) {
+				//SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
+				//enemy = Enemy2::createEnemy2(pointsVector, 700);
+				//groupEnemy->setType2Total(groupEnemy->getType2Total() - 1);
+	/*			this->addChild(enemy, 10);
+				instance->enemyVector.pushBack(enemy);*/
+			}
+			else if (et.type == ENEMY3_TYPE) {
+				//enemy = Enemy3::createEnemy3(pointsVector, 900);
+				//SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
+				//groupEnemy->setType3Total(groupEnemy->getType3Total() - 1);
+				//this->addChild(enemy, 10);
+				//instance->enemyVector.pushBack(enemy);
+			}
+
+			groupEnemy->enemies.erase(groupEnemy->enemies.begin());
+
+		}
+		else
+		{
+			waveQ.erase(groupEnemy);
+		}
+
+		it++;
+	}
+}
+
+bool GameLayer::allWavesSuccessful()
+{
+	if (!instance->waveVector.empty())
+	{
+		for (auto tmp : instance->waveVector)
+		{
+			if (!tmp->getIsFinished())
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+void GameLayer::logic()
+{
+	Wave* groupEnemy = this->findEarliestWave();
+
+	if (groupEnemy == NULL)
+	{
+		return;
+	}
+	else
+	{
+		if (groupEnemy->enemies.empty())
+		{
+
+		}
+		else
+		{
+			if (this->getInterval(this->getNowTime(), groupEnemy->getShowTime()) > 0.f)
+			{
+				if (waveQ.count(groupEnemy) == 0)
+				{
+					waveQ.insert(groupEnemy);
+				}
+			}
+		}
+	}
 }
 
 //����ʬ�Ե����������
@@ -361,13 +391,6 @@ void GameLayer::enemyIntoHouse()
 	auto enemyVector = instance->enemyVector;
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
-
-		// �߼��������ߵ����һ���㲢����Ѫ
-		// ���õ���ʤ��
-		// ����-1
-		// �ȴ�Ұѵ��������жϸ����������������ͷ�
-
-
 		//auto enemy = enemyVector.at(i);
 		//if (enemy->getEnemySuccessful())
 		//{
@@ -380,7 +403,8 @@ void GameLayer::enemyIntoHouse()
 		//	}
 		//	else {
 		//		instance->clear();
-		//		Director::getInstance()->replaceScene(TransitionFade::create(0.1f, FailedScene::create()));
+		//      Director::getInstance()->replaceScene(TransitionFade::create(0.1f,FailedScene::scene(renderTexture));
+		//		
 		//	}
 		//}
 	}
@@ -422,7 +446,8 @@ void GameLayer::YingZhengTouchesTheElectricSwitch()
 		//UserDefault::getInstance()->setStringForKey("nextLevelFile", nextlevel);
 
 		/*instance->clear();
-		Director::getInstance()->replaceScene(TransitionFade::create(0.1f, WinScene::createScene()));*/
+		Director::getInstance()->replaceScene(TransitionFade::create(0.1f,WinScene::scene(renderTexture));
+		*/
 	}
 
 	return;
@@ -467,6 +492,14 @@ void GameLayer::update(float dt)
 {
 	//addTower();
 	//CollisionDetection();
+	//logic();
+	//GanYuanShield::ShieldInstance->checkNearestEnemy();
+	//GanYuanShield::ShieldInstance->attack(GanYuanShield::ShieldInstance->nearestEnemy);
+	for (int i = 0; i < instance->ganyuanVector.size(); i++) {
+		GanYuanBase* temp= instance->ganyuanVector.at(i);
+		//temp->checkNearestEnemy();
+		//temp->attack(temp->nearestEnemy);
+	}
 	bulletFlying();
 	enemyIntoHouse();
 	YingZhengTouchesTheElectricSwitch();

@@ -7,8 +7,6 @@ Scene* NormalMap3::createScene()
     auto scene = Scene::create();
     auto layer = NormalMap3::create();
     scene->addChild(layer);
-    auto spr = GanYuanShield::create();
-    scene->addChild(spr);
     return scene;
 }
 TMXTiledMap* NormalMap3::createMap()

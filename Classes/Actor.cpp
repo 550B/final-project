@@ -48,7 +48,9 @@ void Actor::takeDamage(INT32 damage)
 
 	// 公式
 	this->setHealth(getHealth() - actualDamage <= 0 ? 0 : getHealth() - actualDamage >= getHp() ? getHp() : getHealth() - actualDamage);
-
+	healthBar->changeStateBy(-actualDamage);//更新血条
+	if (!health)
+		die();
 	if (getHealth() <= 0)
 	{
 		die();
@@ -104,6 +106,4 @@ bool Actor::attack(Actor* target)
 }
 
 void Actor::die()
-{
-	this->setAlive(false);
-}
+{}

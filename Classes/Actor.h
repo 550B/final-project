@@ -6,15 +6,17 @@
 #include <string>
 #include <time.h>
 #include "cocos2d.h"
+#include "Bar.h"
 #include "Const.h"
-
 USING_NS_CC;
 
 class Actor : public cocos2d::Sprite
 {
 
 protected:
-
+	Bar* lethalityBar;
+	Bar* healthBar;
+	Bar* defenceBar;
 	CC_SYNTHESIZE(int, type, Type);
 
 	CC_SYNTHESIZE(int, scope, Scope);

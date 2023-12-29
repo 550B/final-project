@@ -27,7 +27,7 @@ public:
 
     virtual void positionLegal(bool& state, Vec2& p);;//当前位置是否合法
 
-    void firstInteract();//初始交互（包括选择及拖拽去部署位置部署）
+    //void firstInteract();//初始交互（包括选择及拖拽去部署位置部署）
     //virtual void moveToPosition();//初始拖拽
     
     //完成初始化，包括内置数值初始化以及动画初始化

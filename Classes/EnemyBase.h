@@ -33,11 +33,23 @@ public:
     // 终点
     CC_SYNTHESIZE(Vec2, lastPose, LastPose);
 
+    // 当前点（跑到半路是还没跑到的点）
+    CC_SYNTHESIZE(Vec2, curPose, CurPose);
+
+    // 路径数组指针
+    CC_SYNTHESIZE(int, ptr, Ptr);
+
+    // 从Manager里读的下一点
+    CC_SYNTHESIZE(Vec2, nextPose, NextPose);
+
     // 移速
     CC_SYNTHESIZE(float, runSpeed, RunSpeed);
+    //xjy是否被阻挡
+    CC_SYNTHESIZE(bool, blocked, Blocked);
 
 
-
+    //xjy死亡相关
+    virtual void die() {};
 
     // 给空中单位
     // 查找最近干员

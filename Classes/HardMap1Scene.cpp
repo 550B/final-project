@@ -7,8 +7,6 @@ Scene* HardMap1::createScene()
     auto scene = Scene::create();
     auto layer = HardMap1::create();
     scene->addChild(layer);
-    auto spr = GanYuanShield::create();
-    scene->addChild(spr);
     return scene;
 }
 TMXTiledMap* HardMap1::createMap()

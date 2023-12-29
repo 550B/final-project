@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <initializer_list>
+#include <unordered_set>
+#include <cmath>
 #include "cocos2d.h"
 //#include "Enemy.h"
 //#include "GanYuanMedical.h"
@@ -11,18 +13,13 @@
 #include "GameManager.h"
 #include "Menu.h"
 #include "Bullet.h"
+#include "Wave.h"
+#include "Const.h"
 #include "editor-support/cocostudio/SimpleAudioEngine.h"
 #include "extensions/cocos-ext.h"
 using namespace cocos2d::ui;
 #include "Gamepause.h"
 USING_NS_CC;
-
-// �������࣬���ֵ��˵�����
-struct EnemyType
-{
-    int type;
-    int count;
-};
 
 class GameLayer : public Layer
 {
@@ -36,23 +33,36 @@ public:
     virtual bool init() override;
     CREATE_FUNC(GameLayer);
 
+    float startTime;
+    float getNowTime();
+    float getInterval(float a, float b);
    
     virtual void update(float dt) override;
     //virtual bool onTouchBegan(Touch* touch, Event* event) override;
 
-    //Wave* currentWave();
-    //Wave* nextWave();
-    //void addWaveEnemy(std::initializer_list<EnemyType> il);
-    //void initWave();
-     void updatemoney(float dt);
-     void logic(float dt);
-     void bulletFlying();
+    int totalEnemies;
+
+    std::unordered_set<Wave*> waveQ;
+    std::unordered_set<Wave*>::iterator it;
+    void addSceneEnemy(float dt);
+    bool allWavesSuccessful();
+    void addWaveEnemy(float showtime, std::initializer_list<EnemyType> il);
+    void initWave();
+    Wave* findEarliestWave();
+    void logic();
+
+    void updatemoney(float dt);
+
+    void bulletFlying();
     //void initLabelText();
 protected://��Ϊprojected
 
     float interval;
 
     GameManager* instance;
+    GanYuanShield* shield;
+    GanYuanShooter* shooter;
+   // GanYuanMedical* medical;
     int money;
     SpriteBatchNode* spriteSheet;
     TMXTiledMap* map;//��ͼ
@@ -76,6 +86,7 @@ protected://��Ϊprojected
     Sprite* star2;//2��ͼ��
     Sprite* star1;//1��ͼ��
     Sprite* star0;//0��ͼ��
+    int star;
     void initToolLayer();
 
     CC_SYNTHESIZE(int, blue, Blue);
@@ -85,7 +96,6 @@ protected://��Ϊprojected
     bool isSuccessful;
 
     bool isTouchEnable;
-    //GameSprite* chooseTowerpanel;
     void addTowerChoosePanel(Point position);
     Point convertTotileCoord(Point position);
     Point convertToMatrixCoord(Point position);
@@ -95,10 +105,6 @@ protected://��Ϊprojected
     void menuBackCallback(Ref* pSender);
 
     Point towerPos;
-    void initPointsVector(float offX);
-    void addSceneEnemy();
-    //void addTower();
-    //GanYuanBase** towerMatrix;
 
     // to judge whether win or lose
     // win

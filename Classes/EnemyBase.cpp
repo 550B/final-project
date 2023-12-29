@@ -2,11 +2,15 @@
 #include "GameManager.h"
 
 EnemyBase::EnemyBase()
-    // 赋初始值
+// 赋初始值
     : runSpeed(0)
     , entered(false)
     , firstPose(NULL)
     , lastPose(NULL)
+    , curPose(NULL)
+    , nextPose(NULL)
+    , blocked(false)//xjy
+    , ptr(0)
 {
 
 }

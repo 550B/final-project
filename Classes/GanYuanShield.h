@@ -23,7 +23,7 @@ public:
     CC_SYNTHESIZE(Animation*, attackAnimation, AttackAnimation);//攻击时的动画
     CC_SYNTHESIZE(Animation*, bigMoveAnimation, BigMoveAnimation);//大招时的动画
 
-    
+   
     
     bool init();
     static GanYuanShield* create();//创建静态create方法

@@ -52,9 +52,9 @@ void GanYuanShield::setDefaultData() {
     setIsGround(true);
 
     //以下开始初始化血条
-    auto lethalityBar = Bar::create(EStateType::Lethality, lethality);
-    auto healthBar = Bar::create(EStateType::Health, Health);
-    auto defenceBar = Bar::create(EStateType::Defence, defence);
+    lethalityBar = Bar::create(EStateType::Lethality, lethality);
+    healthBar = Bar::create(EStateType::Health, Health);
+    defenceBar = Bar::create(EStateType::Defence, defence);
     auto position = getPosition();
     auto size = getBoundingBox().size;
     lethalityBar->setScaleX(0.5);
@@ -72,7 +72,6 @@ void GanYuanShield::setDefaultData() {
     defenceBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     defenceBar->setPosition(Vec2(200, 450));
     addChild(defenceBar);
-
 }
 void GanYuanShield::initial()
 {
@@ -140,15 +139,11 @@ void GanYuanShield::castBigMove() {
     Sequence* sequence = Sequence::create(delay, stopAnimation, nullptr);
     this->runAction(sequence);
 }
-
-
-
 void GanYuanShield::bigMove() {
     /*
     if (Director::getInstance()->getDeltaTime() == ShieldIntervalTime && health > 0)
         castBigMove();*/
 }//是否达到大招
-
 void GanYuanShield::shoot()
 {
 

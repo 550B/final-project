@@ -33,16 +33,31 @@ public:
     //CC_SYNTHESIZE(float, intervalTime, IntervalTime);
     CC_SYNTHESIZE(float, coolTime, CoolTime);
 
+    EnemyBase* nearestEnemy;
     virtual void firstInteract();
     virtual void selectCallback(Ref* sender);
     virtual void unselectCallback(Ref* sender);
     virtual void ifmove();
     virtual void moveToPosition();
     virtual void positionLegal(bool& state, Vec2& p);
+    //战斗相关
+    //virtual void attack();
+   // virtual void takeDamage(int damage);
+    //死亡相关
+    virtual void die();
     //xjy新增，为了使得选择干员按钮能够在回调函数中被删除
     MenuItemImage*m_selectMenu;
     Menu*m_menuSelect;
+    // 给重装
+    void checkBlock();
 
+    // 给射手
+    void checkNearestEnemy();
+
+    // 给医疗
+    void checkInjuredGanYuan();
+
+    void sortInjuredGanYuan();
 
 
 };

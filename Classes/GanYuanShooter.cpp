@@ -11,8 +11,8 @@ bool GanYuanShooter::init()
     //在这里进行一些精灵类的设置
     auto visibleSize = Director::getInstance()->getVisibleSize();
     // 初始化GanYuanShooter的其他属性和行为
-    this->setPosition(Vec2(visibleSize.width / 5, visibleSize.height / 4));
-    this->setScale(0.3);
+    this->setPosition(Vec2(visibleSize.width / 2-200, 75));//对于Shield设计成在x的四分之一处，y的
+    this->setScale(0.32);
   
     initial();
     return true;
@@ -24,13 +24,14 @@ void GanYuanShooter::initial()
     //完成屏幕的初始化
     setDefaultData();//设置默认值
     firstInteract();//初始交互
-    castBigMove();
+    //castBigMove();
 }
 void GanYuanShooter::setDefaultData() {
   
     // 设定重装默认数值
     setType(SHOOTER_TYPE);
     scope = ShooterScope;
+    setPrice(ShieldPrice);
     setLethality(ShooterLethality);   // 杀伤力
     setHp(ShooterHp);  // 最大血量
     setHealth(ShooterHp);  // 当前血量
@@ -47,34 +48,28 @@ void GanYuanShooter::setDefaultData() {
     setIsGround(false);
 
     //以下开始初始化血条
-    auto lethalityBar = Bar::create(EStateType::Lethality, lethality);
-    auto healthBar = Bar::create(EStateType::Health, Health);
-    auto defenceBar = Bar::create(EStateType::Defence, defence);
+    lethalityBar = Bar::create(EStateType::Lethality, lethality);
+    healthBar = Bar::create(EStateType::Health, Health);
+    defenceBar = Bar::create(EStateType::Defence, defence);
     auto position = getPosition();
     auto size = getBoundingBox().size;
     lethalityBar->setScaleX(0.5);
     lethalityBar->setScaleY(0.7);
     lethalityBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    lethalityBar->setPosition(position + Vec2(size.width / 2 + 80, size.height + 35));
+    lethalityBar->setPosition(Vec2(200, 450 + 70));
     addChild(lethalityBar);
     healthBar->setScaleX(0.5);
     healthBar->setScaleY(0.7);
     healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    healthBar->setPosition(position + Vec2(size.width / 2 + 80, size.height));
+    healthBar->setPosition(Vec2(200, 450 + 35));
     addChild(healthBar);
     defenceBar->setScaleX(0.5);
     defenceBar->setScaleY(0.7);
     defenceBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    defenceBar->setPosition(position + Vec2(size.width / 2 + 80, size.height - 35));
+    defenceBar->setPosition(Vec2(200, 450));
     addChild(defenceBar);
-
 }
-void GanYuanShooter::firstInteract() {
 
-    if (1) {
-        moveToPosition();
-    }
-}
 
 //检查位置合法
 void GanYuanShooter::positionLegal(bool& state, Vec2& p) {
