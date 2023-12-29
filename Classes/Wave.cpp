@@ -29,11 +29,24 @@ void Wave::addEnemy(int type, int road)
     enemies.push_back(tmp);
 }
 
-void Wave::finishAdd()
+void Wave::finishAdd(Wave* w)
 {
 	GameManager* instance = GameManager::getInstance();
 
-	instance->waveVector.push_back(this);
+	//if (instance->waveVector.count(w) == 0)
+	//{
+	//	instance->waveVector.insert(w);
+	//}
+
+	/*for (int i = 0; i < instance->waveVector.size(); i++)
+	{
+		if (instance->waveVector.at(i)->getTag() == w->getTag())
+		{
+
+		}
+	}*/
+
+	instance->waveVector.pushBack(w);
 
 	this->setIsFinished(true);
 	this->setIndex(instance->waveVector.size());

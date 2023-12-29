@@ -2,7 +2,6 @@
 #define _GAME_MANAGER_H_
 
 #include <iostream>
-#include <unordered_set>
 #include "cocos2d.h"
 #include "EnemyBase.h"
 #include "GanYuanBase.h"
@@ -10,12 +9,13 @@
 #include "Const.h"
 #include "Wave.h"
 
-
 USING_NS_CC;
 
 class GameManager
 {
 public:
+
+	int levelType;
 
 	std::vector<Vec2> occupied;
 
@@ -23,7 +23,7 @@ public:
 	Vector<EnemyBase*> enemyVector;
 	Vector<Bullet*> bulletVector;
 	Vector<GanYuanBase*> ganyuanVector;
-	std::vector<Wave*> waveVector;
+	Vector<Wave*> waveVector;
 
 	std::vector<Vec2> towersPosition;
 	std::vector<Vec2> groundsPosition;

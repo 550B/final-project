@@ -10,9 +10,18 @@ USING_NS_CC;
 #define ShieldHp 1221
 #define ShieldBlock 3
 #define ShieldDefence 249
-#define ShieldIntervalTime 1.2
+#define ShieldIntervalTime 12
 #define ShieldCoolTime 60
-#define ShieldPrice 10//¿ª¾Ö¿ÉÂò¸ÉÔ±
+#define ShieldPrice 10//ï¿½ï¿½ï¿½Ö¿ï¿½ï¿½ï¿½ï¿½Ô±
+
+#define MedicalScope 50
+#define MedicalLethality 189
+#define MedicalHp 1000
+#define MedicalBlock 0
+#define MedicalDefence 48
+#define MedicalIntervalTime 2.8
+#define MedicalCoolTime 80
+#define MedicalPrice 12//ï¿½ï¿½ï¿½Ö¿ï¿½ï¿½ï¿½ï¿½Ô±
 
 #define ShooterScope 50
 #define ShooterLethality 337
@@ -21,6 +30,7 @@ USING_NS_CC;
 #define ShooterDefence 79
 #define ShooterIntervalTime 1.6
 #define ShooterCoolTime 70
+#define ShooterPrice 12//ï¿½ï¿½ï¿½Ö¿ï¿½ï¿½ï¿½ï¿½Ô±
 
 // types of GanYuans
 #define SHIELD_TYPE 1
@@ -31,6 +41,12 @@ USING_NS_CC;
 #define ENEMY1_TYPE 4
 #define ENEMY2_TYPE 5
 #define ENEMY3_TYPE 6
+
+// types of Maps
+#define NORMAL_MAP1 1
+#define NORMAL_MAP2 2
+#define NORMAL_MAP3 3
+#define HARD_MAP 4
 
 // pathes of bullets
 const std::string SHIELD_PATH = "Pictures/HelloWorld.png";
@@ -56,11 +72,19 @@ enum Emode
 	biandui,
 };
 
-// µÐÈËÖÖÀà£¬ÕâÖÖµÐÈËµÄÊýÁ¿
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à£¬ï¿½ï¿½ï¿½Öµï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½
 struct EnemyType
 {
 	int type;
 	int road;
+};
+
+enum Eface
+{
+	up,
+	down,
+	left,
+	right
 };
 
 #endif // !Constant_H

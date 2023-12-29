@@ -6,7 +6,7 @@
 #include <unordered_set>
 #include <cmath>
 #include "cocos2d.h"
-//#include "Enemy.h"
+#include "Enemy.h"
 //#include "GanYuanMedical.h"
 #include "GanYuanShield.h"
 #include "GanYuanShooter.h"
@@ -18,6 +18,7 @@
 #include "editor-support/cocostudio/SimpleAudioEngine.h"
 #include "extensions/cocos-ext.h"
 using namespace cocos2d::ui;
+using namespace cocos2d::utils;
 #include "Gamepause.h"
 USING_NS_CC;
 
@@ -29,21 +30,22 @@ public:
     //��������
     static cocos2d::Scene* createScene();
 
+    // type of this map
+    int mapType;
 
     virtual bool init() override;
     CREATE_FUNC(GameLayer);
 
     float startTime;
-    float getNowTime();
-    float getInterval(float a, float b);
+    float getNowTime() const;
+    float getInterval(float a, float b) const;
    
     virtual void update(float dt) override;
     //virtual bool onTouchBegan(Touch* touch, Event* event) override;
 
     int totalEnemies;
 
-    std::unordered_set<Wave*> waveQ;
-    std::unordered_set<Wave*>::iterator it;
+    Vector<Wave*> waveQ;
     void addSceneEnemy(float dt);
     bool allWavesSuccessful();
     void addWaveEnemy(float showtime, std::initializer_list<EnemyType> il);
@@ -61,7 +63,10 @@ protected://��Ϊprojected
     float interval;
 
     GameManager* instance;
-    int money;
+    GanYuanShield* shield;
+    GanYuanShooter* shooter;
+   // GanYuanMedical* medical;
+
     SpriteBatchNode* spriteSheet;
     TMXTiledMap* map;//��ͼ
     TMXLayer* bgLayer;//������
@@ -109,10 +114,10 @@ protected://��Ϊprojected
 
     // to judge whether win or lose
     // win
-    void YingZhengTouchesTheElectricSwitch();
+    void win();
 
     // lose
-    void enemyIntoHouse();
+    void lose();
 };
 
 #endif /* defined(_GAME_LAYER_H_) */

@@ -26,7 +26,7 @@ public:
     int getEnemyCount();
 
     // 加完调用这个推入waveVector
-    void finishAdd();
+    void finishAdd(Wave* w);
 
     // 波次索引
     CC_SYNTHESIZE(int, index, Index);
@@ -34,7 +34,7 @@ public:
     // 是否添加成功
     CC_SYNTHESIZE(bool, isFinished, IsFinished);
 
-    // 是否添加成功
+    // 出现时间
     CC_SYNTHESIZE(float, showTime, ShowTime);
 
     // 波里的敌人数组

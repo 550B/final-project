@@ -4,13 +4,12 @@ USING_NS_CC;
 
 Scene* NormalMap1::createScene()
 {
+    GameManager* instance = GameManager::getInstance();
+    instance->levelType = NORMAL_MAP1;
     auto scene = Scene::create();
     auto layer = NormalMap1::create();
     scene->addChild(layer);
-    auto spr = GanYuanShield::create();
-    scene->addChild(spr);
-    auto shooter = GanYuanShooter::create();
-    scene->addChild(shooter);
+
     return scene;
 }
 TMXTiledMap* NormalMap1::createMap()
@@ -47,8 +46,7 @@ bool NormalMap1::init()
     grounds = map->getObjectGroup("grounds");
     this->addChild(map, 0);
 
-    // ���Ӱ�ť
-    GameLayer::init();
+    GameManager* instance = GameManager::getInstance();
 
     //��tower,ground��road��Vec2�����ʼ��
     ValueVector rvalues = road->getObjects();
@@ -77,6 +75,19 @@ bool NormalMap1::init()
     instance->towersPosition = towers_path;
     instance->groundsPosition = grounds_path;
     //instance->setMoney(money);//xjy加，使得manager money更新
+
+
+  /*  addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
+
+    addWaveEnemy(20.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
+
+    addWaveEnemy(30.f, { {2,AROAD}, {3,AROAD} });*/
+
+
+
+    // ���Ӱ�ť
+    GameLayer::init();
+
     //������һ������
     Sprite* enemy_ground = Sprite::create("Pictures/enemy_ground.png");
     enemy_ground->setScale(0.125);

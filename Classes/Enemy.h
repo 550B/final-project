@@ -3,9 +3,13 @@
 
 #include <iostream>
 #include "EnemyBase.h"
+#include "Const.h"
+#include "Bar.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
+
+//class EnemyBase;
 
 // 这里类名起敌人名字
 // 飞行类
@@ -13,26 +17,13 @@ class Enemy1 : public EnemyBase
 {
 public:
 
-    virtual bool init() override;
+    bool init();
 
-    static Enemy1* createEnemy1(Vector<Node*> points, int hp);
+    static Enemy1* create();//创建静态create方法
 
-    void changeDirection(float dt);
+    virtual void setDefaultData();//设置默认数值
 
-    virtual void enemyExpload();
-
-    // 循环判断小飞机打人
-    virtual void flyAndShoot(float dt);
-
-    virtual void shoot();
-
-    virtual void removeBullet(Node* pSender);
-
-    Sprite* FlyBullet();
-
-private:
-
-    Sprite* enemyFly;
+    virtual void initial();//初始化
 
 };
 
@@ -42,16 +33,13 @@ class Enemy2 : public EnemyBase
 {
 public:
 
-    virtual bool init() override;
+    bool init();
 
-    static Enemy2* createEnemy2(Vector<Node*> points, int hp);
+    static Enemy2* create();//创建静态create方法
 
-    void changeDirection(float dt);
+    virtual void setDefaultData();//设置默认数值
 
-    virtual void enemyExpload();
-
-    // 地面敌人判断阻挡
-    virtual void attack(float dt);
+    virtual void initial();//初始化
 
 };
 
@@ -61,16 +49,13 @@ class Enemy3 : public EnemyBase
 {
 public:
 
-    virtual bool init() override;
+    bool init();
 
-    static Enemy3* createEnemy3(Vector<Node*> points, int hp);
+    static Enemy3* create();//创建静态create方法
 
-    void changeDirection(float dt);
+    virtual void setDefaultData();//设置默认数值
 
-    virtual void enemyExpload();
-
-    // 地面敌人判断阻挡
-    virtual void attack(float dt);
+    virtual void initial();//初始化
 
 };
 

@@ -2,17 +2,17 @@
 #include "GameManager.h"
 
 USING_NS_CC;
-//ÉäÊÖ
+//ï¿½ï¿½ï¿½ï¿½
 bool GanYuanShooter::init()
 {
     if (!Sprite::initWithFile("Pictures/GanYuanShooter.png")) {
         return false;
     }
-    //ÔÚÕâÀï½øÐÐÒ»Ð©¾«ÁéÀàµÄÉèÖÃ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ð©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    // ³õÊ¼»¯GanYuanShooterµÄÆäËûÊôÐÔºÍÐÐÎª
-    this->setPosition(Vec2(visibleSize.width / 5, visibleSize.height / 4));
-    this->setScale(0.3);
+    // ï¿½ï¿½Ê¼ï¿½ï¿½GanYuanShooterï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½Îª
+    this->setPosition(Vec2(visibleSize.width / 2-200, 75));//ï¿½ï¿½ï¿½ï¿½Shieldï¿½ï¿½Æ³ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½Ä·ï¿½Ö®Ò»ï¿½ï¿½ï¿½ï¿½yï¿½ï¿½
+    this->setScale(0.32);
   
     initial();
     return true;
@@ -21,67 +21,62 @@ bool GanYuanShooter::init()
 }
 void GanYuanShooter::initial()
 {
-    //Íê³ÉÆÁÄ»µÄ³õÊ¼»¯
-    setDefaultData();//ÉèÖÃÄ¬ÈÏÖµ
-    firstInteract();//³õÊ¼½»»¥
-    castBigMove();
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½Ä³ï¿½Ê¼ï¿½ï¿½
+    setDefaultData();//ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Öµ
+    firstInteract();//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+    //castBigMove();
 }
 void GanYuanShooter::setDefaultData() {
   
-    // Éè¶¨ÖØ×°Ä¬ÈÏÊýÖµ
+    // ï¿½è¶¨ï¿½ï¿½×°Ä¬ï¿½ï¿½ï¿½ï¿½Öµ
     setType(SHOOTER_TYPE);
     scope = ShooterScope;
-    setLethality(ShooterLethality);   // É±ÉËÁ¦
-    setHp(ShooterHp);  // ×î´óÑªÁ¿
-    setHealth(ShooterHp);  // µ±Ç°ÑªÁ¿
-    setBlock(ShooterBlock);  //×èµ²Êý
-    setCurBlock(0);  //ÒÑ¾­×èµ²Êý*/
-    setDefence(ShooterDefence);  // ·ÀÓùÁ¦
-    setAlive(true);//ÊÇ·ñÈÔÈ»»î×Å
-    setIntervalTime(ShooterIntervalTime);//¹¥»÷¼ä¸ôÊ±¼ä
-    setCoolTime(ShooterCoolTime);//ËÀÍöÀäÈ´Ê±¼ä;
+    setPrice(ShieldPrice);
+    setLethality(ShooterLethality);   // É±ï¿½ï¿½ï¿½ï¿½
+    setHp(ShooterHp);  // ï¿½ï¿½ï¿½Ñªï¿½ï¿½
+    setHealth(ShooterHp);  // ï¿½ï¿½Ç°Ñªï¿½ï¿½
+    setBlock(ShooterBlock);  //ï¿½èµ²ï¿½ï¿½
+    setCurBlock(0);  //ï¿½Ñ¾ï¿½ï¿½èµ²ï¿½ï¿½*/
+    setDefence(ShooterDefence);  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    setAlive(true);//ï¿½Ç·ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½
+    setIntervalTime(ShooterIntervalTime);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+    setCoolTime(ShooterCoolTime);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´Ê±ï¿½ï¿½;
     setFirstPose(Vec2(getPosition()));
 
     setLastAttackTime(GetCurrentTime() / 1000.f);
     setIsBlock(false);
     setIsGround(false);
 
-    //ÒÔÏÂ¿ªÊ¼³õÊ¼»¯ÑªÌõ
-    auto lethalityBar = Bar::create(EStateType::Lethality, lethality);
-    auto healthBar = Bar::create(EStateType::Health, Health);
-    auto defenceBar = Bar::create(EStateType::Defence, defence);
+    //ï¿½ï¿½ï¿½Â¿ï¿½Ê¼ï¿½ï¿½Ê¼ï¿½ï¿½Ñªï¿½ï¿½
+    lethalityBar = Bar::create(EStateType::Lethality, lethality);
+    healthBar = Bar::create(EStateType::Health, Health);
+    defenceBar = Bar::create(EStateType::Defence, defence);
     auto position = getPosition();
     auto size = getBoundingBox().size;
     lethalityBar->setScaleX(0.5);
     lethalityBar->setScaleY(0.7);
     lethalityBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    lethalityBar->setPosition(position + Vec2(size.width / 2 + 80, size.height + 35));
+    lethalityBar->setPosition(Vec2(200, 450 + 70));
     addChild(lethalityBar);
     healthBar->setScaleX(0.5);
     healthBar->setScaleY(0.7);
     healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    healthBar->setPosition(position + Vec2(size.width / 2 + 80, size.height));
+    healthBar->setPosition(Vec2(200, 450 + 35));
     addChild(healthBar);
     defenceBar->setScaleX(0.5);
     defenceBar->setScaleY(0.7);
     defenceBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    defenceBar->setPosition(position + Vec2(size.width / 2 + 80, size.height - 35));
+    defenceBar->setPosition(Vec2(200, 450));
     addChild(defenceBar);
-
-}
-void GanYuanShooter::firstInteract() {
-
-    if (1) {
-        moveToPosition();
-    }
 }
 
-//¼ì²éÎ»ÖÃºÏ·¨
+
+//ï¿½ï¿½ï¿½Î»ï¿½ÃºÏ·ï¿½
 void GanYuanShooter::positionLegal(bool& state, Vec2& p) {
     GameManager* instance = GameManager::getInstance();
     for (int i = 0; i < instance->towersPosition.size(); i++) {
         //(road_path[i - 1] - road_path[i]).getLength()
-        if ((this->getPosition()).distance(instance->towersPosition[i]) < 50.f)//È·¶¨ÊÇÖØ×°¿Éµ½´ïÎ»ÖÃ
+        if ((this->getPosition()).distance(instance->towersPosition[i]) < 50.f)//È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×°ï¿½Éµï¿½ï¿½ï¿½Î»ï¿½ï¿½
         {
             state = true;
             p = instance->towersPosition[i];
@@ -94,7 +89,7 @@ void GanYuanShooter::positionLegal(bool& state, Vec2& p) {
 //void GanYuanShooter::moveToPosition() {
 //    auto listener1 = EventListenerTouchOneByOne::create();
 //    listener1->setSwallowTouches(true);
-//    //Í¨¹ý lambda ±í´ïÊ½ Ö±½ÓÊµÏÖ´¥ÃþÊÂ¼þµÄ»Øµô·½·¨
+//    //Í¨ï¿½ï¿½ lambda ï¿½ï¿½ï¿½ï¿½Ê½ Ö±ï¿½ï¿½Êµï¿½Ö´ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ä»Øµï¿½ï¿½ï¿½ï¿½ï¿½
 //    listener1->onTouchBegan = [](Touch* touch, Event* event) {
 //        auto target = static_cast<Sprite*>(event->getCurrentTarget());
 //        Point locationInNode = target->convertToNodeSpace(touch->getLocation());
@@ -104,7 +99,7 @@ void GanYuanShooter::positionLegal(bool& state, Vec2& p) {
 //        if (rect.containsPoint(locationInNode))
 //        {
 //            log("sprite began... x = %f, y = %f", locationInNode.x, locationInNode.y);
-//            target->setOpacity(180);//µã»÷µÄÊ±ºò¾«ÁéÑÕÉ«±ä°µ£¬255Îª×î´óÖµ£¬9×îÐ¡return true;
+//            target->setOpacity(180);//ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ä°µï¿½ï¿½255Îªï¿½ï¿½ï¿½Öµï¿½ï¿½9ï¿½ï¿½Ð¡return true;
 //            return true;
 //        }
 //        return false;
@@ -118,7 +113,7 @@ void GanYuanShooter::positionLegal(bool& state, Vec2& p) {
 //    listener1->onTouchEnded = [&](Touch* touch, Event* event) {
 //        auto target = static_cast<Sprite*>(event->getCurrentTarget());
 //        log("sprite onTouchesEnded..");
-//        target->setOpacity(255);//ÊÖÊÆËÉ¿ªÊ±Ê¹¾«Áé»Ö¸´Ô­À´µÄÑÕÉ«
+//        target->setOpacity(255);//ï¿½ï¿½ï¿½ï¿½ï¿½É¿ï¿½Ê±Ê¹ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½Ô­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«
 //        if (this->curTowerRect.getMinX()!= 0) {
 //            target->setPosition(this->curTowerRect.getMidX(), this->curTowerRect.getMidY());
 //        }
@@ -127,7 +122,7 @@ void GanYuanShooter::positionLegal(bool& state, Vec2& p) {
 //        }
 //        this->curTowerRect = Rect(0, 0, 0, 0);
 //        };
-//    //½«´¥ÃþÊÂ¼þ°ó¶¨µ½¾«ÁéÉíÉÏ
+//    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ó¶¨µï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this);
 //    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
 //    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);

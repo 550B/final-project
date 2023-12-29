@@ -58,6 +58,9 @@ public:
     // 跑到下一点
     virtual void runToFollowPoint();
 
+    // 检查是否进点
+    virtual bool checkIsEntered();
+
 };
 
 
