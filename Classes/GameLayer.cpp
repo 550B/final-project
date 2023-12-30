@@ -40,7 +40,6 @@ GameLayer::GameLayer()
 	, instance(GameManager::getInstance())
 	, mapType(0)
 {
-
 }
 Scene* GameLayer::createScene()
 {
@@ -59,21 +58,17 @@ bool GameLayer::init()
 	// record start time first
 	this->startTime = GetCurrentTime() / 1000.f;
 
-	// ���������
 	srand((unsigned int)(time(0)));
 
-	// ��ʼÿ��������һ��
 	interval = 4.0f;
 
-	// ��ȡ����
 	Size winSize = Director::getInstance()->getWinSize();
 	instance = GameManager::getInstance();
 
 	mapType = instance->levelType;
+	instance->towersPosition = towers_path;
+	instance->groundsPosition = grounds_path;
 
-	//instance->towersPosition = towers_path;
-	//instance->groundsPosition = grounds_path;
-	//��������
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("Music/battle.mp3");
 	auto audio_battle = SimpleAudioEngine::getInstance();
 	if (!audio_battle->isBackgroundMusicPlaying()) {
@@ -86,21 +81,19 @@ bool GameLayer::init()
 	shooter = GanYuanShooter::create();
 	this->addChild(shooter);
 	instance->ganyuanVector.pushBack(shooter);
-	// ���Ӱ�ť
+	medical = GanYuanMedical::create();
+	this->addChild(medical);
+	instance->ganyuanVector.pushBack(medical);
+
 	initToolLayer();
 
-	// initialize waves
+	//initialize waves
 	initWave();
 
 	// ÿ������һ����Ϸ�߼�
 	schedule(CC_SCHEDULE_SELECTOR(GameLayer::addSceneEnemy), interval);
 	//schedule(CC_SCHEDULE_SELECTOR(GameLayer::logic), 0.5f);
 	schedule(CC_SCHEDULE_SELECTOR(GameLayer::updatemoney), 1.0f);
-
-	// ����¼�����
-	auto touchListener = EventListenerTouchOneByOne::create();
-	touchListener->onTouchBegan = CC_CALLBACK_2(GameLayer::onTouchBegan, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
 	// ��ʼschedule
 	scheduleUpdate();
@@ -118,8 +111,7 @@ void GameLayer::initToolLayer()
 	addChild(toolLayer, 10);
 	
 
-	//�������
-	moneyL = 8;
+
 	instance->setMoney(moneyL);
 	auto moneyText = patch::to_string(moneyL);//ת��Ϊstring
 	moneyLabel = Label::createWithSystemFont(moneyText, "fonts/arial.ttf", 50);
@@ -129,18 +121,24 @@ void GameLayer::initToolLayer()
 	toolLayer->addChild(moneyLabel);
 
 	sprite_money = Sprite::create("Pictures/money.png");
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = [](Touch* touch, Event* event) {return true; };
+	listener->onTouchMoved = [](Touch* touch, Event* event) {return true; };
+	listener->onTouchEnded = [](Touch* touch, Event* event) {return true; };
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, sprite_money);
 	sprite_money->setAnchorPoint(Point(1, 1));
 	sprite_money->setScale(2);//32*32
 	sprite_money->setPosition(Point(Director::getInstance()->getVisibleSize().width-100, Director::getInstance()->getVisibleSize().height));
+
 	toolLayer->addChild(sprite_money);
 
 
-	//3��
+	//3
 	star3 = Sprite::create("Pictures/star3.png");
 	star3->setScale(0.5);
 	star3->setAnchorPoint(Point(0.5f, 1));
 	star3->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
-	star3->setTag(333);//�ı�ʱɾȥsprite
+	star3->setTag(333);
 	toolLayer->addChild(star3);
 
 	/*
@@ -160,14 +158,14 @@ void GameLayer::initToolLayer()
 	spritetool->addChild(groupTotalLabel);*/
 
 	// back
-	//��������ͼ������ӽڵ�
+
 	Button* back = Button::create("Pictures/pause.png", "Pictures/pause.png", "");//��ʾһ������״̬��һ��ѡ��״̬��һ�����ɵ��״̬
 	back->setScale(2);
 	back->setAnchorPoint(Vec2(0, 1));
 	back->setPosition(Vec2(0, Director::getInstance()->getVisibleSize().height));
 	back->setPressedActionEnabled(true);
 	toolLayer->addChild(back);
-	//���Ӵ����¼� �����ó���
+
 	back->addTouchEventListener(CC_CALLBACK_1(GameLayer::menuBackCallback, this));
 }
 
@@ -184,24 +182,19 @@ void GameLayer::updatemoney(float dt)
 	moneyLabel->setString(moneyText);
 }
 
-//�˵���ť
 void GameLayer::menuBackCallback(Ref* pSender)
 {
-	// ������Ч
 	SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("Music/button.mp3").c_str(), false);
 	SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
-	// ������ʵ���ļ���ȡ������ؿ�
 
 	//instance->clear();
-	//�õ����ڵĴ�С
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	RenderTexture* renderTexture = RenderTexture::create(visibleSize.width, visibleSize.height);
-	//������ǰ��������ӽڵ���Ϣ������renderTexture�С�
+
 	renderTexture->begin();
 	this->getParent()->visit();
 	renderTexture->end();
 
-	//����Ϸ������ͣ��ѹ�볡����ջ�����л���GamePause����
 	Director::getInstance()->pushScene(Gamepause::scene(renderTexture));
 }
 

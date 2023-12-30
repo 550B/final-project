@@ -13,6 +13,7 @@ USING_NS_CC;
 #define ShieldIntervalTime 12
 #define ShieldCoolTime 60
 #define ShieldPrice 10//���ֿ����Ա
+#define ShieldWeapon 5
 
 #define MedicalScope 50
 #define MedicalLethality 189
@@ -21,7 +22,8 @@ USING_NS_CC;
 #define MedicalDefence 48
 #define MedicalIntervalTime 2.8
 #define MedicalCoolTime 80
-#define MedicalPrice 12//���ֿ����Ա
+#define MedicalPrice 15//���ֿ����Ա
+#define MedicalWeapon 5
 
 #define ShooterScope 50
 #define ShooterLethality 337
@@ -31,6 +33,7 @@ USING_NS_CC;
 #define ShooterIntervalTime 1.6
 #define ShooterCoolTime 70
 #define ShooterPrice 12//���ֿ����Ա
+#define ShooterWeapon 5
 
 // types of GanYuans
 #define SHIELD_TYPE 1

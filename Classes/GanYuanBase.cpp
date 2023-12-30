@@ -7,11 +7,12 @@ GanYuanBase::GanYuanBase() :
 	//, hp(0)  // ���Ѫ��
 	//, health(0) // ��ǰѪ��
 	//, defence(0)  // ������
-	//, alive(true)//�Ƿ���Ȼ����
+	//�Ƿ���Ȼ����
 	//, intervalTime(0)//�������ʱ��
-	selected(false)
-	, coolTime(0)//������ȴʱ��;
-{};
+	 coolTime(0)//������ȴʱ��;
+{
+	alive=false;
+};
 GanYuanBase* GanYuanBase::create(const std::string& filename)
 {
 	GanYuanBase* Base = new(std::nothrow)GanYuanBase;
@@ -62,6 +63,7 @@ void GanYuanBase::selectCallback(Ref* sender)
 	if (managerInstance->getMoney() > price) {
 		this->removeChild(m_selectMenu, true);
 		this->removeChild(m_menuSelect, true);
+		
 		moveToPosition();
 	}
 	else {
@@ -81,17 +83,14 @@ void GanYuanBase::selectCallback(Ref* sender)
 	
 	//selected = true;
 }
-
-
 // ��ѡ��ص�����
 void GanYuanBase::unselectCallback(Ref* sender)
 {
 	Menu* unselectOption = static_cast<Menu*>(sender);
 	unselectOption->setColor(Color3B::RED);
 
-	// ���ò���ֵΪfalse
-	selected = false;
 }
+
 void GanYuanBase::ifmove() {
 	//��ʼ��λ��
 	/*
@@ -159,16 +158,46 @@ void GanYuanBase::moveToPosition() {
 			GameManager* instance = GameManager::getInstance();
 			this->setPosition(p);
 			instance->occupied.push_back(p);
+			alive = true;
+
+
+			lethalityBar = Bar::create(EStateType::Lethality, lethality);
+			healthBar = Bar::create(EStateType::Health, Health);
+			defenceBar = Bar::create(EStateType::Defence, defence);
+			auto position = getPosition();
+			auto size = getBoundingBox().size;
+			lethalityBar->setScaleX(0.5);
+			lethalityBar->setScaleY(0.7);
+			lethalityBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			lethalityBar->setPosition(Vec2(200, 450 + 70));
+			addChild(lethalityBar);
+			healthBar->setScaleX(0.5);
+			healthBar->setScaleY(0.7);
+			healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			healthBar->setPosition(Vec2(200, 450 + 35));
+			addChild(healthBar);
+			defenceBar->setScaleX(0.5);
+			defenceBar->setScaleY(0.7);
+			defenceBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			defenceBar->setPosition(Vec2(200, 450));
+			addChild(defenceBar);
+
+			weapon = MenuItemImage::create("Pictures/weapon_n.png", "Pictures/weapon_y.png", CC_CALLBACK_1(GanYuanBase::weaponCallback, this));
+			auto menu_weapon = Menu::create(weapon, NULL, NULL);
+			menu_weapon->setPosition(Vec2(-20, 100));
+			menu_weapon->setOpacity(200);
+			menu_weapon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			this->addChild(menu_weapon);
+
 		}
-		};
-	//�������¼��󶨵���������
+	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
 }
-void GanYuanBase::positionLegal(bool &state, Vec2& p) {  }//��ǰλ���Ƿ�Ϸ�
+void GanYuanBase::positionLegal(bool &state, Vec2& p) {  }
 
-//ս��
+
 void GanYuanBase::checkNearestEnemy()
 {
 	GameManager* instance = GameManager::getInstance();
@@ -189,7 +218,6 @@ void GanYuanBase::checkNearestEnemy()
 	}
 	nearestEnemy = enemyTemp;
 }
-//die,��Ҫ�ڵ���֮ǰcheck ����ֵ
 void GanYuanBase::die()
 {
 	// ���ø�Ա��λ��Ϊ��ʼλ��
@@ -228,7 +256,6 @@ void GanYuanBase::die()
 	this->runAction(sequence);
 }
 
-// �����̼��Ѫ����͸�Ա
 /*
 void GanYuanBase::checkInjuredGanYuan()
 {

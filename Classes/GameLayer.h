@@ -7,7 +7,7 @@
 #include <cmath>
 #include "cocos2d.h"
 #include "Enemy.h"
-//#include "GanYuanMedical.h"
+#include "GanYuanMedical.h"
 #include "GanYuanShield.h"
 #include "GanYuanShooter.h"
 #include "GameManager.h"
@@ -65,7 +65,7 @@ protected://��Ϊprojected
     GameManager* instance;
     GanYuanShield* shield;
     GanYuanShooter* shooter;
-   // GanYuanMedical* medical;
+    GanYuanMedical* medical;
 
     SpriteBatchNode* spriteSheet;
     TMXTiledMap* map;//��ͼ
