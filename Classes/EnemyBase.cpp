@@ -2,14 +2,13 @@
 #include "GameManager.h"
 
 EnemyBase::EnemyBase()
-// 赋初始值
+    // 赋初始值
     : runSpeed(0)
     , entered(false)
-    , firstPose(NULL)
-    , lastPose(NULL)
-    , curPose(NULL)
-    , nextPose(NULL)
-    , blocked(false)//xjy
+    //, firstPose(NULL)
+    //, lastPose(NULL)
+    //, curPose(NULL)
+    //, nextPose(NULL)
     , ptr(0)
 {
 
@@ -51,6 +50,15 @@ void EnemyBase::runToFollowPoint()
     //}
     GameManager* instance = GameManager::getInstance();
     // complicated... tomorrow
+}
+
+bool EnemyBase::checkIsEntered()
+{
+    if (this->getCurPose().equals(this->getLastPose()) && this->getPosition().distance(this->getLastPose()) < 1.f)
+    {
+        return true;
+    }
+    return false;
 }
 
 Actor* EnemyBase::checkNearestGanYuan()

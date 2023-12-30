@@ -1,4 +1,5 @@
 #include "Gamepause.h"
+#include "GameManager.h"
 
 //传入一个renderTexture 
 //相当于一个正在运行的游戏的截图作为这个暂停对话框的背景 
@@ -75,5 +76,7 @@ void Gamepause::menuContinueCallback(Ref* pSender)
 void  Gamepause::menuLogin(Ref* pSender)
 {
 	Scene* scene = Menusys::createScene();
+	GameManager* instance = GameManager::getInstance();
+	instance->clear();
 	Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
 }

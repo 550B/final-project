@@ -1,10 +1,10 @@
 #ifndef _GAN_YUAN_SHIELD_H_
 #define _GAN_YUAN_SHIELD_H_
 /*
-   CC_SYNTHESIZE(int, scope, Scope);  // ËþµÄÊÓÏß·¶Î§
-   CC_SYNTHESIZE(int, lethality, Lethality);   // É±ÉËÁ¦
-   CC_SYNTHESIZE(float, hp, Hp);  // ×î´óÑªÁ¿
-   CC_SYNTHESIZE(float, health, Health);  // µ±Ç°ÑªÁ¿*/
+   CC_SYNTHESIZE(int, scope, Scope);  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß·ï¿½Î§
+   CC_SYNTHESIZE(int, lethality, Lethality);   // É±ï¿½ï¿½ï¿½ï¿½
+   CC_SYNTHESIZE(float, hp, Hp);  // ï¿½ï¿½ï¿½Ñªï¿½ï¿½
+   CC_SYNTHESIZE(float, health, Health);  // ï¿½ï¿½Ç°Ñªï¿½ï¿½*/
 #include "GanYuanBase.h"
 #include "Const.h"
 #include "Bar.h"
@@ -14,36 +14,36 @@ class GanYuanShield : public GanYuanBase
 {
 public:
 
-    CC_SYNTHESIZE(int, block, Block);  //×èµ²Êý
-    CC_SYNTHESIZE(int, curBlock, CurBlock);  //ÒÑ¾­×èµ²Êý
-    //baseÖÐÒÑÓÐ
+    CC_SYNTHESIZE(int, block, Block);  //ï¿½èµ²ï¿½ï¿½
+    CC_SYNTHESIZE(int, curBlock, CurBlock);  //ï¿½Ñ¾ï¿½ï¿½èµ²ï¿½ï¿½
+    //baseï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     
-    //Íê³É³õÊ¼»¯
-    //¿ªÊ¼¹¥»÷
-    CC_SYNTHESIZE(Animation*, attackAnimation, AttackAnimation);//¹¥»÷Ê±µÄ¶¯»­
-    CC_SYNTHESIZE(Animation*, bigMoveAnimation, BigMoveAnimation);//´óÕÐÊ±µÄ¶¯»­
+    //ï¿½ï¿½É³ï¿½Ê¼ï¿½ï¿½
+    //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+    CC_SYNTHESIZE(Animation*, attackAnimation, AttackAnimation);//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ä¶ï¿½ï¿½ï¿½
+    CC_SYNTHESIZE(Animation*, bigMoveAnimation, BigMoveAnimation);//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ä¶ï¿½ï¿½ï¿½
 
    
     
     bool init();
-    static GanYuanShield* create();//´´½¨¾²Ì¬create·½·¨
-    virtual void setDefaultData();//ÉèÖÃÄ¬ÈÏÊýÖµ
-    virtual void positionLegal(bool& state, Vec2& p);;//µ±Ç°Î»ÖÃÊÇ·ñºÏ·¨
-    virtual void initial();//³õÊ¼»¯
+    static GanYuanShield* create();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¬createï¿½ï¿½ï¿½ï¿½
+    virtual void setDefaultData();//ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½ï¿½ï¿½Öµ
+    virtual void positionLegal(bool& state, Vec2& p);;//ï¿½ï¿½Ç°Î»ï¿½ï¿½ï¿½Ç·ï¿½Ï·ï¿½
+    virtual void initial();//ï¿½ï¿½Ê¼ï¿½ï¿½
     
-    //Íê³É³õÊ¼»¯£¬°üÀ¨ÄÚÖÃÊýÖµ³õÊ¼»¯ÒÔ¼°¶¯»­³õÊ¼»¯
-    void shoot();//¹¥»÷
-    void bigMove();//ÊÇ·ñ´ïµ½´óÕÐ
-    void castBigMove();//¿ª·Å´óÕÐ
-    //ÀäÈ´×´Ì¬
-    bool beingCool();//ÀäÈ´×´Ì¬¶¯»­ÏÔÊ¾¼°×Ô¼ºÍË³öÀäÈ´×´Ì¬
+    //ï¿½ï¿½É³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+    void shoot();//ï¿½ï¿½ï¿½ï¿½
+    void bigMove();//ï¿½Ç·ï¿½ïµ½ï¿½ï¿½ï¿½ï¿½
+    void castBigMove();//ï¿½ï¿½ï¿½Å´ï¿½ï¿½ï¿½
+    //ï¿½ï¿½È´×´Ì¬
+    bool beingCool();//ï¿½ï¿½È´×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½Ë³ï¿½ï¿½ï¿½È´×´Ì¬
     //reset
-    bool reset();//ÀäÈ´ºóÖØÆô
+    bool reset();//ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 private:
-    void updateHealth(float delta);//¸üÐÂÑªÌõ
-    void updateLethality(float delta);//¸üÐÂÉ±ÉËÁ¦£¨´óÕÐÊÍ·Å£©
-    void updatDefence(float delta);//¸üÐÂ·ÀÓùÁ¦£¨¼¼ÄÜ¼Ó³É£©
+    void updateHealth(float delta);//ï¿½ï¿½ï¿½ï¿½Ñªï¿½ï¿½
+    void updateLethality(float delta);//ï¿½ï¿½ï¿½ï¿½É±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·Å£ï¿½
+    void updatDefence(float delta);//ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¼Ó³É£ï¿½
 
     Sprite* ganyuanShield;
 

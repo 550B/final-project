@@ -2,7 +2,7 @@
 #include "GameManager.h"
 
 USING_NS_CC;
-//´´½¨Ò»¸öÖØ×°
+//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½×°
 bool GanYuanShield::init()
 {
     if (!GanYuanBase::init("Pictures/snake.png"))
@@ -10,9 +10,9 @@ bool GanYuanShield::init()
         return false;
     }
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    // ³õÊ¼»¯GanYuanShieldµÄÆäËûÊôÐÔºÍÐÐÎª
+    // ï¿½ï¿½Ê¼ï¿½ï¿½GanYuanShieldï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½Îª
     //this->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-    this->setPosition(Vec2(visibleSize.width / 2, 75));//¶ÔÓÚShieldÉè¼Æ³ÉÔÚxµÄËÄ·ÖÖ®Ò»´¦£¬yµÄ
+    this->setPosition(Vec2(visibleSize.width / 2, 75));//ï¿½ï¿½ï¿½ï¿½Shieldï¿½ï¿½Æ³ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½Ä·ï¿½Ö®Ò»ï¿½ï¿½ï¿½ï¿½yï¿½ï¿½
     this->setScale(0.3);
     initial();
     return true;
@@ -32,26 +32,26 @@ GanYuanShield* GanYuanShield::create()
 }
 
 void GanYuanShield::setDefaultData() {
-    // Éè¶¨ÖØ×°Ä¬ÈÏÊýÖµ
+    // ï¿½è¶¨ï¿½ï¿½×°Ä¬ï¿½ï¿½ï¿½ï¿½Öµ
     setType(SHIELD_TYPE);
     setPrice(ShieldPrice);
     scope = ShieldScope;
-    setLethality(ShieldLethality);   // É±ÉËÁ¦
-    setHp(ShieldHp);  // ×î´óÑªÁ¿
-    setHealth(ShieldHp);  // µ±Ç°ÑªÁ¿
-    setBlock(ShieldBlock);  //×èµ²Êý
-    setCurBlock(0);  //ÒÑ¾­×èµ²Êý*/
-    setDefence(ShieldDefence);  // ·ÀÓùÁ¦
-    setAlive(true);//ÊÇ·ñÈÔÈ»»î×Å
-    setIntervalTime(ShieldIntervalTime);//¹¥»÷¼ä¸ôÊ±¼ä
-    setCoolTime(ShieldCoolTime);//ËÀÍöÀäÈ´Ê±¼ä;
+    setLethality(ShieldLethality);   // É±ï¿½ï¿½ï¿½ï¿½
+    setHp(ShieldHp);  // ï¿½ï¿½ï¿½Ñªï¿½ï¿½
+    setHealth(ShieldHp);  // ï¿½ï¿½Ç°Ñªï¿½ï¿½
+    setBlock(ShieldBlock);  //ï¿½èµ²ï¿½ï¿½
+    setCurBlock(0);  //ï¿½Ñ¾ï¿½ï¿½èµ²ï¿½ï¿½*/
+    setDefence(ShieldDefence);  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    setAlive(true);//ï¿½Ç·ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½
+    setIntervalTime(ShieldIntervalTime);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+    setCoolTime(ShieldCoolTime);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´Ê±ï¿½ï¿½;
     setFirstPose(Vec2(getPosition()));
 
     setLastAttackTime(GetCurrentTime() / 1000.f);
     setIsBlock(false);
     setIsGround(true);
 
-    //ÒÔÏÂ¿ªÊ¼³õÊ¼»¯ÑªÌõ
+    //ï¿½ï¿½ï¿½Â¿ï¿½Ê¼ï¿½ï¿½Ê¼ï¿½ï¿½Ñªï¿½ï¿½
     lethalityBar = Bar::create(EStateType::Lethality, lethality);
     healthBar = Bar::create(EStateType::Health, Health);
     defenceBar = Bar::create(EStateType::Defence, defence);
@@ -75,17 +75,17 @@ void GanYuanShield::setDefaultData() {
 }
 void GanYuanShield::initial()
 {
-    //Íê³ÉÆÁÄ»µÄ³õÊ¼»¯
-    setDefaultData();//ÉèÖÃÄ¬ÈÏÖµ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½Ä³ï¿½Ê¼ï¿½ï¿½
+    setDefaultData();//ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Öµ
     firstInteract();
     //castBigMove();
 }
-//¼ì²éÎ»ÖÃºÏ·¨
+//ï¿½ï¿½ï¿½Î»ï¿½ÃºÏ·ï¿½
 void GanYuanShield:: positionLegal(bool& state, Vec2& p) {
     GameManager* instance = GameManager::getInstance();
     for (int i = 0; i < instance->groundsPosition.size(); i++) {
         //(road_path[i - 1] - road_path[i]).getLength()
-        if ((this->getPosition()).distance(instance->groundsPosition[i]) < 50.f)//È·¶¨ÊÇÖØ×°¿Éµ½´ïÎ»ÖÃ
+        if ((this->getPosition()).distance(instance->groundsPosition[i]) < 50.f)//È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×°ï¿½Éµï¿½ï¿½ï¿½Î»ï¿½ï¿½
         {
             state = true;
             p = instance->groundsPosition[i];
@@ -143,7 +143,7 @@ void GanYuanShield::bigMove() {
     /*
     if (Director::getInstance()->getDeltaTime() == ShieldIntervalTime && health > 0)
         castBigMove();*/
-}//ÊÇ·ñ´ïµ½´óÕÐ
+}//ï¿½Ç·ï¿½ïµ½ï¿½ï¿½ï¿½ï¿½
 void GanYuanShield::shoot()
 {
 

@@ -1,53 +1,53 @@
-#include "GanYuanShooter.h"
+﻿#include "GanYuanMedical.h"
 #include "GameManager.h"
 
 USING_NS_CC;
 //����
-bool GanYuanShooter::init()
+bool GanYuanMedical::init()
 {
-    if (!Sprite::initWithFile("Pictures/GanYuanShooter.png")) {
+    if (!Sprite::initWithFile("Pictures/GanYuanMedical.png")) {
         return false;
     }
     //���������һЩ�����������
     auto visibleSize = Director::getInstance()->getVisibleSize();
     // ��ʼ��GanYuanShooter���������Ժ���Ϊ
-    this->setPosition(Vec2(visibleSize.width / 2-200, 75));//����Shield��Ƴ���x���ķ�֮һ����y��
+    this->setPosition(Vec2(visibleSize.width / 2+200, 75));
     this->setScale(0.32);
-  
+
     initial();
     return true;
 
-    
+
 }
-void GanYuanShooter::initial()
+void GanYuanMedical::initial()
 {
     //�����Ļ�ĳ�ʼ��
     setDefaultData();//����Ĭ��ֵ
     firstInteract();//��ʼ����
     //castBigMove();
 }
-void GanYuanShooter::setDefaultData() {
-  
-    // �趨��װĬ����ֵ
-    setType(SHOOTER_TYPE);
-    scope = ShooterScope;
+void GanYuanMedical::setDefaultData() {
+
+
+    setType(MEDICAL_TYPE);
+    scope = MedicalScope;
     setPrice(ShieldPrice);
-    setLethality(ShooterLethality);   // ɱ����
-    setHp(ShooterHp);  // ���Ѫ��
-    setHealth(ShooterHp);  // ��ǰѪ��
-    setBlock(ShooterBlock);  //�赲��
+    setLethality(MedicalLethality);   // ɱ����
+    setHp(MedicalHp);  // ���Ѫ��
+    setHealth(MedicalHp);  // ��ǰѪ��
+    setBlock(MedicalBlock);  //�赲��
     setCurBlock(0);  //�Ѿ��赲��*/
-    setDefence(ShooterDefence);  // ������
+    setDefence(MedicalDefence);  // ������
     setAlive(true);//�Ƿ���Ȼ����
-    setIntervalTime(ShooterIntervalTime);//�������ʱ��
-    setCoolTime(ShooterCoolTime);//������ȴʱ��;
+    setIntervalTime(MedicalIntervalTime);//�������ʱ��
+    setCoolTime(MedicalCoolTime);//������ȴʱ��;
     setFirstPose(Vec2(getPosition()));
 
     setLastAttackTime(GetCurrentTime() / 1000.f);
     setIsBlock(false);
     setIsGround(false);
 
-    //���¿�ʼ��ʼ��Ѫ��
+
     lethalityBar = Bar::create(EStateType::Lethality, lethality);
     healthBar = Bar::create(EStateType::Health, Health);
     defenceBar = Bar::create(EStateType::Defence, defence);
@@ -71,8 +71,7 @@ void GanYuanShooter::setDefaultData() {
 }
 
 
-//���λ�úϷ�
-void GanYuanShooter::positionLegal(bool& state, Vec2& p) {
+void GanYuanMedical::positionLegal(bool& state, Vec2& p) {
     GameManager* instance = GameManager::getInstance();
     for (int i = 0; i < instance->towersPosition.size(); i++) {
         //(road_path[i - 1] - road_path[i]).getLength()
@@ -80,6 +79,7 @@ void GanYuanShooter::positionLegal(bool& state, Vec2& p) {
         {
             state = true;
             p = instance->towersPosition[i];
+            instance->setMoney(instance->getMoney() - price);
             return;
         }
     }
@@ -129,7 +129,7 @@ void GanYuanShooter::positionLegal(bool& state, Vec2& p) {
 //}
 
 
-Rect GanYuanShooter::getCurTowerRect(Point touchP) {
+Rect GanYuanMedical::getCurTowerRect(Point touchP) {
     Rect rec(0, 0, 0, 0);
     for (Rect rect : this->towerRectVec) {
         if (rect.containsPoint(touchP)) {
@@ -140,7 +140,7 @@ Rect GanYuanShooter::getCurTowerRect(Point touchP) {
     return rec;
 }
 
-void GanYuanShooter::castBigMove() {
+void GanYuanMedical::castBigMove() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -148,7 +148,7 @@ void GanYuanShooter::castBigMove() {
     this->addChild(sprite);
     sprite->setPosition(Vec2(visibleSize.width / 5, visibleSize.height / 4));
 
-    std::string frameNamePrefix = "Pictures/ShooterBigMove/";
+    std::string frameNamePrefix = "Pictures/MedicalBigMove/";
     int numFrames = 9;
 
     Vector<SpriteFrame*> frames;
@@ -181,3 +181,5 @@ void GanYuanShooter::castBigMove() {
     Sequence* sequence = Sequence::create(delay, stopAnimation, nullptr);
     this->runAction(sequence);
 }
+
+

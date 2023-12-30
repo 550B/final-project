@@ -106,4 +106,6 @@ bool Actor::attack(Actor* target)
 }
 
 void Actor::die()
-{}
+{
+	this->setAlive(false);
+}

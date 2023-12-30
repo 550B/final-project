@@ -5,6 +5,8 @@
 
 #include "cocos2d.h"
 #include "GameLayer.h"
+#include "Const.h"
+
 class NormalMap1 : public GameLayer
 {
 public:

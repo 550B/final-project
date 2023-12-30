@@ -44,12 +44,9 @@ public:
 
     // 移速
     CC_SYNTHESIZE(float, runSpeed, RunSpeed);
-    //xjy是否被阻挡
-    CC_SYNTHESIZE(bool, blocked, Blocked);
 
 
-    //xjy死亡相关
-    virtual void die() {};
+
 
     // 给空中单位
     // 查找最近干员
@@ -60,6 +57,9 @@ public:
 
     // 跑到下一点
     virtual void runToFollowPoint();
+
+    // 检查是否进点
+    virtual bool checkIsEntered();
 
 };
 

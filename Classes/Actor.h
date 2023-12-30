@@ -8,6 +8,7 @@
 #include "cocos2d.h"
 #include "Bar.h"
 #include "Const.h"
+
 USING_NS_CC;
 
 class Actor : public cocos2d::Sprite

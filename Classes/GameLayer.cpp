@@ -28,7 +28,7 @@ GameLayer::GameLayer()
 	, spriteSheet(NULL)
 	, map(NULL)
 	, waveCounter(0)
-	, money(8)
+	, moneyL(8)
 	, blue(3)
 	, moneyLabel(NULL)
 	, groupLabel(NULL)
@@ -37,6 +37,8 @@ GameLayer::GameLayer()
 	, interval(0)
 	, startTime(0)
 	, totalEnemies(0)
+	, instance(GameManager::getInstance())
+	, mapType(0)
 {
 
 }
@@ -61,11 +63,13 @@ bool GameLayer::init()
 	srand((unsigned int)(time(0)));
 
 	// ��ʼÿ��������һ��
-	interval = 2.0f;
+	interval = 4.0f;
 
 	// ��ȡ����
 	Size winSize = Director::getInstance()->getWinSize();
 	instance = GameManager::getInstance();
+
+	mapType = instance->levelType;
 
 	//instance->towersPosition = towers_path;
 	//instance->groundsPosition = grounds_path;
@@ -82,9 +86,14 @@ bool GameLayer::init()
 	shooter = GanYuanShooter::create();
 	this->addChild(shooter);
 	instance->ganyuanVector.pushBack(shooter);
+	medical = GanYuanMedical::create();
+	this->addChild(medical);
+	instance->ganyuanVector.pushBack(medical);
 	// ���Ӱ�ť
 	initToolLayer();
 
+	// initialize waves
+	initWave();
 
 	// ÿ������һ����Ϸ�߼�
 	schedule(CC_SCHEDULE_SELECTOR(GameLayer::addSceneEnemy), interval);
@@ -102,9 +111,6 @@ bool GameLayer::init()
 	// �����һ�¿ɷ��õ㣬�ĳ�Vector
 	int arraySize = sizeof(GanYuanBase*) * MAP_WIDTH * MAP_HEIGHT;
 
-	// ��ʼ������
-	//initWave();
-
 	return true;
 }
 
@@ -116,9 +122,9 @@ void GameLayer::initToolLayer()
 	
 
 	//�������
-	money = 8;
-	instance->setMoney(money);
-	auto moneyText = patch::to_string(money);//ת��Ϊstring
+	moneyL = 8;
+	instance->setMoney(moneyL);
+	auto moneyText = patch::to_string(moneyL);//ת��Ϊstring
 	moneyLabel = Label::createWithSystemFont(moneyText, "fonts/arial.ttf", 50);
 	moneyLabel->setColor(Color3B(255, 215, 0));
 	moneyLabel->setAnchorPoint(Point(1, 1));
@@ -170,16 +176,14 @@ void GameLayer::initToolLayer()
 
 void GameLayer::updatemoney(float dt)
 {
-
-	if (money - instance->getMoney() == 1) {
-		money += 1;
-		instance->setMoney(money);
+	if (moneyL - instance->getMoney() == 1) {
+		moneyL += 1;
+		instance->setMoney(moneyL);
 	}
 	else {
-		money= instance->getMoney() + 1;
+		moneyL= instance->getMoney() + 1;
 	}
-	auto moneyText = patch::to_string(money);
-
+	auto moneyText = patch::to_string(moneyL);
 	moneyLabel->setString(moneyText);
 }
 
@@ -205,13 +209,13 @@ void GameLayer::menuBackCallback(Ref* pSender)
 }
 
 // return a float value of current time in a formal way
-float GameLayer::getNowTime()
+float GameLayer::getNowTime() const
 {
 	return GetCurrentTime() / 1000.f;
 }
 
 // calculate the interval between two parameters
-float GameLayer::getInterval(float a, float b)
+float GameLayer::getInterval(float a, float b) const
 {
 	return a - b;
 }
@@ -234,13 +238,17 @@ float GameLayer::getInterval(float a, float b)
 // give you the earliest showed wave
 Wave* GameLayer::findEarliestWave()
 {
+	GameManager* instance = GameManager::getInstance();
 	Wave* w = NULL;
 	if (!instance->waveVector.empty() && this->allWavesSuccessful())
 	{
 		/*w = (Wave*)instance->waveVector.at(instance->waveVector.size() - 1);*/
 		float minShowTime = MAX_GAME_DURATION;
-		for (auto tmp : instance->waveVector)
+
+		for(int i = 0; i < instance->waveVector.size(); i++)
 		{
+			auto tmp = instance->waveVector.at(i);
+
 			if (tmp->getShowTime() < minShowTime/*tmp->getShowTime() > 5.f*/)
 			{
 				minShowTime = tmp->getShowTime();
@@ -258,7 +266,7 @@ Wave* GameLayer::findEarliestWave()
 // example codes below
 void GameLayer::addWaveEnemy(float showtime, std::initializer_list<EnemyType> il)
 {
-	instance = GameManager::getInstance();
+	GameManager* instance = GameManager::getInstance();
 
 	Wave* curWave = Wave::create();
 
@@ -271,31 +279,46 @@ void GameLayer::addWaveEnemy(float showtime, std::initializer_list<EnemyType> il
 			curWave->addEnemy(ene.type, ene.road);
 		}
 
-		curWave->finishAdd();
+		curWave->finishAdd(curWave);
 	}
 }
 
 // initiate it in each Scene!
 void GameLayer::initWave()
 {
-	GameLayer::addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
-
-	GameLayer::addWaveEnemy(20.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
-
-	GameLayer::addWaveEnemy(30.f, { {1,AROAD},{2,AROAD}, {3,AROAD} });
-
+	switch (mapType)
+	{
+	case NORMAL_MAP1:
+		GameLayer::addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
+		GameLayer::addWaveEnemy(20.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
+		GameLayer::addWaveEnemy(30.f, { {2,AROAD}, {3,AROAD} });
+		break;
+	case NORMAL_MAP2:
+		GameLayer::addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
+		GameLayer::addWaveEnemy(20.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
+		GameLayer::addWaveEnemy(30.f, { {2,AROAD}, {3,AROAD} });
+		break;
+	case NORMAL_MAP3:
+		GameLayer::addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
+		GameLayer::addWaveEnemy(20.f, { {rand() % 2 + 5,BROAD},{rand() % 2 + 5,BROAD}, {rand() % 2 + 5,BROAD} });
+		GameLayer::addWaveEnemy(30.f, { {2,AROAD}, {3,AROAD} });
+		break;
+	case HARD_MAP:
+		GameLayer::addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,BROAD}, {rand() % 2 + 5,CROAD} });
+		GameLayer::addWaveEnemy(20.f, { {rand() % 2 + 5,DROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,BROAD} });
+		GameLayer::addWaveEnemy(30.f, { {2,CROAD}, {3,DROAD} });
+		break;
+	}
 }
 
 // handle enemies in waves waiting to be added in Scene
 void GameLayer::addSceneEnemy(float dt)
 {
-	instance = GameManager::getInstance();
+	GameManager* instance = GameManager::getInstance();
 
-	it = waveQ.begin();
-
-	while (it != waveQ.end())
+	for (int i = 0; i < waveQ.size(); i++)
 	{
-		auto groupEnemy = *it;
+		auto groupEnemy = waveQ.at(i);
 
 		EnemyType et;
 
@@ -307,10 +330,26 @@ void GameLayer::addSceneEnemy(float dt)
 		{
 			et = groupEnemy->enemies.front();
 
+			std::vector<Vec2> rd = instance->roadsPosition.at(et.road - 1);
+
 			if (et.type == ENEMY1_TYPE) {
 				// �볡��Ч
 				//SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
 				// ������һ�ֵ��ˣ�Ѫ��500
+
+				auto enemy = Enemy1::create();
+				enemy->setEntered(false);
+				enemy->setFirstPose(rd.front());
+				enemy->setLastPose(rd.back());
+				enemy->setCurPose(rd.front());
+				enemy->setNextPose(rd.at(1));
+				enemy->setPtr(0);
+				enemy->setRunSpeed(100.f);
+				enemy->setPosition(rd.front());
+				enemy->setScale(0.125);
+				this->addChild(enemy, 10);
+				instance->enemyVector.pushBack(enemy);
+
 				//enemy = Enemy1::createEnemy1(pointsVector, 500);
 				//groupEnemy->setType1Total(groupEnemy->getType1Total() - 1);
 			/*	this->addChild(enemy, 10);
@@ -322,6 +361,20 @@ void GameLayer::addSceneEnemy(float dt)
 				//groupEnemy->setType2Total(groupEnemy->getType2Total() - 1);
 	/*			this->addChild(enemy, 10);
 				instance->enemyVector.pushBack(enemy);*/
+
+				auto enemy = Enemy2::create();
+				enemy->setEntered(false);
+				enemy->setFirstPose(rd.front());
+				enemy->setLastPose(rd.back());
+				enemy->setCurPose(rd.front());
+				enemy->setNextPose(rd.at(1));
+				enemy->setPtr(0);
+				enemy->setRunSpeed(150.f);
+				enemy->setPosition(rd.front());
+				enemy->setScale(0.125);
+				this->addChild(enemy, 10);
+				instance->enemyVector.pushBack(enemy);
+
 			}
 			else if (et.type == ENEMY3_TYPE) {
 				//enemy = Enemy3::createEnemy3(pointsVector, 900);
@@ -329,6 +382,20 @@ void GameLayer::addSceneEnemy(float dt)
 				//groupEnemy->setType3Total(groupEnemy->getType3Total() - 1);
 				//this->addChild(enemy, 10);
 				//instance->enemyVector.pushBack(enemy);
+
+				auto enemy = Enemy3::create();
+				enemy->setEntered(false);
+				enemy->setFirstPose(rd.front());
+				enemy->setLastPose(rd.back());
+				enemy->setCurPose(rd.front());
+				enemy->setNextPose(rd.at(1));
+				enemy->setPtr(0);
+				enemy->setRunSpeed(200.f);
+				enemy->setPosition(rd.front());
+				enemy->setScale(0.125);
+				this->addChild(enemy, 10);
+				instance->enemyVector.pushBack(enemy);
+
 			}
 
 			groupEnemy->enemies.erase(groupEnemy->enemies.begin());
@@ -336,10 +403,8 @@ void GameLayer::addSceneEnemy(float dt)
 		}
 		else
 		{
-			waveQ.erase(groupEnemy);
+			waveQ.eraseObject(groupEnemy);
 		}
-
-		it++;
 	}
 }
 
@@ -347,8 +412,10 @@ bool GameLayer::allWavesSuccessful()
 {
 	if (!instance->waveVector.empty())
 	{
-		for (auto tmp : instance->waveVector)
+		for(int i = 0; i < instance->waveVector.size(); i++)
 		{
+			auto tmp = instance->waveVector.at(i);
+
 			if (!tmp->getIsFinished())
 			{
 				return false;
@@ -370,48 +437,82 @@ void GameLayer::logic()
 	{
 		if (groupEnemy->enemies.empty())
 		{
-
+			instance->waveVector.eraseObject(groupEnemy);
 		}
 		else
 		{
 			if (this->getInterval(this->getNowTime(), groupEnemy->getShowTime()) > 0.f)
 			{
-				if (waveQ.count(groupEnemy) == 0)
+				if (!waveQ.contains(groupEnemy))
 				{
-					waveQ.insert(groupEnemy);
+					waveQ.pushBack(groupEnemy);
+				}
+				instance->waveVector.eraseObject(groupEnemy);
+			}
+		}
+	}
+}
+
+// lose
+void GameLayer::lose()
+{
+	auto enemyVector = instance->enemyVector;
+
+	if (!enemyVector.empty())
+	{
+		for (int i = 0; i < enemyVector.size(); i++)
+		{
+			auto enemy = enemyVector.at(i);
+
+			if (enemy->checkIsEntered())
+			{
+				instance->enemyVector.eraseObject(enemy);
+				enemy->removeFromParent();
+				this->star--;
+
+				// update star
+				switch (star)
+				{
+				case 2:
+					star2 = Sprite::create("Pictures/star2.png");
+					star2->setScale(0.5);
+					star2->setAnchorPoint(Point(0.5f, 1));
+					star2->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
+					toolLayer->addChild(star2);
+					break;
+				case 1:
+					star1 = Sprite::create("Pictures/star1.png");
+					star1->setScale(0.5);
+					star1->setAnchorPoint(Point(0.5f, 1));
+					star1->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
+					toolLayer->addChild(star1);
+					break;
+				case 0:
+					star0 = Sprite::create("Pictures/star0.png");
+					star0->setScale(0.5);
+					star0->setAnchorPoint(Point(0.5f, 1));
+					star0->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
+					toolLayer->addChild(star0);
+					break;
+				}
+
+				if (star == 0)
+				{
+					Size visibleSize = Director::getInstance()->getVisibleSize();
+					RenderTexture* renderTexture = RenderTexture::create(visibleSize.width, visibleSize.height);
+					renderTexture->begin();
+					this->getParent()->visit();
+					renderTexture->end();
+					instance->clear();
+					Director::getInstance()->replaceScene(TransitionFade::create(0.1f, Failed::scene(renderTexture)));
 				}
 			}
 		}
 	}
 }
 
-//����ʬ�Ե����������
-void GameLayer::enemyIntoHouse()
-{
-	auto enemyVector = instance->enemyVector;
-	for (int i = 0; i < enemyVector.size(); i++)
-	{
-		//auto enemy = enemyVector.at(i);
-		//if (enemy->getEnemySuccessful())
-		//{
-		//	instance->enemyVector.eraseObject(enemy);
-		//	enemy->removeFromParent();
-		//	auto playHp = getPlayHpPercentage() - 10;
-		//	if (playHp > 0) {
-		//		setPlayHpPercentage(playHp);
-		//		playHpBar->setPercentage(playHp);
-		//	}
-		//	else {
-		//		instance->clear();
-		//      Director::getInstance()->replaceScene(TransitionFade::create(0.1f,FailedScene::scene(renderTexture));
-		//		
-		//	}
-		//}
-	}
-}
-
 // ��ʼ�������š���Ӯ����
-void GameLayer::YingZhengTouchesTheElectricSwitch()
+void GameLayer::win()
 {
 	/*if (this->blue > 0 && this->currentWave() == NULL)
 	{
@@ -492,16 +593,9 @@ void GameLayer::update(float dt)
 {
 	//addTower();
 	//CollisionDetection();
-	//logic();
-	//GanYuanShield::ShieldInstance->checkNearestEnemy();
-	//GanYuanShield::ShieldInstance->attack(GanYuanShield::ShieldInstance->nearestEnemy);
-	for (int i = 0; i < instance->ganyuanVector.size(); i++) {
-		GanYuanBase* temp= instance->ganyuanVector.at(i);
-		//temp->checkNearestEnemy();
-		//temp->attack(temp->nearestEnemy);
-	}
+	logic();
 	bulletFlying();
-	enemyIntoHouse();
-	YingZhengTouchesTheElectricSwitch();
+	lose();
+	win();
 }
 

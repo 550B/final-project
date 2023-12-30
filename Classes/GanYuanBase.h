@@ -19,7 +19,7 @@ public:
 
     static GanYuanBase* create(const std::string& filename);
 
-    // ÕÔÃ÷Ôó×¢ÊÍµÄ£¬ÀíÓÉ£º·ÅActorÀïÁË
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ÍµÄ£ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½Actorï¿½ï¿½ï¿½ï¿½
     //CC_SYNTHESIZE(int, scope, Scope);
     //CC_SYNTHESIZE(int, lethality, Lethality);
     //CC_SYNTHESIZE(float, hp, Hp);
@@ -29,7 +29,7 @@ public:
     //CC_SYNTHESIZE(bool, alive, Alive);
     CC_SYNTHESIZE(Vec2, firstPose, FirstPose);
     CC_SYNTHESIZE(Vec2, pose, Pose);
-    CC_SYNTHESIZE(int, price, Price);//¸ÉÔ±µÄ¹ºÂò¼Û¸ñ
+    CC_SYNTHESIZE(int, price, Price);//ï¿½ï¿½Ô±ï¿½Ä¹ï¿½ï¿½ï¿½Û¸ï¿½
     //CC_SYNTHESIZE(float, intervalTime, IntervalTime);
     CC_SYNTHESIZE(float, coolTime, CoolTime);
 
@@ -40,21 +40,21 @@ public:
     virtual void ifmove();
     virtual void moveToPosition();
     virtual void positionLegal(bool& state, Vec2& p);
-    //Õ½¶·Ïà¹Ø
+    //Õ½ï¿½ï¿½ï¿½ï¿½ï¿½
     //virtual void attack();
    // virtual void takeDamage(int damage);
-    //ËÀÍöÏà¹Ø
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     virtual void die();
-    //xjyÐÂÔö£¬ÎªÁËÊ¹µÃÑ¡Ôñ¸ÉÔ±°´Å¥ÄÜ¹»ÔÚ»Øµ÷º¯ÊýÖÐ±»É¾³ý
+    //xjyï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Ê¹ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ô±ï¿½ï¿½Å¥ï¿½Ü¹ï¿½ï¿½Ú»Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½É¾ï¿½ï¿½
     MenuItemImage*m_selectMenu;
     Menu*m_menuSelect;
-    // ¸øÖØ×°
+    // ï¿½ï¿½ï¿½ï¿½×°
     void checkBlock();
 
-    // ¸øÉäÊÖ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void checkNearestEnemy();
 
-    // ¸øÒ½ÁÆ
+    // ï¿½ï¿½Ò½ï¿½ï¿½
     void checkInjuredGanYuan();
 
     void sortInjuredGanYuan();

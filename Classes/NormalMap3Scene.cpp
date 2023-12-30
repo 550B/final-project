@@ -4,6 +4,8 @@ USING_NS_CC;
 
 Scene* NormalMap3::createScene()
 {
+    GameManager* instance = GameManager::getInstance();
+    instance->levelType = NORMAL_MAP3;
     auto scene = Scene::create();
     auto layer = NormalMap3::create();
     scene->addChild(layer);
@@ -11,7 +13,7 @@ Scene* NormalMap3::createScene()
 }
 TMXTiledMap* NormalMap3::createMap()
 {
-    //ÔØÈëµØÍ¼±³¾°
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
     TMXTiledMap* map = TMXTiledMap::create("normalmap3.tmx");
     return map;
 }
@@ -30,38 +32,38 @@ bool NormalMap3::init()
     {
         return false;
     }
-    //ÔØÈëµØÍ¼±³¾°
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
     map = createMap();
-    //Í¼¿é²ã
+    //Í¼ï¿½ï¿½ï¿½
     bgLayer = map->getLayer("normalmap3");
     bgLayer->setAnchorPoint(Point(0.5f, 0.5f));
     Size winSize = Director::getInstance()->getWinSize();
     bgLayer->setPosition(Point(winSize.width / 2, winSize.height / 2));
-    //¶ÔÏó²ã
+    //ï¿½ï¿½ï¿½ï¿½ï¿½
     aroad = map->getObjectGroup("aroad");
     broad = map->getObjectGroup("broad");
     towers = map->getObjectGroup("towers");
     grounds = map->getObjectGroup("grounds");
     this->addChild(map, 0);
 
-    // Ìí¼Ó°´Å¥
+    // ï¿½ï¿½ï¿½Ó°ï¿½Å¥
     GameLayer::init();
 
 
-    //½«tower,ground£¬roadµÄVec2Êý×é³õÊ¼»¯
+    //ï¿½ï¿½tower,groundï¿½ï¿½roadï¿½ï¿½Vec2ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
 
     
     ValueVector ravalues = aroad->getObjects();
     for (Value value : ravalues)
     {
-        ValueMap valueMap = value.asValueMap();//»ñµÃÊôÐÔÖµ£ºValue×ª»»³ÉValueMap       
-        aroad_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//½«Â·¾¶µã±£´æµ½Â·¾¶ÖÐ
+        ValueMap valueMap = value.asValueMap();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Value×ªï¿½ï¿½ï¿½ï¿½ValueMap       
+        aroad_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//ï¿½ï¿½Â·ï¿½ï¿½ï¿½ã±£ï¿½æµ½Â·ï¿½ï¿½ï¿½ï¿½
     }
     ValueVector rbvalues = broad->getObjects();
     for (Value value : rbvalues)
     {
-        ValueMap valueMap = value.asValueMap();//»ñµÃÊôÐÔÖµ£ºValue×ª»»³ÉValueMap       
-        broad_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//½«Â·¾¶µã±£´æµ½Â·¾¶ÖÐ
+        ValueMap valueMap = value.asValueMap();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Value×ªï¿½ï¿½ï¿½ï¿½ValueMap       
+        broad_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//ï¿½ï¿½Â·ï¿½ï¿½ï¿½ã±£ï¿½æµ½Â·ï¿½ï¿½ï¿½ï¿½
     }
     instance->roadsPosition.push_back(aroad_path);
     instance->roadsPosition.push_back(broad_path);
@@ -69,39 +71,39 @@ bool NormalMap3::init()
     ValueVector tvalues = towers->getObjects();
     for (Value value : tvalues)
     {
-        ValueMap valueMap = value.asValueMap();//»ñµÃÊôÐÔÖµ£ºValue×ª»»³ÉValueMap       
-        towers_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//½«Â·¾¶µã±£´æµ½Â·¾¶ÖÐ
+        ValueMap valueMap = value.asValueMap();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Value×ªï¿½ï¿½ï¿½ï¿½ValueMap       
+        towers_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//ï¿½ï¿½Â·ï¿½ï¿½ï¿½ã±£ï¿½æµ½Â·ï¿½ï¿½ï¿½ï¿½
     }
     ValueVector gvalues = grounds->getObjects();
     for (Value value : gvalues)
     {
-        ValueMap valueMap = value.asValueMap();//»ñµÃÊôÐÔÖµ£ºValue×ª»»³ÉValueMap       
-        grounds_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//½«Â·¾¶µã±£´æµ½Â·¾¶ÖÐ
+        ValueMap valueMap = value.asValueMap();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Value×ªï¿½ï¿½ï¿½ï¿½ValueMap       
+        grounds_path.push_back(Vec2(valueMap["x"].asFloat() + valueMap["width"].asFloat() / 2, valueMap["y"].asFloat() + valueMap["height"].asFloat() / 2));//ï¿½ï¿½Â·ï¿½ï¿½ï¿½ã±£ï¿½æµ½Â·ï¿½ï¿½ï¿½ï¿½
     }
     instance->towersPosition = towers_path;
     instance->groundsPosition = grounds_path;
-    //instance->setMoney(money);//xjy¼Ó£¬Ê¹µÃmanager money¸üÐÂ
-    //´´½¨µÚÒ»¸öµÐÈË
+    //instance->setMoney(money);//xjyï¿½Ó£ï¿½Ê¹ï¿½ï¿½manager moneyï¿½ï¿½ï¿½ï¿½
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     Sprite* enemy_ground = Sprite::create("Pictures/enemy_ground.png");
     enemy_ground->setScale(0.125);
     enemy_ground->setPosition(aroad_path[0]);
     this->addChild(enemy_ground);
 
-    //´æ´¢¶¯»­
+    //ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½
     Vector<FiniteTimeAction*> actions;
 
-    for (int i = 1; i < (int)aroad_path.size(); i++)//±éÀúÆäËûÂ·¾¶µã
+    for (int i = 1; i < (int)aroad_path.size(); i++)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½
     {
 
 
         float lenth = (aroad_path[i - 1] - aroad_path[i]).getLength();
         MoveTo* moveTo = MoveTo::create(lenth / 100, aroad_path[i]);
-        actions.pushBack(moveTo);//¶¯»­¼ÓÈëµ½Ë³Ðò±íÖÐ
+        actions.pushBack(moveTo);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ëµ½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½
 
     }
 
-    Sequence* seqAct = Sequence::create(actions);//×é³ÉÐòÁÐ¶¯×÷
-    enemy_ground->runAction(seqAct);//Ö´ÐÐ¶¯»­
+    Sequence* seqAct = Sequence::create(actions);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½
+    enemy_ground->runAction(seqAct);//Ö´ï¿½Ð¶ï¿½ï¿½ï¿½
 
     return true;
 }
