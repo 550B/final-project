@@ -12,8 +12,9 @@ USING_NS_CC;
 #define ShieldDefence 249
 #define ShieldIntervalTime 12
 #define ShieldCoolTime 60
-#define ShieldPrice 10//���ֿ����Ա
+#define ShieldPrice 10
 
+#define ShieldWeapon 5
 #define MedicalScope 50
 #define MedicalLethality 189
 #define MedicalHp 1000
@@ -21,7 +22,8 @@ USING_NS_CC;
 #define MedicalDefence 48
 #define MedicalIntervalTime 2.8
 #define MedicalCoolTime 80
-#define MedicalPrice 15//���ֿ����Ա
+#define MedicalPrice 15
+#define MedicalWeapon 5
 
 #define ShooterScope 50
 #define ShooterLethality 337
@@ -30,8 +32,8 @@ USING_NS_CC;
 #define ShooterDefence 79
 #define ShooterIntervalTime 1.6
 #define ShooterCoolTime 70
-#define ShooterPrice 12//���ֿ����Ա
-
+#define ShooterPrice 12
+#define ShooterWeapon 5
 // types of GanYuans
 #define SHIELD_TYPE 1
 #define SHOOTER_TYPE 2
@@ -72,7 +74,6 @@ enum Emode
 	biandui,
 };
 
-// �������࣬���ֵ��˵�����
 struct EnemyType
 {
 	int type;

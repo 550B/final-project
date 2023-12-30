@@ -16,38 +16,38 @@ public:
     CREATE_FUNC(GanYuanMedical);
 
 
-    //Íê³É³õÊ¼»¯
-       //¿ªÊ¼¹¥»÷
-    CC_SYNTHESIZE(Animation*, attackAnimation, AttackAnimation);//¹¥»÷Ê±µÄ¶¯»­
-    CC_SYNTHESIZE(Animation*, bigMoveAnimation, BigMoveAnimation);//´óÕĞÊ±µÄ¶¯»­
+    //å®Œæˆåˆå§‹åŒ–
+       //å¼€å§‹æ”»å‡»
+    CC_SYNTHESIZE(Animation*, attackAnimation, AttackAnimation);//æ”»å‡»æ—¶çš„åŠ¨ç”»
+    CC_SYNTHESIZE(Animation*, bigMoveAnimation, BigMoveAnimation);//å¤§æ‹›æ—¶çš„åŠ¨ç”»
 
 
     void initial();
-    virtual void setDefaultData();//ÉèÖÃÄ¬ÈÏÊıÖµ
+    virtual void setDefaultData();//è®¾ç½®é»˜è®¤æ•°å€¼
 
-    virtual void positionLegal(bool& state, Vec2& p);;//µ±Ç°Î»ÖÃÊÇ·ñºÏ·¨
+    virtual void positionLegal(bool& state, Vec2& p);;//å½“å‰ä½ç½®æ˜¯å¦åˆæ³•
 
-    //void firstInteract();//³õÊ¼½»»¥£¨°üÀ¨Ñ¡Ôñ¼°ÍÏ×§È¥²¿ÊğÎ»ÖÃ²¿Êğ£©
-    //virtual void moveToPosition();//³õÊ¼ÍÏ×§
+    //void firstInteract();//åˆå§‹äº¤äº’ï¼ˆåŒ…æ‹¬é€‰æ‹©åŠæ‹–æ‹½å»éƒ¨ç½²ä½ç½®éƒ¨ç½²ï¼‰
+    //virtual void moveToPosition();//åˆå§‹æ‹–æ‹½
 
-    //Íê³É³õÊ¼»¯£¬°üÀ¨ÄÚÖÃÊıÖµ³õÊ¼»¯ÒÔ¼°¶¯»­³õÊ¼»¯
-    //void shoot();//¹¥»÷
-    //bool bigMove();//ÊÇ·ñ´ïµ½´óÕĞ
+    //å®Œæˆåˆå§‹åŒ–ï¼ŒåŒ…æ‹¬å†…ç½®æ•°å€¼åˆå§‹åŒ–ä»¥åŠåŠ¨ç”»åˆå§‹åŒ–
 
-    void castBigMove();//¿ª·Å´óÕĞ
-    //ÀäÈ´×´Ì¬
-    bool beingCool();//ÀäÈ´×´Ì¬¶¯»­ÏÔÊ¾¼°×Ô¼ºÍË³öÀäÈ´×´Ì¬
+    void castBigMove();//å¼€æ”¾å¤§æ‹›
+    void weaponCallback(Ref* sender);
+
+    //å†·å´çŠ¶æ€
+    bool beingCool();//å†·å´çŠ¶æ€åŠ¨ç”»æ˜¾ç¤ºåŠè‡ªå·±é€€å‡ºå†·å´çŠ¶æ€
     //reset
-    bool reset();//ÀäÈ´ºóÖØÆô
+    bool reset();//å†·å´åé‡å¯
 
     void setTowerRect(std::vector<Rect> vec) {
         this->towerRectVec = vec;
     }
 
 private:
-    void updateHealth(float delta);//¸üĞÂÑªÌõ
-    void updateLethality(float delta);//¸üĞÂÉ±ÉËÁ¦£¨´óÕĞÊÍ·Å£©
-    void updatDefence(float delta);//¸üĞÂ·ÀÓùÁ¦£¨¼¼ÄÜ¼Ó³É£©
+    void updateHealth(float delta);//æ›´æ–°è¡€æ¡
+    void updateLethality(float delta);//æ›´æ–°æ€ä¼¤åŠ›ï¼ˆå¤§æ‹›é‡Šæ”¾ï¼‰
+    void updatDefence(float delta);//æ›´æ–°é˜²å¾¡åŠ›ï¼ˆæŠ€èƒ½åŠ æˆï¼‰
 
     Rect getCurTowerRect(Point touchP);
 

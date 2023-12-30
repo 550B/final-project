@@ -30,6 +30,8 @@ public:
     virtual void setDefaultData();//����Ĭ����ֵ
     virtual void positionLegal(bool& state, Vec2& p);;//��ǰλ���Ƿ�Ϸ�
     virtual void initial();//��ʼ��
+    virtual void weaponCallback(Ref* sender);
+
     
     //��ɳ�ʼ��������������ֵ��ʼ���Լ�������ʼ��
     void shoot();//����

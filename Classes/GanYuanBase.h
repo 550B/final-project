@@ -6,6 +6,7 @@
 #include<time.h>
 #include "cocos2d.h"
 #include "EnemyBase.h"
+using namespace cocos2d::ui;
 #include "Const.h"//xjy
 #include "Bar.h"
 #include "Actor.h" //zmz
@@ -25,19 +26,20 @@ public:
     //CC_SYNTHESIZE(float, hp, Hp);
     //CC_SYNTHESIZE(float, health, Health);
     //CC_SYNTHESIZE(float, defence, Defence);
-    CC_SYNTHESIZE(bool, selected, Selected);
+    //CC_SYNTHESIZE(bool, selected, Selected);
     //CC_SYNTHESIZE(bool, alive, Alive);
     CC_SYNTHESIZE(Vec2, firstPose, FirstPose);
     CC_SYNTHESIZE(Vec2, pose, Pose);
     CC_SYNTHESIZE(int, price, Price);//��Ա�Ĺ���۸�
     //CC_SYNTHESIZE(float, intervalTime, IntervalTime);
     CC_SYNTHESIZE(float, coolTime, CoolTime);
+    CC_SYNTHESIZE(int, weapon_price, weapon_Price);
 
     EnemyBase* nearestEnemy;
     virtual void firstInteract();
     virtual void selectCallback(Ref* sender);
     virtual void unselectCallback(Ref* sender);
-    virtual void ifmove();
+    virtual void weaponCallback(Ref* sender) {};
     virtual void moveToPosition();
     virtual void positionLegal(bool& state, Vec2& p);
     //ս�����
@@ -48,6 +50,8 @@ public:
     //xjy������Ϊ��ʹ��ѡ���Ա��ť�ܹ��ڻص������б�ɾ��
     MenuItemImage*m_selectMenu;
     Menu*m_menuSelect;
+
+    MenuItemImage *weapon;
     // ����װ
     void checkBlock();
 

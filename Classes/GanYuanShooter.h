@@ -33,6 +33,8 @@ public:
     //��ɳ�ʼ��������������ֵ��ʼ���Լ�������ʼ��
     void shoot();//����
     bool bigMove();//�Ƿ�ﵽ����
+    void weaponCallback(Ref* sender);
+
 
     void castBigMove();//���Ŵ���
     //��ȴ״̬
