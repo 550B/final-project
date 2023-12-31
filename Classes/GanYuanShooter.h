@@ -11,21 +11,21 @@ class GanYuanShooter : public GanYuanBase
 {
 public:
     CREATE_FUNC(GanYuanShooter); 
-    //base���
-    CC_SYNTHESIZE(Animation*, attackAnimation, AttackAnimation);//����ʱ�Ķ���
-    CC_SYNTHESIZE(Animation*, bigMoveAnimation, BigMoveAnimation);//����ʱ�Ķ���
+
+    CC_SYNTHESIZE(Animation*, attackAnimation, AttackAnimation);
+    CC_SYNTHESIZE(Animation*, bigMoveAnimation, BigMoveAnimation);
 
     
     void initial();
     bool init();
-    virtual void setDefaultData();//����Ĭ����ֵ
+    virtual void setDefaultData();
 
-    virtual void positionLegal(bool& state, Vec2& p);;//��ǰλ���Ƿ�Ϸ�
-    void castBigMove();//���Ŵ���
+    virtual void positionLegal(bool& state, Vec2& p);;
+    void castBigMove();
     void setTowerRect(std::vector<Rect> vec) {
         this->towerRectVec = vec;
     }
-
+    virtual void reborn();
 private:
 
     Rect getCurTowerRect(Point touchP);

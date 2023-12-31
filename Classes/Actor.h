@@ -38,13 +38,13 @@ protected:
 
 	CC_SYNTHESIZE(float, lastAttackTime, LastAttackTime);
 
-	CC_SYNTHESIZE(bool, isBlock, IsBlock);  //�Ƿ��赲
+	CC_SYNTHESIZE(bool, isBlock, IsBlock);  
 
-	CC_SYNTHESIZE(int, block, Block);  //�赲��
+	CC_SYNTHESIZE(int, block, Block);  
 
-	CC_SYNTHESIZE(int, curBlock, CurBlock);  //�Ѿ��赲��
+	CC_SYNTHESIZE(int, curBlock, CurBlock);  
 
-	CC_SYNTHESIZE(bool, isGround, IsGround);  // �Ƿ����
+	CC_SYNTHESIZE(bool, isGround, IsGround);  
 
 	CC_SYNTHESIZE(Actor*, attacking, Attacking);
 

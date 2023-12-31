@@ -2,7 +2,7 @@
 #include "GameManager.h"
 
 USING_NS_CC;
-//����һ����װ
+
 bool GanYuanShield::init()
 {
     if (!GanYuanBase::init("Pictures/snake.png"))
@@ -30,19 +30,19 @@ GanYuanShield* GanYuanShield::create()
 }
 
 void GanYuanShield::setDefaultData() {
-    // �趨��װĬ����ֵ
+  
     setType(SHIELD_TYPE);
     setPrice(ShieldPrice);
     scope = ShieldScope;
-    setLethality(ShieldLethality);   // ɱ����
-    setHp(ShieldHp);  // ���Ѫ��
-    setHealth(ShieldHp);  // ��ǰѪ��
-    setBlock(ShieldBlock);  //�赲��
-    setCurBlock(0);  //�Ѿ��赲��*/
-    setDefence(ShieldDefence);  // ������
-    setAlive(true);//�Ƿ���Ȼ����
-    setIntervalTime(ShieldIntervalTime);//�������ʱ��
-    setCoolTime(ShieldCoolTime);//������ȴʱ��;
+    setLethality(ShieldLethality);   
+    setHp(ShieldHp);  
+    setHealth(ShieldHp);  
+    setBlock(ShieldBlock);  
+    setCurBlock(0); 
+    setDefence(ShieldDefence);  
+    setAlive(true);
+    setIntervalTime(ShieldIntervalTime);
+    setCoolTime(ShieldCoolTime);
     setFirstPose(Vec2(getPosition()));
     setweapon_Price(ShieldWeapon);
     setLastAttackTime(GetCurrentTime() / 1000.f);
@@ -65,6 +65,7 @@ void GanYuanShield:: positionLegal(bool& state, Vec2& p) {
         {
             state = true;
             p = instance->groundsPosition[i];
+            listener1->setEnabled(0);
             return;
         }
     }
@@ -113,11 +114,11 @@ void GanYuanShield::castBigMove() {
     this->runAction(sequence);
     //开大招的数值
     defence *= 1.5;
-    defenceBar->setPercent(defence / 0.005);
+    defenceBar->setPercent(defence * 200);
 
     auto callFunc = CallFunc::create([&]() {
         defence /= 1.5;
-        defenceBar->setPercent(defence / 0.005);
+        defenceBar->setPercent(defence * 200);
         });
 
     this->runAction(Sequence::create(DelayTime::create(BigMoveTime), callFunc, nullptr));

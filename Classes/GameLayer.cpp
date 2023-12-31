@@ -29,15 +29,12 @@ GameLayer::GameLayer()
 	, map(NULL)
 	, waveCounter(0)
 	, moneyL(8)
-	, blue(3)
 	, moneyLabel(NULL)
 	, groupLabel(NULL)
 	, groupTotalLabel(NULL)
-	, isSuccessful(false)
 	, interval(0)
 	, startTime(0)
 	, totalEnemies(0)
-	, instance(GameManager::getInstance())
 	, mapType(0)
 	, star(3)
 {
@@ -60,15 +57,12 @@ bool GameLayer::init()
 	// record start time first
 	this->startTime = GetCurrentTime() / 1000.f;
 
-	// ���������
 	srand((unsigned int)(time(0)));
 
-	// ��ʼÿ��������һ��
 	interval = 4.0f;
 
-	// ��ȡ����
 	Size winSize = Director::getInstance()->getWinSize();
-	instance = GameManager::getInstance();
+	GameManager* instance = GameManager::getInstance();
 
 	mapType = instance->levelType;
 
@@ -92,15 +86,12 @@ bool GameLayer::init()
 	// initialize waves
 	initWave();
 
-	// ÿ������һ����Ϸ�߼�
 	schedule(CC_SCHEDULE_SELECTOR(GameLayer::addSceneEnemy), interval);
 	schedule(CC_SCHEDULE_SELECTOR(GameLayer::bulletFlying), 0.1f);
 	schedule(CC_SCHEDULE_SELECTOR(GameLayer::updatemoney), 1.0f);
 
-	// ��ʼschedule
 	scheduleUpdate();
 
-	// �����һ�¿ɷ��õ㣬�ĳ�Vector
 	int arraySize = sizeof(GanYuanBase*) * MAP_WIDTH * MAP_HEIGHT;
 
 	return true;
@@ -108,15 +99,15 @@ bool GameLayer::init()
 
 void GameLayer::initToolLayer()
 {
+	GameManager* instance = GameManager::getInstance();
 	auto size = Director::getInstance()->getWinSize();
 	toolLayer = Layer::create();
 	addChild(toolLayer, 10);
 	
 
-	//�������
 	moneyL = 8;
 	instance->setMoney(moneyL);
-	auto moneyText = patch::to_string(moneyL);//ת��Ϊstring
+	auto moneyText = patch::to_string(moneyL);
 	moneyLabel = Label::createWithSystemFont(moneyText, "fonts/arial.ttf", 50);
 	moneyLabel->setColor(Color3B(255, 215, 0));
 	moneyLabel->setAnchorPoint(Point(1, 1));
@@ -130,12 +121,12 @@ void GameLayer::initToolLayer()
 	toolLayer->addChild(sprite_money);
 
 
-	//3��
+	//3
 	star3 = Sprite::create("Pictures/star3.png");
 	star3->setScale(0.5);
 	star3->setAnchorPoint(Point(0.5f, 1));
 	star3->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
-	star3->setTag(333);//�ı�ʱɾȥsprite
+	star3->setTag(333);
 	toolLayer->addChild(star3);
 
 	/*
@@ -155,19 +146,18 @@ void GameLayer::initToolLayer()
 	spritetool->addChild(groupTotalLabel);*/
 
 	// back
-	//��������ͼ������ӽڵ�
-	Button* back = Button::create("Pictures/pause.png", "Pictures/pause.png", "");//��ʾһ������״̬��һ��ѡ��״̬��һ�����ɵ��״̬
+	Button* back = Button::create("Pictures/pause.png", "Pictures/pause.png", "");
 	back->setScale(2);
 	back->setAnchorPoint(Vec2(0, 1));
 	back->setPosition(Vec2(0, Director::getInstance()->getVisibleSize().height));
 	back->setPressedActionEnabled(true);
 	toolLayer->addChild(back);
-	//���Ӵ����¼� �����ó���
 	back->addTouchEventListener(CC_CALLBACK_1(GameLayer::menuBackCallback, this));
 }
 
 void GameLayer::updatemoney(float dt)
 {
+	GameManager* instance = GameManager::getInstance();
 	if (moneyL - instance->getMoney() == 1) {
 		moneyL += 1;
 		instance->setMoney(moneyL);
@@ -185,13 +175,13 @@ void GameLayer::menuBackCallback(Ref* pSender)
 	// ������Ч
 	SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("Music/button.mp3").c_str(), false);
 	SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
-	// ������ʵ���ļ���ȡ������ؿ�
+	// ������ʵ���ļ���ȡ������ؿ�?
 
 	//instance->clear();
 	//�õ����ڵĴ�С
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	RenderTexture* renderTexture = RenderTexture::create(visibleSize.width, visibleSize.height);
-	//������ǰ��������ӽڵ���Ϣ������renderTexture�С�
+	//������ǰ��������ӽڵ����?������renderTexture�С�
 	renderTexture->begin();
 	this->getParent()->visit();
 	renderTexture->end();
@@ -211,21 +201,6 @@ float GameLayer::getInterval(float a, float b) const
 {
 	return a - b;
 }
-
-// wasted
-//Wave* GameLayer::currentWave()
-//{
-//	Wave* w;
-//	if (!instance->waveVector.empty())
-//	{
-//		w = (Wave*)instance->waveVector.at(instance->waveVector.size() - 1);
-//	}
-//	else 
-//	{
-//		w = NULL;
-//	}
-//	return w;
-//}
 
 // give you the earliest showed wave
 Wave* GameLayer::findEarliestWave()
@@ -281,24 +256,24 @@ void GameLayer::initWave()
 	switch (mapType)
 	{
 	case NORMAL_MAP1:
-		GameLayer::addWaveEnemy(10.f, { {5,AROAD}/*,{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD}*/ });
-		GameLayer::addWaveEnemy(20.f, { {6,AROAD}/*,{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} */});
-		GameLayer::addWaveEnemy(30.f, { {ENEMY1_TYPE,AROAD}/*, {ENEMY2_TYPE,AROAD}, {ENEMY3_TYPE,AROAD}*/ });
+		GameLayer::addWaveEnemy(5.f, { {5,AROAD}/*,{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD}*/ });
+		GameLayer::addWaveEnemy(10.f, { {6,AROAD}/*,{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} */});
+		GameLayer::addWaveEnemy(15.f, { {4,AROAD}/*, {ENEMY2_TYPE,AROAD}, {ENEMY3_TYPE,AROAD}*/ });
 		break;
 	case NORMAL_MAP2:
 		GameLayer::addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
 		GameLayer::addWaveEnemy(20.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
-		GameLayer::addWaveEnemy(30.f, { {ENEMY1_TYPE,AROAD}, {ENEMY2_TYPE,AROAD}, {ENEMY3_TYPE,AROAD} });
+		GameLayer::addWaveEnemy(30.f, { {4,AROAD}, {5,AROAD}, {6,AROAD} });
 		break;
 	case NORMAL_MAP3:
 		GameLayer::addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
 		GameLayer::addWaveEnemy(20.f, { {rand() % 2 + 5,BROAD},{rand() % 2 + 5,BROAD}, {rand() % 2 + 5,BROAD} });
-		GameLayer::addWaveEnemy(30.f, { {ENEMY1_TYPE,AROAD}, {ENEMY2_TYPE,BROAD}, {ENEMY3_TYPE,AROAD} });
+		GameLayer::addWaveEnemy(30.f, { {4,AROAD}, {5,BROAD}, {6,AROAD} });
 		break;
 	case HARD_MAP:
 		GameLayer::addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,BROAD}, {rand() % 2 + 5,CROAD} });
 		GameLayer::addWaveEnemy(20.f, { {rand() % 2 + 5,DROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,BROAD} });
-		GameLayer::addWaveEnemy(30.f, { {ENEMY1_TYPE,CROAD}, {ENEMY2_TYPE,DROAD}, {ENEMY3_TYPE,AROAD} });
+		GameLayer::addWaveEnemy(30.f, { {4,CROAD}, {5,DROAD}, {6,AROAD} });
 		break;
 	}
 }
@@ -325,9 +300,9 @@ void GameLayer::addSceneEnemy(float dt)
 			std::vector<Vec2> rd = instance->roadsPosition.at(et.road - 1);
 
 			if (et.type == ENEMY1_TYPE) {
-				// �볡��Ч
+		
 				//SimpleAudioEngine::getInstance()->playEffect(FileUtils::getInstance()->fullPathForFilename("sound/comeout.wav").c_str(), false);
-				// ������һ�ֵ��ˣ�Ѫ��500
+			
 
 				auto enemy = Enemy1::create();
 				enemy->setEntered(false);
@@ -338,11 +313,10 @@ void GameLayer::addSceneEnemy(float dt)
 				enemy->setCurPose(rd.front());
 				enemy->setNextPose(rd.at(1));
 				enemy->setPtr(0);
-				enemy->setRunSpeed(100.f);
 				enemy->setPosition(rd.front());
 				enemy->setScale(0.125);
 				this->addChild(enemy, 10);
-				instance->enemyVector.pushBack(enemy);
+				instance->enemyVector.insert(0, enemy);
 
 				//enemy = Enemy1::createEnemy1(pointsVector, 500);
 				//groupEnemy->setType1Total(groupEnemy->getType1Total() - 1);
@@ -365,11 +339,10 @@ void GameLayer::addSceneEnemy(float dt)
 				enemy->setCurPose(rd.front());
 				enemy->setNextPose(rd.at(1));
 				enemy->setPtr(0);
-				enemy->setRunSpeed(150.f);
 				enemy->setPosition(rd.front());
 				enemy->setScale(0.125);
 				this->addChild(enemy, 10);
-				instance->enemyVector.pushBack(enemy);
+				instance->enemyVector.insert(0, enemy);
 
 			}
 			else if (et.type == ENEMY3_TYPE) {
@@ -388,11 +361,10 @@ void GameLayer::addSceneEnemy(float dt)
 				enemy->setCurPose(rd.front());
 				enemy->setNextPose(rd.at(1));
 				enemy->setPtr(0);
-				enemy->setRunSpeed(200.f);
 				enemy->setPosition(rd.front());
 				enemy->setScale(0.125);
 				this->addChild(enemy, 10);
-				instance->enemyVector.pushBack(enemy);
+				instance->enemyVector.insert(0, enemy);
 
 			}
 
@@ -408,6 +380,7 @@ void GameLayer::addSceneEnemy(float dt)
 
 bool GameLayer::allWavesSuccessful()
 {
+	GameManager* instance = GameManager::getInstance();
 	if (!instance->waveVector.empty())
 	{
 		for(int i = 0; i < instance->waveVector.size(); i++)
@@ -425,6 +398,7 @@ bool GameLayer::allWavesSuccessful()
 
 void GameLayer::logic()
 {
+	GameManager* instance = GameManager::getInstance();
 	Wave* groupEnemy = this->findEarliestWave();
 
 	if (groupEnemy == NULL)
@@ -439,7 +413,7 @@ void GameLayer::logic()
 		}
 		else
 		{
-			if (this->getInterval(this->getNowTime(), groupEnemy->getShowTime()) > 0.f)
+			if (this->getInterval(this->getNowTime(), this->startTime) > groupEnemy->getShowTime())
 			{
 				if (!waveQ.contains(groupEnemy))
 				{
@@ -454,6 +428,7 @@ void GameLayer::logic()
 // lose
 void GameLayer::lose()
 {
+	GameManager* instance = GameManager::getInstance();
 	auto enemyVector = instance->enemyVector;
 
 	if (!enemyVector.empty())
@@ -462,38 +437,47 @@ void GameLayer::lose()
 		{
 			auto enemy = enemyVector.at(i);
 
-			if (enemy->checkIsEntered())
+			if (!enemy->getAlive())
 			{
+				continue;
+			}
+
+			if (enemy->checkIsEntered(enemy)/* && enemy->getAlive()*/)
+			{
+				bool isAlive = enemy->getAlive();
 				instance->enemyVector.eraseObject(enemy);
 				enemy->removeFromParent();
-				this->star--;
 
-				// update star
-				switch (star)
+				if (isAlive)
 				{
-				case 2:
-					star2 = Sprite::create("Pictures/star2.png");
-					star2->setScale(0.5);
-					star2->setAnchorPoint(Point(0.5f, 1));
-					star2->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
-					toolLayer->addChild(star2, 200);
-					break;
-				case 1:
-					star1 = Sprite::create("Pictures/star1.png");
-					star1->setScale(0.5);
-					star1->setAnchorPoint(Point(0.5f, 1));
-					star1->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
-					toolLayer->addChild(star1, 300);
-					break;
-				default:
-					star0 = Sprite::create("Pictures/star0.png");
-					star0->setScale(0.5);
-					star0->setAnchorPoint(Point(0.5f, 1));
-					star0->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
-					toolLayer->addChild(star0, 400);
-					break;
-				}
+					this->star--;
 
+					// update star
+					switch (star)
+					{
+					case 2:
+						star2 = Sprite::create("Pictures/star2.png");
+						star2->setScale(0.5);
+						star2->setAnchorPoint(Point(0.5f, 1));
+						star2->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
+						toolLayer->addChild(star2, 200);
+						break;
+					case 1:
+						star1 = Sprite::create("Pictures/star1.png");
+						star1->setScale(0.5);
+						star1->setAnchorPoint(Point(0.5f, 1));
+						star1->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
+						toolLayer->addChild(star1, 300);
+						break;
+					default:
+						star0 = Sprite::create("Pictures/star0.png");
+						star0->setScale(0.5);
+						star0->setAnchorPoint(Point(0.5f, 1));
+						star0->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
+						toolLayer->addChild(star0, 400);
+						break;
+					}
+				}
 				if (star <= 0)
 				{
 					Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -502,6 +486,7 @@ void GameLayer::lose()
 					this->getParent()->visit();
 					renderTexture->end();
 					unscheduleUpdate();
+					SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 					instance->clear();
 					Director::getInstance()->replaceScene(TransitionFade::create(0.1f, Failed::scene(renderTexture)));
 				}
@@ -510,58 +495,41 @@ void GameLayer::lose()
 	}
 }
 
-// ��ʼ�������š���Ӯ����
+
 void GameLayer::win()
 {
-	/*if (this->blue > 0 && this->currentWave() == NULL)
+	GameManager* instance = GameManager::getInstance();
+
+	bool condition1 = instance->waveVector.empty();
+	bool condition2 = star > 0;
+	bool condition3 = true;
+	bool condition4 = waveQ.empty();
+	
+	for (int i = 0; i < instance->enemyVector.size(); i++)
 	{
-		this->isSuccessful = true;
-	}*/
+		if (instance->enemyVector.at(i)->getAlive())
+		{
+			condition3 = false;
+			break;
+		}
+	}
 
-	if (isSuccessful)
+	if (condition1 && condition2 && condition3 && condition4 )
 	{
-		// ��֪������
-		isSuccessful = false;
-
-		// ��ѡ�Ǽ�
-		//auto star = this->getBlue();
-		// 
-		//auto star = 0;
-		//auto remainBlue = this->getBlue();
-
-		//if (remainBlue > 0 && remainBlue <= 1) { star = 1; }
-		//else if (remainBlue > 1 && remainBlue <= 2) { star = 2; }
-		//else if (remainBlue > 60 && remainBlue <= 100) { star = 3; }
-
-		// ��һ��
-		// �����������˻�������
-		//if (star > UserDefault::getInstance()->getIntegerForKey(instance->getCurrLevelFile().c_str()))
-		//{
-		//	UserDefault::getInstance()->setIntegerForKey(instance->getCurrLevelFile().c_str(), star);
-		//	auto levelNum = UserDefault::getInstance()->getIntegerForKey("levelNum") + 1;
-		//	UserDefault::getInstance()->setIntegerForKey("levelNum", levelNum);
-		//}
-
-		//auto nextlevel = instance->getNextLevelFile();
-		//UserDefault::getInstance()->setStringForKey("nextLevelFile", nextlevel);
-
-		/*instance->clear();
-		Director::getInstance()->replaceScene(TransitionFade::create(0.1f,WinScene::scene(renderTexture));
-		*/
+		Size visibleSize = Director::getInstance()->getVisibleSize();
+		RenderTexture* renderTexture = RenderTexture::create(visibleSize.width, visibleSize.height);
+		renderTexture->begin();
+		this->getParent()->visit();
+		renderTexture->end();
+		unscheduleUpdate();
+		SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+		instance->clear();
+		Director::getInstance()->replaceScene(TransitionFade::create(0.1f, Win::scene(renderTexture)));
 	}
 
 	return;
 }
 
-//bool GameLayer::onTouchBegan(Touch* touch, Event* event)
-//{
-//	this->removeChild(chooseTowerpanel);
-//	chooseTowerpanel = NULL;
-//	auto location = touch->getLocation();
-//
-//	checkAndAddTowerPanle(location);
-//	return true;
-//}
 
 void GameLayer::removeBullet(Bullet* pSender)
 {
@@ -614,27 +582,56 @@ void GameLayer::bulletFlying(float dt)
 	}
 }
 
-// Run! Gump Run!
 void GameLayer::runEnemies()
 {
 	GameManager* instance = GameManager::getInstance();
-
 	for (auto enemy : instance->enemyVector)
 	{
 		enemy->runToFollowPoint();
 	}
 }
+void GameLayer::runmedical() {
+	GameManager* instance = GameManager::getInstance();
+	medical->checkInjuredGanYuan();
+	if (!instance->injuredganyuan.empty()) {
+		medical->sortInjuredGanYuan();
+		int i;
+		for (i = 0; i < instance->injuredganyuan.size(); i++)
+		{
+			if (instance->injuredganyuan.at(i)->getAlive())
+			{
+				break;
+			}
+		}
+		if (instance->injuredganyuan.size() != 0)
+		{
+			medical->attack(instance->injuredganyuan.at(i));
+			if (instance->injuredganyuan.at(i)->getHealth() == instance->injuredganyuan.at(i)->getHp()) {
+				instance->injuredganyuan.erase(instance->injuredganyuan.begin() + i);
+			}
+		}
+	}
+	
+}
 
 // update runs every frame
 void GameLayer::update(float dt)
 {
-	//addTower();
-	//CollisionDetection();
+	GameManager* instance = GameManager::getInstance();
 	logic();
 	for (int i = 0; i < instance->ganyuanVector.size(); i++) {
-		instance->ganyuanVector.at(i)->ganYuanController();
+		if (instance->ganyuanVector.at(i)->getType() == 3) {
+			runmedical();
+		}
+		else
+			instance->ganyuanVector.at(i)->ganYuanController();
 	}
-	//bulletFlying();
+	for (int i = 0; i < instance->enemyVector.size(); i++) {
+		if (instance->enemyVector.at(i)->getType() == ENEMY1_TYPE)
+		{
+			instance->enemyVector.at(i)->enemyController();
+		}
+	}
 	runEnemies();
 	lose();
 	win();

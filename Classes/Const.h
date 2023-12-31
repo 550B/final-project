@@ -7,56 +7,56 @@ USING_NS_CC;
 
 #define BigMoveTime 3
 
-#define ShieldScope 50
+#define ShieldScope 110
 #define ShieldLethality 193
 #define ShieldHp 1221
 #define ShieldBlock 3
 #define ShieldDefence 0.249
 #define ShieldIntervalTime 1.2
 #define ShieldCoolTime 10
-#define ShieldPrice 10
-#define ShieldWeapon 9
+#define ShieldPrice 5
+#define ShieldWeapon 4
 
-#define MedicalScope 50
-#define MedicalLethality 189
+#define MedicalScope 110
+#define MedicalLethality -189
 #define MedicalHp 1000
-#define MedicalDefence 0.48
+#define MedicalDefence 0.048
 #define MedicalIntervalTime 2.8
 #define MedicalCoolTime 20
-#define MedicalPrice 15
-#define MedicalWeapon 14
+#define MedicalPrice 7
+#define MedicalWeapon 6
 
-#define ShooterScope 50
+#define ShooterScope 110
 #define ShooterLethality 337
 #define ShooterHp 709
-#define ShooterDefence 0.79
+#define ShooterDefence 0.079
 #define ShooterIntervalTime 1.6
 #define ShooterCoolTime 15
-#define ShooterPrice 12
-#define ShooterWeapon 11
+#define ShooterPrice 6
+#define ShooterWeapon 5
 
 //air
-#define Enemy1Scope 50
-#define Enemy1Lethality 110
-#define Enemy1Hp 500
-#define Enemy1Defence 2.5
-#define Enemy1IntervalTime 3.0
-#define Enemy1RunSpeed 200
+#define Enemy1Scope 110
+#define Enemy1Lethality 55
+#define Enemy1Hp 250
+#define Enemy1Defence 1.25
+#define Enemy1IntervalTime 6.0
+#define Enemy1RunSpeed 100
 
 //ground1
-#define Enemy2Scope 50
-#define Enemy2Lethality 130
-#define Enemy2Hp 550
-#define Enemy2Defence 1.0
-#define Enemy2IntervalTime 1.7
-#define Enemy2RunSpeed 100
+#define Enemy2Scope 110
+#define Enemy2Lethality 65
+#define Enemy2Hp 275
+#define Enemy2Defence 0.5
+#define Enemy2IntervalTime 0.8
+#define Enemy2RunSpeed 50
 
-#define Enemy3Scope 50
-#define Enemy3Lethality 240
-#define Enemy3Hp 650
-#define Enemy3Defence 0.8
-#define Enemy3IntervalTime 2.4
-#define Enemy3RunSpeed 90
+#define Enemy3Scope 110
+#define Enemy3Lethality 120
+#define Enemy3Hp 325
+#define Enemy3Defence 0.4
+#define Enemy3IntervalTime 1.2
+#define Enemy3RunSpeed 45
 
 // types of GanYuans
 #define SHIELD_TYPE 1
@@ -75,13 +75,13 @@ USING_NS_CC;
 #define HARD_MAP 4
 
 // pathes of bullets
-const std::string SHIELD_PATH = "Pictures/HelloWorld.png";
-const std::string SHOOTER_PATH = "Pictures/HelloWorld.png";
-const std::string MEDICAL_PATH = "Pictures/HelloWorld.png";
+const std::string SHIELD_PATH = /*"Pictures/HelloWorld.png"*/"Pictures/Bullet_attack.jpg";
+const std::string SHOOTER_PATH = "Pictures/Bullet_attack.jpg";
+const std::string MEDICAL_PATH = "Pictures/Bullet_medical.png";
 
-const std::string ENEMY1_PATH = "Pictures/HelloWorld.png";
-const std::string ENEMY2_PATH = "Pictures/HelloWorld.png";
-const std::string ENEMY3_PATH = "Pictures/HelloWorld.png";
+const std::string ENEMY1_PATH = "Pictures/Bullet_attack.jpg";
+const std::string ENEMY2_PATH = "Pictures/Bullet_attack.jpg";
+const std::string ENEMY3_PATH = "Pictures/Bullet_attack.jpg";
 
 const float MAX_GAME_DURATION = 9999.f;
 

@@ -20,20 +20,20 @@ bool Bar::init(EStateType stateType, int defaultState)
 
 	if (stateType == EStateType::Lethality)
 	{
-		loadTexture("Pictures/orangeBar.png", TextureResType::LOCAL);//ɱ������
+		loadTexture("Pictures/orangeBar.png", TextureResType::LOCAL);
 		setOpacity(200);
 	}
 	else if (stateType == EStateType::Health)
 	{
-		loadTexture("Pictures/redBar.png", TextureResType::LOCAL);//Ѫ����
+		loadTexture("Pictures/redBar.png", TextureResType::LOCAL);
 		setOpacity(200);
 		setPercent(100);
 	}
 	else {
-		loadTexture("Pictures/blueBar.png", TextureResType::LOCAL);//��������
+		loadTexture("Pictures/blueBar.png", TextureResType::LOCAL);
 		setOpacity(200);
 	}
-	//�趨һЩĬ��ֵ
+	
 	setStateType(stateType);
 	setMaxState(defaultState);
 	setCurrentState(defaultState);
@@ -41,9 +41,9 @@ bool Bar::init(EStateType stateType, int defaultState)
 	auto size = getContentSize();
 	background->setPosition(size / 2);
 	background->setOpacity(200);
-	addChild(background,-1);//��ʼչʾ
+	addChild(background,-1);
 	_barRenderer->setLocalZOrder(1);
-	schedule([=](float dt) {//1��ִ��һ��recover����
+	schedule([=](float dt) {
 		ifRecover(dt);
 		}, 1.0f, "recover_schedule");
 
@@ -58,10 +58,10 @@ void Bar::ifRecover(float delta)
 }
 void Bar::changeStateBy(float delta)
 {
-	if (currentState <= 0)//��ǰstate�Ѿ�û�˾�ֱ�ӷ���
+	if (currentState <= 0)
 		return;
 	currentState += delta;
-	//�������������max����С��0
+	
 	currentState = std::min(maxState, currentState);
 	currentState = std::max(0, currentState);
 	updatePercent();

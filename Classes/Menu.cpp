@@ -5,9 +5,7 @@
 #include "GanYuanShield.h"
 USING_NS_CC;
 
-//һЩȫ�ֱ�����������ȫ�ֿɲٿص�
-Emode mode;//ģʽ
-bool gameStart = false;//�Ƿ���Ϸ�Ѿ���ʼ����,����Ѿ��������Աѡ���ǲ��ܼ����ģ���ʼ�뷨����ư�ť�ɾ�����ʼ
+bool gameStart = false;
 Scene* Menusys::createScene()
 {
     auto scene = Scene::create();
@@ -35,11 +33,11 @@ bool Menusys::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    //Ԥ����
+
     SimpleAudioEngine::getInstance()->preloadBackgroundMusic("Music/m_sys.mp3");
     SimpleAudioEngine::getInstance()->preloadBackgroundMusic("Music/button.mp3");
 
-    //����˵�����ͼ����ײ㣩
+
     auto sprite = Sprite::create("Pictures/Menu.jpg");
     sprite->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     this->addChild(sprite, 0);
@@ -52,19 +50,17 @@ bool Menusys::init()
     auto offMusic = MenuItemImage::create("Pictures/stopMusic.png", "Pictures/stopMusic.png");
     auto onMusic = MenuItemImage::create("Pictures/continueMusic.png", "Pictures/continueMusic.png");
 
-    //չʾ��ͬ��ť״̬���������֣�
     MenuItemToggle* MusicMenu = MenuItemToggle::createWithCallback(CC_CALLBACK_1(Menusys::MenuMusicCallBack, this), onMusic, offMusic,NULL );
     auto Menu_Music= Menu::create(MusicMenu, NULL);
     Menu_Music->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
     Menu_Music->setPosition(Vec2(1221, 661));
     this->addChild(Menu_Music, 1);
 
-    //1 ��ͨ�ؿ�--Normal
-    //�������� 
+ 
     auto label_normal = Label::createWithSystemFont("NormalMap", "fonts/arial.ttf", 30);
     auto menuitem_normal = MenuItemLabel::create(label_normal, CC_CALLBACK_1(Menusys::NormalMap, this));
 
-    //�������˲˵���Ŀ������Ҫ����˵��У�����������Ǵ����˵�
+   
     auto menu_normal = Menu::create(menuitem_normal, NULL);
     if (menu_normal == nullptr || menu_normal->getContentSize().width <= 0 || menu_normal->getContentSize().height <= 0) {
         problemLoading("'NormalMap'");
@@ -77,8 +73,7 @@ bool Menusys::init()
     }
 
 
-    //2 ������ս--Hard
-    //��������
+    
     auto label_Hard = Label::createWithSystemFont("HardMap", "fonts/arial.ttf", 30);
     auto menuitem_Hard = MenuItemLabel::create(label_Hard, CC_CALLBACK_1(Menusys::HardMap, this));
 
@@ -94,7 +89,7 @@ bool Menusys::init()
     }
     
 
-    //3��Ա��ӡ�Operator
+  
     auto label_Operator = Label::createWithSystemFont("OperatorFormation", "fonts/arial.ttf", 30);
     auto menuitem_Operator = MenuItemLabel::create(label_Operator, CC_CALLBACK_1(Menusys::OperatorFormation, this));
 
@@ -111,7 +106,7 @@ bool Menusys::init()
 
     return true;
 }
-//��������
+
 void Menusys::MenuMusicCallBack(Ref* pSender) {
     auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
     if (audio->isBackgroundMusicPlaying()) {
@@ -121,34 +116,34 @@ void Menusys::MenuMusicCallBack(Ref* pSender) {
         audio->resumeBackgroundMusic();
     }
 }
-//��ͨ�ؿ�
+
 void Menusys::NormalMap(Ref* pSender)
 {
     onButtonEffect();
-    mode=normal;//����ȫ�ֱ���mode
+ 
     Scene* scene = MapChoose::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
 }
-//������ս
+
 void Menusys::HardMap(Ref* pSender)
 {
     onButtonEffect();
-    mode = hard;//����ȫ�ֱ���mode;
+ 
     Scene* scene = HardMap1::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(0, scene));
 }
-//��Ա���
+
 void Menusys::OperatorFormation(Ref* pSender)
 {
     onButtonEffect();
-    mode = biandui;//����ȫ�ֱ���mode;
+ 
     Scene* scene = OperatorFormation::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
 }
-//��ť��Ч
+
 void Menusys::onButtonEffect()
 {
-    SimpleAudioEngine::getInstance()->stopBackgroundMusic(); //ֹͣϵͳbgm
-    SimpleAudioEngine::getInstance()->playBackgroundMusic("Music/button.mp3", false); //false��ʾ��ѭ��
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic(); 
+    SimpleAudioEngine::getInstance()->playBackgroundMusic("Music/button.mp3", false); 
 }
 

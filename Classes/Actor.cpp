@@ -2,22 +2,6 @@
 #include "Bullet.h"
 #include "GameManager.h"
 
-//Actor::Actor()
-//	: scope(0)
-//	, lethality(0)   // ɱ����
-//	, hp(0)  // ���Ѫ��
-//	, health(0) // ��ǰѪ��
-//	, defence(0)  // ������
-//	, alive(true)//�Ƿ���Ȼ����
-//	, intervalTime(0)//�������ʱ��
-//	, lastAttackTime(0)//��һ�ι�����ʱ��
-//	, isBlock(false)//�Ƿ��赲
-//	, isGround(false)// �Ƿ����
-//	, curBlock(0)//�Ѿ��赲��
-//	, block(0)//�赲��
-//{
-//
-//}
 
 Actor* Actor::create()
 {

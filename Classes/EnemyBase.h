@@ -7,10 +7,10 @@
 #include <time.h>
 #include "cocos2d.h"
 #include "GanYuanBase.h"
-#include "Const.h"//xjy
+#include "Const.h"
 #include "Bar.h"
-#include "Actor.h" //zmz
-#include "Bullet.h"//zmz
+#include "Actor.h" 
+#include "Bullet.h"
 
 USING_NS_CC;
 
@@ -49,22 +49,26 @@ public:
     CC_SYNTHESIZE(State, mov, Mov);
 
 
+    virtual void enemyController();
 
 
     // 给空中单位
     // 查找最近干员
     virtual Actor* checkBlockedGanYuan(Vec2 bp);
 
-    // 判断阻挡
-    virtual bool lookAround();
+    void checkNearestGanYuan();
 
     // 跑到下一点
     virtual void runToFollowPoint();
 
     // 检查是否进点
-    virtual bool checkIsEntered() const;
+    virtual bool checkIsEntered(EnemyBase* ttt) const;
 
     virtual bool attack(Actor* target);
+
+    virtual void die();
+
+    void cleanDie();
 
 };
 

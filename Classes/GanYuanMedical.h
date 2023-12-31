@@ -16,21 +16,17 @@ public:
     CREATE_FUNC(GanYuanMedical);
 
 
-    //��ɳ�ʼ��
-       //��ʼ����
-    //CC_SYNTHESIZE(Animation*, attackAnimation, AttackAnimation);//����ʱ�Ķ���
-    //CC_SYNTHESIZE(Animation*, bigMoveAnimation, BigMoveAnimation);//����ʱ�Ķ���
-
 
     void initial();
-    virtual void setDefaultData();//����Ĭ����ֵ
+    virtual void setDefaultData();
 
-    virtual void positionLegal(bool& state, Vec2& p);;//��ǰλ���Ƿ�Ϸ�
-    void castBigMove();//���Ŵ���
+    virtual void positionLegal(bool& state, Vec2& p);;
+    void castBigMove();
 
     void setTowerRect(std::vector<Rect> vec) {
         this->towerRectVec = vec;
     }
+    virtual void reborn();
 
 private:
 

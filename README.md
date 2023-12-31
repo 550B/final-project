@@ -11,4 +11,6 @@
 
 GitHub地址：[550B/final-project (github.com)](https://github.com/550B/final-project)
 
+* iOS平台额外开发的版本：https://github.com/550B/iOS-development.git
 
+项目贡献程度：1：1：1：1

@@ -40,16 +40,6 @@ void Enemy1::setDefaultData() {
     setLastAttackTime(GetCurrentTime() / 1000.f);
     setIsGround(true);
 
-    //以下开始初始化血条
-    auto healthBar = Bar::create(EStateType::Health, Health);
-    //auto position = getPosition();
-    auto size = getBoundingBox().size;
-    healthBar->setScaleX(0.5);
-    healthBar->setScaleY(0.7);
-    healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    healthBar->setPosition(Vec2(200, 450));
-    addChild(healthBar);
-
 }
 void Enemy1::initial()
 {
@@ -95,16 +85,6 @@ void Enemy2::setDefaultData() {
     setIsBlock(false);
     setIsGround(true);
 
-    //以下开始初始化血条
-
-    auto healthBar = Bar::create(EStateType::Health, Health);
-    auto size = getBoundingBox().size;
-    healthBar->setScaleX(0.5);
-    healthBar->setScaleY(0.7);
-    healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    healthBar->setPosition(Vec2(200, 450));
-    addChild(healthBar);
-
 }
 void Enemy2::initial()
 {
@@ -148,16 +128,8 @@ void Enemy3::setDefaultData() {
     setLastAttackTime(GetCurrentTime() / 1000.f);
     setIsBlock(false);
     setIsGround(true);
-
-    //以下开始初始化血条
-    auto healthBar = Bar::create(EStateType::Health, Health);
-    auto size = getBoundingBox().size;
-    healthBar->setScaleX(0.5);
-    healthBar->setScaleY(0.7);
-    healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    healthBar->setPosition(Vec2(200, 450));
-    addChild(healthBar);
 }
+
 void Enemy3::initial()
 {
     //完成屏幕的初始化

@@ -2,16 +2,16 @@
 #include "GameManager.h"
 
 USING_NS_CC;
-//����
+
 bool GanYuanShooter::init()
 {
     if (!Sprite::initWithFile("Pictures/GanYuanShooter.png")) {
         return false;
     }
-    //���������һЩ�����������
+
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    // ��ʼ��GanYuanShooter���������Ժ���Ϊ
-    this->setPosition(Vec2(visibleSize.width / 2-200, 75));//����Shield��Ƴ���x���ķ�֮һ����y��
+
+    this->setPosition(Vec2(visibleSize.width / 2-200, 75));
     this->setScale(0.32);
   
     initial();
@@ -21,25 +21,25 @@ bool GanYuanShooter::init()
 }
 void GanYuanShooter::initial()
 {
-    //�����Ļ�ĳ�ʼ��
-    setDefaultData();//����Ĭ��ֵ
-    firstInteract();//��ʼ����
-    //castBigMove();
+ 
+    setDefaultData();
+    firstInteract();
+   
 }
 void GanYuanShooter::setDefaultData() {
   
-    // �趨��װĬ����ֵ
+
     setType(SHOOTER_TYPE);
     scope = ShooterScope;
     setPrice(ShieldPrice);
-    setLethality(ShooterLethality);   // ɱ����
-    setHp(ShooterHp);  // ���Ѫ��
-    setHealth(ShooterHp);  // ��ǰѪ��
-    setCurBlock(0);  //�Ѿ��赲��*/
-    setDefence(ShooterDefence);  // ������
-    setAlive(true);//�Ƿ���Ȼ����
-    setIntervalTime(ShooterIntervalTime);//�������ʱ��
-    setCoolTime(ShooterCoolTime);//������ȴʱ��;
+    setLethality(ShooterLethality);   
+    setHp(ShooterHp); 
+    setHealth(ShooterHp);  
+    setCurBlock(0);  
+    setDefence(ShooterDefence);  
+    setAlive(true);
+    setIntervalTime(ShooterIntervalTime);
+    setCoolTime(ShooterCoolTime);
     setFirstPose(Vec2(getPosition()));
     setweapon_Price(ShooterWeapon);
     setLastAttackTime(GetCurrentTime() / 1000.f);
@@ -48,15 +48,15 @@ void GanYuanShooter::setDefaultData() {
 }
 
 
-//���λ�úϷ�
 void GanYuanShooter::positionLegal(bool& state, Vec2& p) {
     GameManager* instance = GameManager::getInstance();
     for (int i = 0; i < instance->towersPosition.size(); i++) {
         //(road_path[i - 1] - road_path[i]).getLength()
-        if ((this->getPosition()).distance(instance->towersPosition[i]) < 50.f)//ȷ������װ�ɵ���λ��
+        if ((this->getPosition()).distance(instance->towersPosition[i]) < 50.f)
         {
             state = true;
             p = instance->towersPosition[i];
+            listener1->setEnabled(0);
             return;
         }
     }
@@ -125,3 +125,9 @@ void GanYuanShooter::castBigMove() {
     this->runAction(Sequence::create(DelayTime::create(BigMoveTime), callFunc, nullptr));
 }
 
+void GanYuanShooter::reborn() {
+    GameManager* instance = GameManager::getInstance();
+    auto shooter = GanYuanShooter::create();
+    instance->gameScene->addChild(shooter);
+    instance->ganyuanVector.pushBack(shooter);
+}

@@ -2,7 +2,7 @@
 #include "GameManager.h"
 
 USING_NS_CC;
-//����
+
 bool GanYuanMedical::init()
 {
     if (!Sprite::initWithFile("Pictures/GanYuanMedical.png")) {
@@ -25,15 +25,15 @@ void GanYuanMedical::initial()
 void GanYuanMedical::setDefaultData() {
     setType(MEDICAL_TYPE);
     scope = MedicalScope;
-    setPrice(ShieldPrice);
-    setLethality(MedicalLethality);   // ɱ����
-    setHp(MedicalHp);  // ���Ѫ��
-    setHealth(MedicalHp);  // ��ǰѪ��
-    setCurBlock(0);  //�Ѿ��赲��*/
-    setDefence(MedicalDefence);  // ������
-    setAlive(true);//�Ƿ���Ȼ����
-    setIntervalTime(MedicalIntervalTime);//�������ʱ��
-    setCoolTime(MedicalCoolTime);//������ȴʱ��;
+    setPrice(MedicalPrice);
+    setLethality(MedicalLethality);   
+    setHp(MedicalHp);  
+    setHealth(MedicalHp);  
+    setCurBlock(0);  
+    setDefence(MedicalDefence);  
+    setAlive(true);
+    setIntervalTime(MedicalIntervalTime);
+    setCoolTime(MedicalCoolTime);
     setFirstPose(Vec2(getPosition()));
     setweapon_Price(ShieldWeapon);
     setLastAttackTime(GetCurrentTime() / 1000.f);
@@ -45,10 +45,11 @@ void GanYuanMedical::positionLegal(bool& state, Vec2& p) {
     GameManager* instance = GameManager::getInstance();
     for (int i = 0; i < instance->towersPosition.size(); i++) {
         //(road_path[i - 1] - road_path[i]).getLength()
-        if ((this->getPosition()).distance(instance->towersPosition[i]) < 50.f)//ȷ������װ�ɵ���λ��
+        if ((this->getPosition()).distance(instance->towersPosition[i]) < 50.f)
         {
             state = true;
             p = instance->towersPosition[i];
+            listener1->setEnabled(0);
             return;
         }
     }
@@ -108,18 +109,23 @@ void GanYuanMedical::castBigMove() {
     this->runAction(sequence);
     //开大招的数值
     defence *= 1.3;
-    defenceBar->setPercent(defence / 5);
+    defenceBar->setPercent(defence *200);
     lethality *= 1.5;
-    lethalityBar->setPercent(lethality/ 5);
+    lethalityBar->setPercent(-lethality/ 5);
 
     auto callFunc = CallFunc::create([&]() {
         defence /= 1.3;
-        defenceBar->setPercent(defence / 5);
+        defenceBar->setPercent(defence * 200);
         lethality /= 1.5;
-        lethalityBar->setPercent(lethality / 5);
+        lethalityBar->setPercent(-lethality / 5);
         });
 
     this->runAction(Sequence::create(DelayTime::create(BigMoveTime), callFunc, nullptr));
 }
-
+void GanYuanMedical::reborn() {
+    GameManager* instance = GameManager::getInstance();
+    auto medical = GanYuanMedical::create();
+    instance->gameScene->addChild(medical);
+    instance->ganyuanVector.pushBack(medical);
+}
 

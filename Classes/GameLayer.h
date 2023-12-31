@@ -31,7 +31,6 @@ public:
     GanYuanMedical* medical;
     GameLayer();
 
-    //��������
     static cocos2d::Scene* createScene();
 
     // type of this map
@@ -57,24 +56,22 @@ public:
     Wave* findEarliestWave();
     void logic();
     void runEnemies();
-
+    void runmedical();
     void updatemoney(float dt);
 
     void bulletFlying(float dt);
     void removeBullet(Bullet* pSender);
     //void initLabelText();
 
-protected://��Ϊprojected
+protected:
 
     float interval;
 
-    GameManager* instance;
-
     SpriteBatchNode* spriteSheet;
-    TMXTiledMap* map;//��ͼ
-    TMXLayer* bgLayer;//������
-    TMXObjectGroup* towers;//����
-    TMXObjectGroup* grounds;//����
+    TMXTiledMap* map;
+    TMXLayer* bgLayer;
+    TMXObjectGroup* towers;
+    TMXObjectGroup* grounds;
     std::vector<Vec2> towers_path;
     std::vector<Vec2> grounds_path;
 
@@ -91,18 +88,12 @@ protected://��Ϊprojected
     Label* groupTotalLabel;
     Layer* toolLayer;
 
-    Sprite* sprite_money;//���ͼ��
-    Sprite* star3;//3��ͼ��
-    Sprite* star2;//2��ͼ��
-    Sprite* star1;//1��ͼ��
-    Sprite* star0;//0��ͼ��
+    Sprite* sprite_money;
+    Sprite* star3;
+    Sprite* star2;
+    Sprite* star1;
+    Sprite* star0;
     void initToolLayer();
-
-    CC_SYNTHESIZE(int, blue, Blue);
-
-    // ����Ҫ�ؿ�Ѫ��
-    //CC_SYNTHESIZE_READONLY(ProgressTimer*, playHpBar, PlayHpBar);
-    bool isSuccessful;
 
     bool isTouchEnable;
     void addTowerChoosePanel(Point position);

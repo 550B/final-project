@@ -33,7 +33,83 @@ bool EnemyBase::init(const std::string& filename)
     {
         return false;
     }
+    //以下开始初始化血条
+    healthBar = Bar::create(EStateType::Health, health);
+    //auto position = getPosition();
+    auto size = getBoundingBox().size;
+    healthBar->setScaleX(0.5);
+    healthBar->setScaleY(0.7);
+    healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    healthBar->setPosition(Vec2(200, 450));
+    addChild(healthBar);
     return true;
+}
+
+void EnemyBase::checkNearestGanYuan()
+{
+    GameManager* instance = GameManager::getInstance();
+    auto gyv = instance->ganyuanVector;
+
+    auto currMinDistant = this->scope;
+
+    GanYuanBase* ganyuanTemp = nullptr;
+    for (int i = 0; i < gyv.size(); i++)
+    {
+        auto enemy = gyv.at(i);
+        double distance = this->getPosition().getDistance(enemy->getPosition());
+
+        if (distance < currMinDistant) {
+            currMinDistant = distance;
+            ganyuanTemp = enemy;
+        }
+    }
+    attacking = ganyuanTemp;
+}
+
+void EnemyBase::enemyController()
+{
+    if (getAlive())
+    {
+        checkNearestGanYuan();//判断最近干员
+        this->attack(attacking);
+        if (health <= 0)
+            this->die();
+    }
+}
+
+void EnemyBase::cleanDie()
+{
+    GameManager* instance = GameManager::getInstance();
+
+    for (int i = 0; i < instance->bulletVector.size(); i++)
+    {
+        if (instance->bulletVector.at(i)->getTarget() == this)
+        {
+            instance->bulletVector.eraseObject(instance->bulletVector.at(i), true);
+        }
+    }
+}
+
+void EnemyBase::die()
+{
+    GameManager* instance = GameManager::getInstance();
+
+    for (int i = 0; i < instance->occupied.size(); i++)
+    {
+        if (instance->occupied.at(i).equals(this->getPosition()))
+        {
+            instance->occupied.erase(instance->occupied.begin() + i);
+        }
+    }
+    this->setAlive(false);
+
+    auto es = instance->enemyVector;
+    es.eraseObject(this, true);
+    healthBar->setOpacity(0);
+    healthBar->background->setOpacity(0);
+    this->setOpacity(0);
+
+    cleanDie();
 }
 
 // 跑到下一个点去
@@ -47,14 +123,6 @@ void EnemyBase::runToFollowPoint()
     {
         if (ptr < positions.size() - 1)
         {
-            /*for (int i = 0; i < ocp.size(); i++)
-            {
-                if (ocp.at(i).p.equals(positions.at(ptr + 1)))
-                {
-                    this->setMov(ATTACKING);
-                }
-            }*/
-
             for (auto p : ocp)
             {
                 if (p.equals(positions.at(ptr + 1)))
@@ -90,40 +158,24 @@ void EnemyBase::runToFollowPoint()
                 this->setNextPose(positions.at(ptr + 1));
             }
 
-            //for (auto ganyuan : instance->ganyuanVector)
-            //{
-            //    //if()
-            //}
-
             this->setMov(STILL);
         }
-        //else if (this->getPosition().equals(positions.at(ptr)))
-        //{
-        //}
     }
 
     if (this->getMov() == ATTACKING)
     {
-        auto gy = checkBlockedGanYuan(positions.at(ptr + 1));
-        if (gy != NULL && gy->getAlive())
+        if (this->getType() == ENEMY3_TYPE || this->getType() == ENEMY2_TYPE)
         {
-            this->setAttacking(gy);
-            gy->attack(this);
-            this->attack(gy);
-            if (gy->getAttacking() == NULL)
+            auto gy = checkBlockedGanYuan(positions.at(ptr + 1));
+            if (gy != NULL && gy->getAlive())
             {
-                gy->setAttacking(this);
+                this->setAttacking(gy);
+                this->attack(gy);
             }
-        }
-        else
-        {
-            /*this->setCurPose(positions.at(ptr + 1));
-            this->setPtr(++ptr);
-            if (!positions.at(ptr).equals(this->getLastPose()))
+            else
             {
-                this->setNextPose(positions.at(ptr + 1));
-            }*/
-            this->setMov(STILL);
+                this->setMov(STILL);
+            }
         }
     }
 }
@@ -181,7 +233,7 @@ bool EnemyBase::attack(Actor* target)
     return false;
 }
 
-bool EnemyBase::checkIsEntered() const
+bool EnemyBase::checkIsEntered(EnemyBase* ttt) const
 {
     /*if (this->getCurPose().equals(this->getLastPose()) && this->getPosition().distance(this->getLastPose()) < 1.f)
     {
@@ -189,14 +241,34 @@ bool EnemyBase::checkIsEntered() const
     }*/
     GameManager* instance = GameManager::getInstance();
 
-    for (int i = 0; i < instance->enemyVector.size(); i++)
-    {
-        if (instance->enemyVector.at(i)->getCurPose().equals(instance->enemyVector.at(i)->getLastPose())
-            && instance->enemyVector.at(i)->getPosition().distance(instance->enemyVector.at(i)->getLastPose()) < 0.1f)
+    //for (int i = 0; i < instance->enemyVector.size(); i++)
+    //{
+    //    if (instance->enemyVector.at(i) != NULL)
+    //    {
+    //        if (!instance->enemyVector.at(i)->getAlive())
+    //        {
+    //            return false;
+    //        }
+    //        if (instance->enemyVector.at(i)->getCurPose().equals(instance->enemyVector.at(i)->getLastPose())
+    //            && instance->enemyVector.at(i)->getPosition().distance(instance->enemyVector.at(i)->getLastPose()) < 0.1f)
+    //        {
+    //            return true;
+    //        }
+    //    }
+    //}
+
+        if (ttt != NULL)
         {
-            return true;
+            if (!ttt->getAlive())
+            {
+                return false;
+            }
+            if (ttt->getCurPose().equals(ttt->getLastPose())
+                && ttt->getPosition().distance(ttt->getLastPose()) < 0.1f)
+            {
+                return true;
+            }
         }
-    }
 
 
     return false;
@@ -209,15 +281,12 @@ Actor* EnemyBase::checkBlockedGanYuan(Vec2 bp)
 
     for (auto gy : ganyuanVector)
     {
-        if (gy->getPosition().equals(bp))
-        {
-            return gy;
+        if (gy->getType() == SHIELD_TYPE) {
+            if (gy->getPosition().equals(bp))
+            {
+                return gy;
+            }
         }
     }
     return NULL;
-}
-
-bool EnemyBase::lookAround()
-{
-    return false;
 }

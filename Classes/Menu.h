@@ -14,19 +14,14 @@ public:
 
     virtual bool init();
 
-    //��������
     void MenuMusicCallBack(Ref* pSender);
 
-    //��ת��ͨ�ؿ�
     void NormalMap(Ref* pSender);
 
-    //��ת������ս
     void HardMap(Ref* pSender);
 
-    //��ת��Ա���
     void OperatorFormation(Ref* pSender);
 
-    //��������
     void onButtonEffect();
 
     // implement the "static create()" method manually
