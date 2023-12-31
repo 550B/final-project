@@ -20,30 +20,30 @@ bool Bar::init(EStateType stateType, int defaultState)
 
 	if (stateType == EStateType::Lethality)
 	{
-		loadTexture("Pictures/orangeBar.png", TextureResType::LOCAL);//É±ÉËÁ¦éÙ
+		loadTexture("Pictures/orangeBar.png", TextureResType::LOCAL);//É±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		setOpacity(200);
 	}
 	else if (stateType == EStateType::Health)
 	{
-		loadTexture("Pictures/redBar.png", TextureResType::LOCAL);//ÑªÌõºì
+		loadTexture("Pictures/redBar.png", TextureResType::LOCAL);//Ñªï¿½ï¿½ï¿½ï¿½
 		setOpacity(200);
+		setPercent(100);
 	}
 	else {
-		loadTexture("Pictures/blueBar.png", TextureResType::LOCAL);//·ÀÓùÁ¦À¶
+		loadTexture("Pictures/blueBar.png", TextureResType::LOCAL);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		setOpacity(200);
 	}
-	//Éè¶¨Ò»Ð©Ä¬ÈÏÖµ
+	//ï¿½è¶¨Ò»Ð©Ä¬ï¿½ï¿½Öµ
 	setStateType(stateType);
 	setMaxState(defaultState);
 	setCurrentState(defaultState);
-	setPercent(100);
-	auto background = Sprite::create("Pictures/blueBar.png");
+	background = Sprite::create("Pictures/grayBar.png");
 	auto size = getContentSize();
 	background->setPosition(size / 2);
-	background->setOpacity(0);
-	addChild(background, -1);//³õÊ¼Õ¹Ê¾
+	background->setOpacity(200);
+	addChild(background,-1);//ï¿½ï¿½Ê¼Õ¹Ê¾
 	_barRenderer->setLocalZOrder(1);
-	schedule([=](float dt) {//1ÃëÖ´ÐÐÒ»´Îrecoverº¯Êý
+	schedule([=](float dt) {//1ï¿½ï¿½Ö´ï¿½ï¿½Ò»ï¿½ï¿½recoverï¿½ï¿½ï¿½ï¿½
 		ifRecover(dt);
 		}, 1.0f, "recover_schedule");
 
@@ -51,17 +51,17 @@ bool Bar::init(EStateType stateType, int defaultState)
 }
 void Bar::ifRecover(float delta)
 {
-	if (currentState < maxState && currentState>0)
+	if (currentState <= maxState && currentState>=0)
 	{
 		changeStateBy(delta);
 	}
 }
-void Bar::changeStateBy(int delta)
+void Bar::changeStateBy(float delta)
 {
-	if (currentState < 0)//µ±Ç°stateÒÑ¾­Ã»ÁË¾ÍÖ±½Ó·µ»Ø
+	if (currentState <= 0)//ï¿½ï¿½Ç°stateï¿½Ñ¾ï¿½Ã»ï¿½Ë¾ï¿½Ö±ï¿½Ó·ï¿½ï¿½ï¿½
 		return;
 	currentState += delta;
-	//ÌØÅÐÈç¹û³¬¹ýÁËmax»òÕßÐ¡ÓÚ0
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½maxï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½0
 	currentState = std::min(maxState, currentState);
 	currentState = std::max(0, currentState);
 	updatePercent();
@@ -69,9 +69,10 @@ void Bar::changeStateBy(int delta)
 
 void Bar::updatePercent()
 {
+	auto tmp = currentState * 100.0 / maxState;
 	setPercent(currentState * 100.0 / maxState);
 }
-void Bar::changeMaxBy(int delta) {
+void Bar::changeMaxBy(float delta) {
 	setMaxState(maxState + delta);
 	if (delta > 0)
 	{

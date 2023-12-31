@@ -20,6 +20,8 @@ protected:
 	Bar* defenceBar;
 	CC_SYNTHESIZE(int, type, Type);
 
+	CC_SYNTHESIZE(int, road, Road);
+
 	CC_SYNTHESIZE(int, scope, Scope);
 
 	CC_SYNTHESIZE(int, lethality, Lethality);
@@ -43,6 +45,8 @@ protected:
 	CC_SYNTHESIZE(int, curBlock, CurBlock);  //�Ѿ��赲��
 
 	CC_SYNTHESIZE(bool, isGround, IsGround);  // �Ƿ����
+
+	CC_SYNTHESIZE(Actor*, attacking, Attacking);
 
 public:
 

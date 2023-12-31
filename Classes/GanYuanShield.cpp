@@ -10,9 +10,7 @@ bool GanYuanShield::init()
         return false;
     }
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    // ��ʼ��GanYuanShield���������Ժ���Ϊ
-    //this->setAnchorPoint(Vec2::ANCHOR_MIDDLE_BOTTOM);
-    this->setPosition(Vec2(visibleSize.width / 2, 75));//����Shield��Ƴ���x���ķ�֮һ����y��
+    this->setPosition(Vec2(visibleSize.width / 2, 75));
     this->setScale(0.3);
     initial();
     return true;
@@ -46,55 +44,30 @@ void GanYuanShield::setDefaultData() {
     setIntervalTime(ShieldIntervalTime);//�������ʱ��
     setCoolTime(ShieldCoolTime);//������ȴʱ��;
     setFirstPose(Vec2(getPosition()));
-
+    setweapon_Price(ShieldWeapon);
     setLastAttackTime(GetCurrentTime() / 1000.f);
     setIsBlock(false);
     setIsGround(true);
 
-    //���¿�ʼ��ʼ��Ѫ��
-    lethalityBar = Bar::create(EStateType::Lethality, lethality);
-    healthBar = Bar::create(EStateType::Health, Health);
-    defenceBar = Bar::create(EStateType::Defence, defence);
-    auto position = getPosition();
-    auto size = getBoundingBox().size;
-    lethalityBar->setScaleX(0.5);
-    lethalityBar->setScaleY(0.7);
-    lethalityBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    lethalityBar->setPosition(Vec2(200, 450+70));
-    addChild(lethalityBar);
-    healthBar->setScaleX(0.5);
-    healthBar->setScaleY(0.7);
-    healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    healthBar->setPosition(Vec2(200, 450+35));
-    addChild(healthBar);
-    defenceBar->setScaleX(0.5);
-    defenceBar->setScaleY(0.7);
-    defenceBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    defenceBar->setPosition(Vec2(200, 450));
-    addChild(defenceBar);
 }
+
 void GanYuanShield::initial()
 {
-    //�����Ļ�ĳ�ʼ��
-    setDefaultData();//����Ĭ��ֵ
+    setDefaultData();
     firstInteract();
-    //castBigMove();
 }
-//���λ�úϷ�
+
 void GanYuanShield:: positionLegal(bool& state, Vec2& p) {
     GameManager* instance = GameManager::getInstance();
     for (int i = 0; i < instance->groundsPosition.size(); i++) {
         //(road_path[i - 1] - road_path[i]).getLength()
-        if ((this->getPosition()).distance(instance->groundsPosition[i]) < 50.f)//ȷ������װ�ɵ���λ��
+        if ((this->getPosition()).distance(instance->groundsPosition[i]) < 50.f)
         {
             state = true;
             p = instance->groundsPosition[i];
-            instance->setMoney(instance->getMoney() - price);
             return;
         }
     }
-    //state=true;//?
-    //state = false;
     return;
 }
 void GanYuanShield::castBigMove() {
@@ -103,7 +76,7 @@ void GanYuanShield::castBigMove() {
     
     Sprite* sprite = Sprite::create();
     this->addChild(sprite);
-    sprite->setPosition(Vec2(this->getPosition().x-70, this->getPosition().y+160));
+    sprite->setPosition(Vec2(visibleSize.width / 6.5, visibleSize.height / 3));
 
 
     std::string frameNamePrefix = "Pictures/snakeBigMove/";
@@ -138,14 +111,21 @@ void GanYuanShield::castBigMove() {
 
     Sequence* sequence = Sequence::create(delay, stopAnimation, nullptr);
     this->runAction(sequence);
-}
-void GanYuanShield::bigMove() {
-    /*
-    if (Director::getInstance()->getDeltaTime() == ShieldIntervalTime && health > 0)
-        castBigMove();*/
-}//�Ƿ�ﵽ����
-void GanYuanShield::shoot()
-{
+    //开大招的数值
+    defence *= 1.5;
+    defenceBar->setPercent(defence / 0.005);
 
+    auto callFunc = CallFunc::create([&]() {
+        defence /= 1.5;
+        defenceBar->setPercent(defence / 0.005);
+        });
+
+    this->runAction(Sequence::create(DelayTime::create(BigMoveTime), callFunc, nullptr));
 }
 
+void GanYuanShield::reborn() {
+    GameManager* instance = GameManager::getInstance();
+    auto shield = GanYuanShield::create();
+    instance->gameScene->addChild(shield);
+    instance->ganyuanVector.pushBack(shield);
+}

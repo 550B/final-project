@@ -7,9 +7,10 @@
 #include <cmath>
 #include "cocos2d.h"
 #include "Enemy.h"
-//#include "GanYuanMedical.h"
+#include "GanYuanMedical.h"
 #include "GanYuanShield.h"
 #include "GanYuanShooter.h"
+#include "GanYuanBase.h"
 #include "GameManager.h"
 #include "Menu.h"
 #include "Bullet.h"
@@ -25,6 +26,9 @@ USING_NS_CC;
 class GameLayer : public Layer
 {
 public:
+    GanYuanShield* shield;
+    GanYuanShooter* shooter;
+    GanYuanMedical* medical;
     GameLayer();
 
     //��������
@@ -52,10 +56,12 @@ public:
     void initWave();
     Wave* findEarliestWave();
     void logic();
+    void runEnemies();
 
     void updatemoney(float dt);
 
-    void bulletFlying();
+    void bulletFlying(float dt);
+    void removeBullet(Bullet* pSender);
     //void initLabelText();
 
 protected://��Ϊprojected
@@ -63,9 +69,6 @@ protected://��Ϊprojected
     float interval;
 
     GameManager* instance;
-    GanYuanShield* shield;
-    GanYuanShooter* shooter;
-   // GanYuanMedical* medical;
 
     SpriteBatchNode* spriteSheet;
     TMXTiledMap* map;//��ͼ

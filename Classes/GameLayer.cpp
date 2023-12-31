@@ -39,6 +39,7 @@ GameLayer::GameLayer()
 	, totalEnemies(0)
 	, instance(GameManager::getInstance())
 	, mapType(0)
+	, star(3)
 {
 
 }
@@ -71,9 +72,8 @@ bool GameLayer::init()
 
 	mapType = instance->levelType;
 
-	//instance->towersPosition = towers_path;
-	//instance->groundsPosition = grounds_path;
-	//��������
+	instance->towersPosition = towers_path;
+	instance->groundsPosition = grounds_path;
 	SimpleAudioEngine::getInstance()->preloadBackgroundMusic("Music/battle.mp3");
 	auto audio_battle = SimpleAudioEngine::getInstance();
 	if (!audio_battle->isBackgroundMusicPlaying()) {
@@ -82,11 +82,11 @@ bool GameLayer::init()
 
 	shield= GanYuanShield::create();
 	this->addChild(shield);
-	instance->ganyuanVector.pushBack(shield);
 	shooter = GanYuanShooter::create();
 	this->addChild(shooter);
-	instance->ganyuanVector.pushBack(shooter);
-	// ���Ӱ�ť
+	medical = GanYuanMedical::create();
+	this->addChild(medical);
+
 	initToolLayer();
 
 	// initialize waves
@@ -94,13 +94,8 @@ bool GameLayer::init()
 
 	// ÿ������һ����Ϸ�߼�
 	schedule(CC_SCHEDULE_SELECTOR(GameLayer::addSceneEnemy), interval);
-	//schedule(CC_SCHEDULE_SELECTOR(GameLayer::logic), 0.5f);
+	schedule(CC_SCHEDULE_SELECTOR(GameLayer::bulletFlying), 0.1f);
 	schedule(CC_SCHEDULE_SELECTOR(GameLayer::updatemoney), 1.0f);
-
-	// ����¼�����
-	auto touchListener = EventListenerTouchOneByOne::create();
-	touchListener->onTouchBegan = CC_CALLBACK_2(GameLayer::onTouchBegan, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
 	// ��ʼschedule
 	scheduleUpdate();
@@ -286,24 +281,24 @@ void GameLayer::initWave()
 	switch (mapType)
 	{
 	case NORMAL_MAP1:
-		GameLayer::addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
-		GameLayer::addWaveEnemy(20.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
-		GameLayer::addWaveEnemy(30.f, { {2,AROAD}, {3,AROAD} });
+		GameLayer::addWaveEnemy(10.f, { {5,AROAD}/*,{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD}*/ });
+		GameLayer::addWaveEnemy(20.f, { {6,AROAD}/*,{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} */});
+		GameLayer::addWaveEnemy(30.f, { {ENEMY1_TYPE,AROAD}/*, {ENEMY2_TYPE,AROAD}, {ENEMY3_TYPE,AROAD}*/ });
 		break;
 	case NORMAL_MAP2:
 		GameLayer::addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
 		GameLayer::addWaveEnemy(20.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
-		GameLayer::addWaveEnemy(30.f, { {2,AROAD}, {3,AROAD} });
+		GameLayer::addWaveEnemy(30.f, { {ENEMY1_TYPE,AROAD}, {ENEMY2_TYPE,AROAD}, {ENEMY3_TYPE,AROAD} });
 		break;
 	case NORMAL_MAP3:
 		GameLayer::addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,AROAD} });
 		GameLayer::addWaveEnemy(20.f, { {rand() % 2 + 5,BROAD},{rand() % 2 + 5,BROAD}, {rand() % 2 + 5,BROAD} });
-		GameLayer::addWaveEnemy(30.f, { {2,AROAD}, {3,AROAD} });
+		GameLayer::addWaveEnemy(30.f, { {ENEMY1_TYPE,AROAD}, {ENEMY2_TYPE,BROAD}, {ENEMY3_TYPE,AROAD} });
 		break;
 	case HARD_MAP:
 		GameLayer::addWaveEnemy(10.f, { {rand() % 2 + 5,AROAD},{rand() % 2 + 5,BROAD}, {rand() % 2 + 5,CROAD} });
 		GameLayer::addWaveEnemy(20.f, { {rand() % 2 + 5,DROAD},{rand() % 2 + 5,AROAD}, {rand() % 2 + 5,BROAD} });
-		GameLayer::addWaveEnemy(30.f, { {2,CROAD}, {3,DROAD} });
+		GameLayer::addWaveEnemy(30.f, { {ENEMY1_TYPE,CROAD}, {ENEMY2_TYPE,DROAD}, {ENEMY3_TYPE,AROAD} });
 		break;
 	}
 }
@@ -336,6 +331,8 @@ void GameLayer::addSceneEnemy(float dt)
 
 				auto enemy = Enemy1::create();
 				enemy->setEntered(false);
+				enemy->setLastAttackTime(this->getNowTime());
+				enemy->setRoad(et.road);
 				enemy->setFirstPose(rd.front());
 				enemy->setLastPose(rd.back());
 				enemy->setCurPose(rd.front());
@@ -361,6 +358,8 @@ void GameLayer::addSceneEnemy(float dt)
 
 				auto enemy = Enemy2::create();
 				enemy->setEntered(false);
+				enemy->setLastAttackTime(this->getNowTime());
+				enemy->setRoad(et.road);
 				enemy->setFirstPose(rd.front());
 				enemy->setLastPose(rd.back());
 				enemy->setCurPose(rd.front());
@@ -382,6 +381,8 @@ void GameLayer::addSceneEnemy(float dt)
 
 				auto enemy = Enemy3::create();
 				enemy->setEntered(false);
+				enemy->setLastAttackTime(this->getNowTime());
+				enemy->setRoad(et.road);
 				enemy->setFirstPose(rd.front());
 				enemy->setLastPose(rd.back());
 				enemy->setCurPose(rd.front());
@@ -475,31 +476,32 @@ void GameLayer::lose()
 					star2->setScale(0.5);
 					star2->setAnchorPoint(Point(0.5f, 1));
 					star2->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
-					toolLayer->addChild(star2);
+					toolLayer->addChild(star2, 200);
 					break;
 				case 1:
 					star1 = Sprite::create("Pictures/star1.png");
 					star1->setScale(0.5);
 					star1->setAnchorPoint(Point(0.5f, 1));
 					star1->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
-					toolLayer->addChild(star1);
+					toolLayer->addChild(star1, 300);
 					break;
-				case 0:
+				default:
 					star0 = Sprite::create("Pictures/star0.png");
 					star0->setScale(0.5);
 					star0->setAnchorPoint(Point(0.5f, 1));
 					star0->setPosition(Point(Director::getInstance()->getVisibleSize().width / 2, Director::getInstance()->getVisibleSize().height));
-					toolLayer->addChild(star0);
+					toolLayer->addChild(star0, 400);
 					break;
 				}
 
-				if (star == 0)
+				if (star <= 0)
 				{
 					Size visibleSize = Director::getInstance()->getVisibleSize();
 					RenderTexture* renderTexture = RenderTexture::create(visibleSize.width, visibleSize.height);
 					renderTexture->begin();
 					this->getParent()->visit();
 					renderTexture->end();
+					unscheduleUpdate();
 					instance->clear();
 					Director::getInstance()->replaceScene(TransitionFade::create(0.1f, Failed::scene(renderTexture)));
 				}
@@ -561,27 +563,65 @@ void GameLayer::win()
 //	return true;
 //}
 
-void GameLayer::bulletFlying()
+void GameLayer::removeBullet(Bullet* pSender)
 {
+	GameManager* instance = GameManager::getInstance();
+
+	auto bulletVector = instance->bulletVector;
+
+	//instance->bulletVector.eraseObject(pSender);
+
+	//pSender->removeFromParent();
+
+	instance->bulletVector.eraseObject(pSender, true);
+
+	pSender->getParent()->removeChild(pSender, true);
+}
+
+void GameLayer::bulletFlying(float dt)
+{
+	GameManager* instance = GameManager::getInstance();
+
 	if (!instance->bulletVector.empty())
 	{
-		for (auto bullet : instance->bulletVector)
+		/*for (auto bullet : instance->bulletVector)*/
+		for(int i = 0; i < instance->bulletVector.size(); i++)
 		{
-			bullet->calculatePosition();
-
-			if (bullet->calculateDistance() < 10.f)
+			auto bullet = instance->bulletVector.at(i);
+			if (bullet)
 			{
-				auto receiver = bullet->getTarget();
-
-				if (receiver != NULL)
+				if (bullet && bullet->getTarget() != NULL)
 				{
-					receiver->takeDamage(bullet->getDamage());
-				}
+					bullet->calculatePosition();
 
-				bullet->removeBullet(bullet);
-				//CC_SAFE_DELETE(bullet);
+					if (bullet->calculateDistance() < 20.f)
+					{
+						auto receiver = bullet->getTarget();
+
+						if (receiver != NULL)
+						{
+							receiver->takeDamage(bullet->getDamage());
+						}
+						this->removeBullet(bullet);
+					}
+				}
+				else
+				{
+					this->removeBullet(bullet);
+				}
 			}
 		}
+	}
+}
+
+// Run! Gump Run!
+void GameLayer::runEnemies()
+{
+	GameManager* instance = GameManager::getInstance();
+
+	for (auto enemy : instance->enemyVector)
+	{
+		enemy->runToFollowPoint();
 	}
 }
 
@@ -591,7 +631,11 @@ void GameLayer::update(float dt)
 	//addTower();
 	//CollisionDetection();
 	logic();
-	bulletFlying();
+	for (int i = 0; i < instance->ganyuanVector.size(); i++) {
+		instance->ganyuanVector.at(i)->ganYuanController();
+	}
+	//bulletFlying();
+	runEnemies();
 	lose();
 	win();
 }

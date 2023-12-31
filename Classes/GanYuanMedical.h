@@ -1,10 +1,13 @@
 #ifndef _GAN_YUAN_MEDICAL_H_
 #define _GAN_YUAN_MEDICAL_H_
 
-#include "cocos2d.h"
+#include "GanYuanBase.h"
+#include "Const.h"
+#include "Bar.h"
 USING_NS_CC;
+class GanYuanBase;
 
-class GanYuanMedical :public cocos2d::Sprite
+class GanYuanMedical :public GanYuanBase
 {
 public:
 
@@ -13,27 +16,29 @@ public:
     CREATE_FUNC(GanYuanMedical);
 
 
+    //ï¿½ï¿½É³ï¿½Ê¼ï¿½ï¿½
+       //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
+    //CC_SYNTHESIZE(Animation*, attackAnimation, AttackAnimation);//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ä¶ï¿½ï¿½ï¿½
+    //CC_SYNTHESIZE(Animation*, bigMoveAnimation, BigMoveAnimation);//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ä¶ï¿½ï¿½ï¿½
+
 
     void initial();
- 
-    void setDefaultData();//ÉèÖÃÄ¬ÈÏÊýÖµ
-    void firstInteract();//³õÊ¼½»»¥£¨°üÀ¨Ñ¡Ôñ¼°ÍÏ×§È¥²¿ÊðÎ»ÖÃ²¿Êð£©
-    void moveToPosition();//³õÊ¼ÍÏ×§
-    void castBigMove();//¿ª·Å´óÕÐ
+    virtual void setDefaultData();//ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½ï¿½ï¿½Öµ
 
-    void shoot();
+    virtual void positionLegal(bool& state, Vec2& p);;//ï¿½ï¿½Ç°Î»ï¿½ï¿½ï¿½Ç·ï¿½Ï·ï¿½
+    void castBigMove();//ï¿½ï¿½ï¿½Å´ï¿½ï¿½ï¿½
 
-    //void removeBullet(Node* pSender);
-
-    //Sprite* MedicalBullet();
+    void setTowerRect(std::vector<Rect> vec) {
+        this->towerRectVec = vec;
+    }
 
 private:
+
     Rect getCurTowerRect(Point touchP);
 
     std::vector<Rect> towerRectVec;
     Rect curTowerRect;
     Point originPos;
-    Sprite* ganyuanMedical;
 
 };
 

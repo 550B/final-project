@@ -9,8 +9,6 @@
 
 USING_NS_CC;
 
-//class EnemyBase;
-
 // 这里类名起敌人名字
 // 飞行类
 class Enemy1 : public EnemyBase

@@ -47,10 +47,12 @@ void Actor::takeDamage(INT32 damage)
 	INT32 actualDamage = static_cast<INT32>(actualDefence * damage * -1);
 
 	// 公式
-	this->setHealth(getHealth() - actualDamage <= 0 ? 0 : getHealth() - actualDamage >= getHp() ? getHp() : getHealth() - actualDamage);
-	healthBar->changeStateBy(-actualDamage);//更新血条
-	if (!health)
-		die();
+	int a = getHealth() - actualDamage <= 0 ? 0 : getHealth() - actualDamage >= getHp() ? getHp() : getHealth() - actualDamage;
+	this->setHealth(getHealth() + actualDamage <= 0 ? 0 : getHealth() + actualDamage >= getHp() ? getHp() : getHealth() + actualDamage);
+	if (this->healthBar != NULL)
+		healthBar->ifRecover(actualDamage);//更新血条 打架是-医疗为正
+	//if (!health)
+	//	die();
 	if (getHealth() <= 0)
 	{
 		die();
@@ -63,16 +65,19 @@ bool Actor::attack(Actor* target)
 
 	auto nowTime = GetCurrentTime() / 1000.f;
 
-	if (nowTime - lastAttackTime < intervalTime)
+	if (nowTime - getLastAttackTime() <= getIntervalTime())
 	{
+		return false;
+	}
+	else if(target == nullptr){
 		return false;
 	}
 	else
 	{
-		lastAttackTime = nowTime;
+		setLastAttackTime(nowTime);
 		std::string tmpPath;
 
-		switch (target->getType())
+		switch (this->getType())
 		{
 		case SHIELD_TYPE:
 			tmpPath = SHIELD_PATH;
@@ -94,9 +99,9 @@ bool Actor::attack(Actor* target)
 			break;
 		}
 
-		auto bullet = Bullet::create(tmpPath, this->getLethality(), 100, this, target);
+		auto bullet = Bullet::create(tmpPath, this->getLethality(), 3000, this, target);
 		bullet->setPosition(this->getPosition());
-		bullet->setScale(2);
+		bullet->setScale(0.12);
 		instance->gameScene->addChild(bullet);
 		instance->bulletVector.pushBack(bullet);
 

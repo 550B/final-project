@@ -1,17 +1,9 @@
 #include "GanYuanBase.h"
 #include "GameManager.h"
-GanYuanBase::GanYuanBase() :
-	// ������ע�͵ģ����ɣ�����Actor�︳��ʼֵ
-	//scope(0)
-	//, lethality(0)   // ɱ����
-	//, hp(0)  // ���Ѫ��
-	//, health(0) // ��ǰѪ��
-	//, defence(0)  // ������
-	//, alive(true)//�Ƿ���Ȼ����
-	//, intervalTime(0)//�������ʱ��
-	selected(false)
-	, coolTime(0)//������ȴʱ��;
-{};
+GanYuanBase::GanYuanBase()
+{
+	alive = false;
+};
 GanYuanBase* GanYuanBase::create(const std::string& filename)
 {
 	GanYuanBase* Base = new(std::nothrow)GanYuanBase;
@@ -50,7 +42,6 @@ void GanYuanBase::firstInteract() {
 		menu_select->setOpacity(200);
 		this->addChild(menu_select);
 	}
-	// ��selectmenu��menu_select����Ϊ��Ա����
 	m_selectMenu = selectmenu;
 	m_menuSelect = menu_select;
 }
@@ -79,32 +70,8 @@ void GanYuanBase::selectCallback(Ref* sender)
 		label->runAction(Sequence::create(delay, removeLabel, nullptr));
 	}
 	
-	//selected = true;
-}
-
-
-// ��ѡ��ص�����
-void GanYuanBase::unselectCallback(Ref* sender)
-{
-	Menu* unselectOption = static_cast<Menu*>(sender);
-	unselectOption->setColor(Color3B::RED);
-
-	// ���ò���ֵΪfalse
-	selected = false;
-}
-void GanYuanBase::ifmove() {
-	//��ʼ��λ��
-	/*
-	while (1) {
-		moveToPosition();
-		
-		
-		//state = true;
-	}
-	this->setPose(getPosition());//��¼��Ա��λ��*/
 }
 void GanYuanBase::moveToPosition() {
-	//��ק���֣����csdn���룩
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	auto listener1 = EventListenerTouchOneByOne::create();
@@ -159,6 +126,40 @@ void GanYuanBase::moveToPosition() {
 			GameManager* instance = GameManager::getInstance();
 			this->setPosition(p);
 			instance->occupied.push_back(p);
+			alive = true;
+			instance->ganyuanVector.pushBack(this);
+			instance->setMoney(instance->getMoney() - price);
+			lethalityBar = Bar::create(EStateType::Lethality, lethality);
+			lethalityBar->setMaxState(500);
+			lethalityBar->setPercent(lethality/5);
+			healthBar = Bar::create(EStateType::Health, health);
+			defenceBar = Bar::create(EStateType::Defence, defence);
+			defenceBar->setMaxState(500);
+			defenceBar->setPercent(defence / 0.005);
+			auto position = getPosition();
+			auto size = getBoundingBox().size;
+			lethalityBar->setScaleX(0.5);
+			lethalityBar->setScaleY(0.7);
+			lethalityBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			lethalityBar->setPosition(Vec2(200, 450 + 35));
+			addChild(lethalityBar);
+			healthBar->setScaleX(0.5);
+			healthBar->setScaleY(0.7);
+			healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			healthBar->setPosition(Vec2(200, 450 + 70));
+			addChild(healthBar);
+			defenceBar->setScaleX(0.5);
+			defenceBar->setScaleY(0.7);
+			defenceBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			defenceBar->setPosition(Vec2(200, 450));
+			addChild(defenceBar);
+
+			weapon = MenuItemImage::create("Pictures/weapon_n.png", "Pictures/weapon_y.png", CC_CALLBACK_1(GanYuanBase::weaponCallback, this));
+			auto menu_weapon = Menu::create(weapon, NULL, NULL);
+			menu_weapon->setPosition(Vec2(-20, 100));
+			menu_weapon->setOpacity(200);
+			menu_weapon->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+			this->addChild(menu_weapon);
 		}
 		};
 	//�������¼��󶨵���������
@@ -167,6 +168,28 @@ void GanYuanBase::moveToPosition() {
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
 }
 void GanYuanBase::positionLegal(bool &state, Vec2& p) {  }//��ǰλ���Ƿ�Ϸ�
+void GanYuanBase::weaponCallback(Ref* sender)
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	GameManager* instance = GameManager::getInstance();
+	if (instance->getMoney() > weapon_price) {
+		instance->setMoney(instance->getMoney() - weapon_price);
+		castBigMove();
+	}
+	else {
+		Label* label = Label::createWithTTF("MONEY NOT ENOUGH!", "fonts/arial.ttf", 200);
+		label->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+		label->setColor(Color3B::RED);
+		this->addChild(label);
+
+		DelayTime* delay = DelayTime::create(1.0f);
+		CallFunc* removeLabel = CallFunc::create([label]() {
+			label->removeFromParent();
+			});
+		label->runAction(Sequence::create(delay, removeLabel, nullptr));
+	}
+}
 
 //ս��
 void GanYuanBase::checkNearestEnemy()
@@ -176,7 +199,7 @@ void GanYuanBase::checkNearestEnemy()
 
 	auto currMinDistant = this->scope;
 
-	EnemyBase* enemyTemp = NULL;
+	EnemyBase* enemyTemp = nullptr;
 	for (int i = 0; i < enemyVector.size(); i++)
 	{
 		auto enemy = enemyVector.at(i);
@@ -187,49 +210,114 @@ void GanYuanBase::checkNearestEnemy()
 			enemyTemp = enemy;
 		}
 	}
-	nearestEnemy = enemyTemp;
-}
-//die,��Ҫ�ڵ���֮ǰcheck ����ֵ
-void GanYuanBase::die()
-{
-	// ���ø�Ա��λ��Ϊ��ʼλ��
-	this->setPosition(firstPose);
-	// ���ø�ԱΪ�Ǵ��״̬
-	alive = false;
-	// ���ø�ԱΪ��ɫ
-	this->setColor(Color3B::GRAY);
-	// ֹͣ���ж���������н����еĶ�����
-	this->stopAllActions();
-	// ����һ����ʱ������������ָ��ʱ������ִ���ض�����
-	auto delay = DelayTime::create(intervalTime);
-	// ����һ�����ж�������ʱ������ִ��һϵ�ж���
-	auto sequence = Sequence::create(
-		// �ָ���Ա��ԭɫ
-		CallFunc::create([&]() {
-			this->setColor(Color3B::WHITE);
-			}),
-		// �ڸ�Ա��ͷ����ʾ��ʾ
-		CallFunc::create([&]() {
-			auto label = Label::createWithSystemFont("Ganyuan ready to go", "fonts/arial.ttf", 30);
-			label->setPosition(Vec2(0, this->getContentSize().height));
-			this->addChild(label);
-			// ����һ����ʱ������������ָ��ʱ����Ƴ���ʾ
-			auto delayRemove = DelayTime::create(3.0f);
-			// ����һ�����ж�������ʱ�������Ƴ���ʾ
-			auto sequenceRemove = Sequence::create(
-				FadeOut::create(0.5f),
-				RemoveSelf::create(),
-				nullptr);
-			// ���Ƴ������󶨵���ʾ��
-			label->runAction(sequenceRemove);
-			}),
-		nullptr);
-	// �����ж����󶨵���Ա��
-	this->runAction(sequence);
+	attacking = enemyTemp;
 }
 
-// �����̼��Ѫ����͸�Ա
-/*
+bool GanYuanBase::attack(Actor* target)
+{
+	GameManager* instance = GameManager::getInstance();
+
+	auto nowTime = GetCurrentTime() / 1000.f;
+
+	if (nowTime - getLastAttackTime() <= getIntervalTime())
+	{
+		return false;
+	}
+	else if (target == nullptr) {
+		return false;
+	}
+	else
+	{
+		setLastAttackTime(nowTime);
+		std::string tmpPath;
+
+		switch (this->getType())
+		{
+		case SHIELD_TYPE:
+			tmpPath = SHIELD_PATH;
+			break;
+		case SHOOTER_TYPE:
+			tmpPath = SHOOTER_PATH;
+			break;
+		case MEDICAL_TYPE:
+			tmpPath = MEDICAL_PATH;
+			break;
+		case ENEMY1_TYPE:
+			tmpPath = ENEMY1_PATH;
+			break;
+		case ENEMY2_TYPE:
+			tmpPath = ENEMY2_PATH;
+			break;
+		case ENEMY3_TYPE:
+			tmpPath = ENEMY3_PATH;
+			break;
+		}
+
+		auto bullet = Bullet::create(tmpPath, this->getLethality(), 3000, this, target);
+		bullet->setPosition(this->getPosition());
+		bullet->setScale(0.12);
+		instance->gameScene->addChild(bullet);
+		instance->bulletVector.pushBack(bullet);
+
+		return true;
+	}
+	return false;
+}
+
+void GanYuanBase::cleanDie()
+{
+	GameManager* instance = GameManager::getInstance();
+
+	for (int i = 0; i < instance->bulletVector.size(); i++)
+	{
+		if (instance->bulletVector.at(i)->getTarget() == this)
+		{
+			instance->bulletVector.eraseObject(instance->bulletVector.at(i), true);
+		}
+	}
+}
+
+void GanYuanBase::die()
+{
+	GameManager* instance = GameManager::getInstance();
+	for (int i = 0; i < instance->occupied.size(); i++)
+	{
+		if (instance->occupied.at(i).equals(this->getPosition()))
+		{
+			instance->occupied.erase(instance->occupied.begin() + i);
+		}
+	}
+	this->setAlive(false);
+
+	auto ganyaunVector = instance->ganyuanVector;
+	ganyaunVector.eraseObject(this, true);
+	lethalityBar->setOpacity(0);
+	lethalityBar->background->setOpacity(0);
+	healthBar->setOpacity(0);
+	healthBar->background->setOpacity(0);
+	defenceBar->setOpacity(0);
+	defenceBar->background->setOpacity(0);
+	weapon->setOpacity(0);
+	this->setOpacity(0);
+
+	cleanDie();
+
+	auto callFunc = CallFunc::create([&]() {
+		this->reborn();
+		this->getParent()->removeChild(this, true);
+		});
+
+	this->runAction(Sequence::create(DelayTime::create(coolTime), callFunc, nullptr));
+}
+void  GanYuanBase::ganYuanController() {
+	checkNearestEnemy();//判断最近敌人
+	attack(attacking);
+	if (health <= 0)
+		die();
+	
+}
+
+
 void GanYuanBase::checkInjuredGanYuan()
 {
 	GameManager* instance = GameManager::getInstance();
@@ -244,18 +332,10 @@ void GanYuanBase::checkInjuredGanYuan()
 
 		if (ganyuan->getHealth() < hp * 1.0 && ganyuan->getHealth() > 0)
 		{
-			injuredGanYuan.pushBack(ganyuan);
+			instance->injuredganyuan.pushBack(ganyuan);
 		}
 	}
 }
-
-void GanYuanBase::sortInjuredGanYuan()
-{
-	// ����ɸ��Ѫ����͵ĸ�Ա
-	qSort(injuredGanYuan, 0, injuredGanYuan.size() - 1);
-
-}
-
 
 void qSort(Vector<GanYuanBase*>array, int low, int high) {
 	int i = low;
@@ -282,7 +362,16 @@ void qSort(Vector<GanYuanBase*>array, int low, int high) {
 	array.swap(low, i);
 	qSort(array, low, i - 1);
 	qSort(array, i + 1, high);
-}*/
+}
+
+void GanYuanBase::sortInjuredGanYuan()
+{
+	GameManager* instance = GameManager::getInstance();
+	
+	qSort(instance->injuredganyuan, 0, instance->injuredganyuan.size() - 1);
+
+}
+
 
 //void GanYuanBase::checkBlock()
 //{

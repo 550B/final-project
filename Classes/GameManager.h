@@ -24,7 +24,7 @@ public:
 	Vector<Bullet*> bulletVector;
 	Vector<GanYuanBase*> ganyuanVector;
 	Vector<Wave*> waveVector;
-
+	Vector<GanYuanBase*> injuredganyuan;
 	std::vector<Vec2> towersPosition;
 	std::vector<Vec2> groundsPosition;
 	std::vector<std::vector<Vec2> > roadsPosition;

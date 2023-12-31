@@ -74,14 +74,3 @@ float Bullet::calculateDistance() const
 	}
 }
 
-void Bullet::removeBullet(Node* pSender)
-{
-	GameManager* instance = GameManager::getInstance();
-
-	auto bulletVector = instance->bulletVector;
-
-	Bullet* sprite = (Bullet*)pSender;
-	instance->bulletVector.eraseObject(sprite);
-	sprite->removeFromParent();
-}
-

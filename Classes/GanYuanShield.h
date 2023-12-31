@@ -16,10 +16,7 @@ public:
 
     CC_SYNTHESIZE(int, block, Block);  //�赲��
     CC_SYNTHESIZE(int, curBlock, CurBlock);  //�Ѿ��赲��
-    //base������
     
-    //��ɳ�ʼ��
-    //��ʼ����
     CC_SYNTHESIZE(Animation*, attackAnimation, AttackAnimation);//����ʱ�Ķ���
     CC_SYNTHESIZE(Animation*, bigMoveAnimation, BigMoveAnimation);//����ʱ�Ķ���
 
@@ -30,23 +27,9 @@ public:
     virtual void setDefaultData();//����Ĭ����ֵ
     virtual void positionLegal(bool& state, Vec2& p);;//��ǰλ���Ƿ�Ϸ�
     virtual void initial();//��ʼ��
-    
-    //��ɳ�ʼ��������������ֵ��ʼ���Լ�������ʼ��
-    void shoot();//����
-    void bigMove();//�Ƿ�ﵽ����
     void castBigMove();//���Ŵ���
-    //��ȴ״̬
-    bool beingCool();//��ȴ״̬������ʾ���Լ��˳���ȴ״̬
-    //reset
-    bool reset();//��ȴ������
-
-private:
-    void updateHealth(float delta);//����Ѫ��
-    void updateLethality(float delta);//����ɱ�����������ͷţ�
-    void updatDefence(float delta);//���·����������ܼӳɣ�
-
     Sprite* ganyuanShield;
-
+    virtual void reborn();
 };
 
 #endif /* defined(_GAN_YUAN_SHIELD_H_) */

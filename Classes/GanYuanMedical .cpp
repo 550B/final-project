@@ -1,17 +1,16 @@
 #include "GanYuanMedical.h"
+#include "GameManager.h"
 
 USING_NS_CC;
-//Ò½ÁÆ
+//ï¿½ï¿½ï¿½ï¿½
 bool GanYuanMedical::init()
 {
     if (!Sprite::initWithFile("Pictures/GanYuanMedical.png")) {
         return false;
     }
-    //ÔÚÕâÀï½øÐÐÒ»Ð©¾«ÁéÀàµÄÉèÖÃ
     auto visibleSize = Director::getInstance()->getVisibleSize();
-
-    this->setPosition(Vec2(visibleSize.width / 5, visibleSize.height / 4));
-    this->setScale(0.3);
+    this->setPosition(Vec2(visibleSize.width / 2+200, 75));
+    this->setScale(0.32);
 
     initial();
     return true;
@@ -20,67 +19,41 @@ bool GanYuanMedical::init()
 }
 void GanYuanMedical::initial()
 {
-    //Íê³ÉÆÁÄ»µÄ³õÊ¼»¯
-    setDefaultData();//ÉèÖÃÄ¬ÈÏÖµ
-    firstInteract();//³õÊ¼½»»¥
-    castBigMove();
+    setDefaultData();
+    firstInteract();
 }
-
 void GanYuanMedical::setDefaultData() {
-
-    /*
-    setLethality(MedicalLethality);   // É±ÉËÁ¦
-    setHp(MedicalHp);  // ×î´óÑªÁ¿
-    setHealth(MedicalHp);  // µ±Ç°ÑªÁ¿*/
+    setType(MEDICAL_TYPE);
+    scope = MedicalScope;
+    setPrice(ShieldPrice);
+    setLethality(MedicalLethality);   // É±ï¿½ï¿½ï¿½ï¿½
+    setHp(MedicalHp);  // ï¿½ï¿½ï¿½Ñªï¿½ï¿½
+    setHealth(MedicalHp);  // ï¿½ï¿½Ç°Ñªï¿½ï¿½
+    setCurBlock(0);  //ï¿½Ñ¾ï¿½ï¿½èµ²ï¿½ï¿½*/
+    setDefence(MedicalDefence);  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    setAlive(true);//ï¿½Ç·ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½
+    setIntervalTime(MedicalIntervalTime);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+    setCoolTime(MedicalCoolTime);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´Ê±ï¿½ï¿½;
+    setFirstPose(Vec2(getPosition()));
+    setweapon_Price(ShieldWeapon);
+    setLastAttackTime(GetCurrentTime() / 1000.f);
+    setIsBlock(false);
+    setIsGround(false);
 }
-void GanYuanMedical::firstInteract() {
 
-    if (1) {
-        moveToPosition();
-    }
-}
-void GanYuanMedical::moveToPosition() {
-    auto listener1 = EventListenerTouchOneByOne::create();
-    listener1->setSwallowTouches(true);
-    //Í¨¹ý lambda ±í´ïÊ½ Ö±½ÓÊµÏÖ´¥ÃþÊÂ¼þµÄ»Øµô·½·¨
-    listener1->onTouchBegan = [](Touch* touch, Event* event) {
-        auto target = static_cast<Sprite*>(event->getCurrentTarget());
-        Point locationInNode = target->convertToNodeSpace(touch->getLocation());
-        Size s = target->getContentSize();
-        Rect rect = Rect(0, 0, s.width, s.height);
-
-        if (rect.containsPoint(locationInNode))
+void GanYuanMedical::positionLegal(bool& state, Vec2& p) {
+    GameManager* instance = GameManager::getInstance();
+    for (int i = 0; i < instance->towersPosition.size(); i++) {
+        //(road_path[i - 1] - road_path[i]).getLength()
+        if ((this->getPosition()).distance(instance->towersPosition[i]) < 50.f)//È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×°ï¿½Éµï¿½ï¿½ï¿½Î»ï¿½ï¿½
         {
-            log("sprite began... x = %f, y = %f", locationInNode.x, locationInNode.y);
-            target->setOpacity(180);//µã»÷µÄÊ±ºò¾«ÁéÑÕÉ«±ä°µ£¬255Îª×î´óÖµ£¬9×îÐ¡return true;
-            return true;
+            state = true;
+            p = instance->towersPosition[i];
+            return;
         }
-        return false;
-        };
-    listener1->onTouchMoved = [=](Touch* touch, Event* event) {
-        auto target = static_cast<Sprite*>(event->getCurrentTarget());
-        target->setPosition(target->getPosition() + touch->getDelta());
-        //this->curRoadSp = this->getCurRoadSp(touch->getLocation());
-        this->curTowerRect = this->getCurTowerRect(touch->getLocation());
-        };
-    listener1->onTouchEnded = [&](Touch* touch, Event* event) {
-        auto target = static_cast<Sprite*>(event->getCurrentTarget());
-        log("sprite onTouchesEnded..");
-        target->setOpacity(255);//ÊÖÊÆËÉ¿ªÊ±Ê¹¾«Áé»Ö¸´Ô­À´µÄÑÕÉ«
-        if (this->curTowerRect.getMinX() != 0) {
-            target->setPosition(this->curTowerRect.getMidX(), this->curTowerRect.getMidY());
-        }
-        else {
-            target->setPosition(this->originPos);
-        }
-        this->curTowerRect = Rect(0, 0, 0, 0);
-        };
-    //½«´¥ÃþÊÂ¼þ°ó¶¨µ½¾«ÁéÉíÉÏ
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
+    }
+    return;
 }
-
 
 Rect GanYuanMedical::getCurTowerRect(Point touchP) {
     Rect rec(0, 0, 0, 0);
@@ -99,7 +72,7 @@ void GanYuanMedical::castBigMove() {
 
     Sprite* sprite = Sprite::create();
     this->addChild(sprite);
-    sprite->setPosition(Vec2(visibleSize.width / 5, visibleSize.height / 4));
+    sprite->setPosition(Vec2(visibleSize.width / 6.5, visibleSize.height / 3));
 
     std::string frameNamePrefix = "Pictures/MedicalBigMove/";
     int numFrames = 9;
@@ -133,5 +106,20 @@ void GanYuanMedical::castBigMove() {
 
     Sequence* sequence = Sequence::create(delay, stopAnimation, nullptr);
     this->runAction(sequence);
+    //å¼€å¤§æ‹›çš„æ•°å€¼
+    defence *= 1.3;
+    defenceBar->setPercent(defence / 5);
+    lethality *= 1.5;
+    lethalityBar->setPercent(lethality/ 5);
+
+    auto callFunc = CallFunc::create([&]() {
+        defence /= 1.3;
+        defenceBar->setPercent(defence / 5);
+        lethality /= 1.5;
+        lethalityBar->setPercent(lethality / 5);
+        });
+
+    this->runAction(Sequence::create(DelayTime::create(BigMoveTime), callFunc, nullptr));
 }
+
 

@@ -25,8 +25,6 @@ public:
 
 	float calculateDistance() const;
 
-	void removeBullet(Node* pSender);
-
 };
 
 #endif // !_BULLET_H_

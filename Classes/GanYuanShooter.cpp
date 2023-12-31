@@ -35,39 +35,16 @@ void GanYuanShooter::setDefaultData() {
     setLethality(ShooterLethality);   // ɱ����
     setHp(ShooterHp);  // ���Ѫ��
     setHealth(ShooterHp);  // ��ǰѪ��
-    setBlock(ShooterBlock);  //�赲��
     setCurBlock(0);  //�Ѿ��赲��*/
     setDefence(ShooterDefence);  // ������
     setAlive(true);//�Ƿ���Ȼ����
     setIntervalTime(ShooterIntervalTime);//�������ʱ��
     setCoolTime(ShooterCoolTime);//������ȴʱ��;
     setFirstPose(Vec2(getPosition()));
-
+    setweapon_Price(ShooterWeapon);
     setLastAttackTime(GetCurrentTime() / 1000.f);
     setIsBlock(false);
     setIsGround(false);
-
-    //���¿�ʼ��ʼ��Ѫ��
-    lethalityBar = Bar::create(EStateType::Lethality, lethality);
-    healthBar = Bar::create(EStateType::Health, Health);
-    defenceBar = Bar::create(EStateType::Defence, defence);
-    auto position = getPosition();
-    auto size = getBoundingBox().size;
-    lethalityBar->setScaleX(0.5);
-    lethalityBar->setScaleY(0.7);
-    lethalityBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    lethalityBar->setPosition(Vec2(200, 450 + 70));
-    addChild(lethalityBar);
-    healthBar->setScaleX(0.5);
-    healthBar->setScaleY(0.7);
-    healthBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    healthBar->setPosition(Vec2(200, 450 + 35));
-    addChild(healthBar);
-    defenceBar->setScaleX(0.5);
-    defenceBar->setScaleY(0.7);
-    defenceBar->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    defenceBar->setPosition(Vec2(200, 450));
-    addChild(defenceBar);
 }
 
 
@@ -85,50 +62,6 @@ void GanYuanShooter::positionLegal(bool& state, Vec2& p) {
     }
     return;
 }
-
-//void GanYuanShooter::moveToPosition() {
-//    auto listener1 = EventListenerTouchOneByOne::create();
-//    listener1->setSwallowTouches(true);
-//    //ͨ�� lambda ����ʽ ֱ��ʵ�ִ����¼��Ļص�����
-//    listener1->onTouchBegan = [](Touch* touch, Event* event) {
-//        auto target = static_cast<Sprite*>(event->getCurrentTarget());
-//        Point locationInNode = target->convertToNodeSpace(touch->getLocation());
-//        Size s = target->getContentSize();
-//        Rect rect = Rect(0, 0, s.width, s.height);
-//
-//        if (rect.containsPoint(locationInNode))
-//        {
-//            log("sprite began... x = %f, y = %f", locationInNode.x, locationInNode.y);
-//            target->setOpacity(180);//�����ʱ������ɫ�䰵��255Ϊ���ֵ��9��Сreturn true;
-//            return true;
-//        }
-//        return false;
-//        };
-//    listener1->onTouchMoved = [=](Touch* touch, Event* event) {
-//        auto target = static_cast<Sprite*>(event->getCurrentTarget());
-//        target->setPosition(target->getPosition() + touch->getDelta());
-//        //this->curRoadSp = this->getCurRoadSp(touch->getLocation());
-//        this->curTowerRect = this->getCurTowerRect(touch->getLocation());
-//        };
-//    listener1->onTouchEnded = [&](Touch* touch, Event* event) {
-//        auto target = static_cast<Sprite*>(event->getCurrentTarget());
-//        log("sprite onTouchesEnded..");
-//        target->setOpacity(255);//�����ɿ�ʱʹ����ָ�ԭ������ɫ
-//        if (this->curTowerRect.getMinX()!= 0) {
-//            target->setPosition(this->curTowerRect.getMidX(), this->curTowerRect.getMidY());
-//        }
-//        else {
-//            target->setPosition(this->originPos);
-//        }
-//        this->curTowerRect = Rect(0, 0, 0, 0);
-//        };
-//    //�������¼��󶨵���������
-//    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this);
-//    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
-//    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this);
-//}
-
-
 Rect GanYuanShooter::getCurTowerRect(Point touchP) {
     Rect rec(0, 0, 0, 0);
     for (Rect rect : this->towerRectVec) {
@@ -146,7 +79,7 @@ void GanYuanShooter::castBigMove() {
 
     Sprite* sprite = Sprite::create();
     this->addChild(sprite);
-    sprite->setPosition(Vec2(visibleSize.width / 5, visibleSize.height / 4));
+    sprite->setPosition(Vec2(visibleSize.width / 6.5, visibleSize.height / 3));
 
     std::string frameNamePrefix = "Pictures/ShooterBigMove/";
     int numFrames = 9;
@@ -180,4 +113,15 @@ void GanYuanShooter::castBigMove() {
 
     Sequence* sequence = Sequence::create(delay, stopAnimation, nullptr);
     this->runAction(sequence);
+    //开大招的数值
+    lethality *= 1.2;
+    lethalityBar->setPercent(lethality / 5);
+
+    auto callFunc = CallFunc::create([&]() {
+        lethality /= 1.2;
+        lethalityBar->setPercent(lethality / 5);
+        });
+
+    this->runAction(Sequence::create(DelayTime::create(BigMoveTime), callFunc, nullptr));
 }
+

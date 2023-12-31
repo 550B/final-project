@@ -6,7 +6,7 @@
 #include <string>
 #include <time.h>
 #include "cocos2d.h"
-//#include "GanYuanBase.h"
+#include "GanYuanBase.h"
 #include "Const.h"//xjy
 #include "Bar.h"
 #include "Actor.h" //zmz
@@ -45,12 +45,15 @@ public:
     // 移速
     CC_SYNTHESIZE(float, runSpeed, RunSpeed);
 
+    // 移动状态
+    CC_SYNTHESIZE(State, mov, Mov);
+
 
 
 
     // 给空中单位
     // 查找最近干员
-    virtual Actor* checkNearestGanYuan();
+    virtual Actor* checkBlockedGanYuan(Vec2 bp);
 
     // 判断阻挡
     virtual bool lookAround();
@@ -59,7 +62,9 @@ public:
     virtual void runToFollowPoint();
 
     // 检查是否进点
-    virtual bool checkIsEntered();
+    virtual bool checkIsEntered() const;
+
+    virtual bool attack(Actor* target);
 
 };
 
